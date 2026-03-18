@@ -1,0 +1,31 @@
+SELECT JSON_ARRAYAGG(
+    JSON_OBJECT(
+        'branch', b.code,
+        'product_name', p.tag,
+        'sub_product', p.code,
+        'module', m.code,
+        'transition_id', t.transition_id,
+        'from_group', t.from_group,
+        'to_groups', t.to_groups,
+        'condition', t.`condition`,
+        'trigger', t.`trigger`,
+        'priority', t.priority,
+        'workflow_id', w.workflow_id
+    )
+) AS result
+FROM transition t
+JOIN workflow w
+    ON w.workflow_id = t.workflow_id
+JOIN branch_product_module bpm
+    ON w.branch_product_module_id = bpm.tenant_product_module
+JOIN branch b
+    ON bpm.branch_id = b.branch_id
+JOIN product_module pm
+    ON bpm.product_module_id = pm.product_module_id
+JOIN product p
+    ON p.product_id = pm.product_id
+JOIN module m
+    ON m.module_id = pm.module_id
+JOIN tenant tr
+    ON tr.tenant_id = b.tenant_id
+WHERE tr.organization_code = {tenant_code_str} and b.code in ({branch_codes_str});

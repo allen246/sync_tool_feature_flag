@@ -1,0 +1,106 @@
+SELECT JSON_ARRAYAGG(
+    JSON_OBJECT(
+        'product_configurations', product_configurations,
+        'module_configurations', module_configurations,
+        'transaction_type_configuration', transaction_type_configuration,
+        'branch_configuration', branch_configuration
+    )
+) AS result
+FROM (
+    SELECT
+        JSON_OBJECT(
+            'product_id', p.product_id,
+            'name', p.name,
+            'code', p.code,
+            'description', p.description,
+            'tag', p.tag,
+            'created_by', p.created_by,
+            'created_at', p.created_at,
+            'sequence', p.sequence,
+            'parent_product_id', p.parent_product_id,
+            'is_inbound', p.is_inbound,
+            'product_module_sequence', pm.sequence,
+            'product_tag_configurations',
+                JSON_OBJECT(
+                    'product_tag_id', pt.product_tag_id,
+                    'name', pt.name,
+                    'code', pt.code,
+                    'sequence', pt.sequence,
+                    'field_meta', pt.field_meta
+                ),
+            'field_meta', p.field_meta,
+            'supported_file_formats', p.supported_file_formats
+        ) AS product_configurations,
+
+        JSON_OBJECT(
+            'module_id', m.module_id,
+            'name', m.name,
+            'description', m.description,
+            'code', m.code,
+            'dependent_modules', m.dependent_modules,
+            'tenant_module_dependent_modules', tm.dependent_modules
+        ) AS module_configurations,
+
+        bpm.eligibility_config AS branch_product_module_eligibility_config,
+
+        JSON_OBJECT(
+            'transaction_type_display_name', bpt.transaction_type_display_name,
+            'transaction_type_id', tym.transaction_type_id,
+            'code', tym.code,
+            'name', tym.name,
+            'description', tym.description,
+            'transaction_type_master_sequence', tym.sequence,
+            'product_transaction_type_sequence', ptt.sequence,
+            'created_by', tym.created_by
+        ) AS transaction_type_configuration,
+
+        JSON_OBJECT(
+            'name', b.name,
+            'description', b.description,
+            'status', b.status,
+            'created_by', b.created_by,
+            'code',b.code,
+            'country_id', b.country_id
+        ) AS branch_configuration
+
+
+    FROM (
+            SELECT *
+            FROM product
+            WHERE code IN ({product_codes_str})
+         ) p
+
+    JOIN product_tag pt
+        ON pt.product_tag_id = p.product_tag_id
+
+    JOIN product_module pm
+        ON pm.product_id = p.product_id
+
+    JOIN module m
+        ON m.module_id = pm.module_id
+
+    JOIN branch_product_module bpm
+        ON bpm.product_module_id = pm.product_module_id
+
+    JOIN branch b
+        ON b.branch_id = bpm.branch_id
+       AND b.code in ({branch_codes_str})
+
+    JOIN tenant t
+        ON t.tenant_id = b.tenant_id
+       AND t.organization_code = {tenant_code_str}
+
+    LEFT JOIN tenant_module tm
+       ON tm.module_id = m.module_id
+       AND tm.tenant_id = t.tenant_id
+
+    LEFT JOIN product_transaction_type ptt
+        ON ptt.product_id = p.product_id
+
+    LEFT JOIN transaction_type_master tym
+        ON ptt.transaction_type_id = tym.transaction_type_id
+
+    LEFT JOIN branch_product_transaction_type bpt
+        ON bpt.product_transaction_type_id = ptt.product_transaction_type_id
+       AND b.branch_id = bpt.branch_id
+) x;

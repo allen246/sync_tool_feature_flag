@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sync Management Tool</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="container">
+
+  <div class="app-header">
+    <div class="app-header-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="22" height="22">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Sync Management Tool</h1>
+      <p>Database migration SQL generator</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="switchTab('branch')" class="active">Branch Sync</button>
+    <button onclick="switchTab('workflow')">Workflow Sync</button>
+    <button onclick="switchTab('feature')">Feature Flag Sync</button>
+  </div>
+
+  <!-- Notes Modal -->
+  <div id="noteModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+          </svg>
+          Manual Action Required
+        </div>
+        <span class="close" onclick="closeModal()">&times;</span>
+      </div>
+      <div id="noteContent" class="modal-body"></div>
+    </div>
+  </div>
+
+  <div id="workflowRemapModal" class="modal hidden">
+    <div class="modal-content workflow-remap-modal-content">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h11M4 12h8m-8 5h16m-4-4l4 4-4 4"/>
+          </svg>
+          Remap Workflow Groups
+        </div>
+        <span class="close" onclick="cancelWorkflowGroupRemap()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p class="workflow-remap-hint">Provide the new group name for every distinct non-empty value found in <code>from_group</code> and <code>to_groups</code>.</p>
+        <div id="workflowRemapContent" class="workflow-remap-list"></div>
+      </div>
+      <div class="workflow-remap-actions">
+        <button type="button" class="secondary" onclick="cancelWorkflowGroupRemap()">Cancel</button>
+        <button type="button" class="primary" onclick="submitWorkflowGroupRemap()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <div id="content"></div>
+</div>
+<script src="/static/js/app.js"></script>
+</body>
+</html>

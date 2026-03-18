@@ -1,0 +1,824 @@
+2026-02-23 02:06:26,337 - INFO - Logging initialized
+2026-02-23 02:06:26,345 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.104:5000
+2026-02-23 02:06:26,345 - INFO - [33mPress CTRL+C to quit[0m
+2026-02-23 02:06:26,346 - INFO -  * Restarting with stat
+2026-02-23 02:06:26,545 - INFO - Logging initialized
+2026-02-23 02:06:26,550 - WARNING -  * Debugger is active!
+2026-02-23 02:06:26,552 - INFO -  * Debugger PIN: 654-435-131
+2026-02-23 02:06:30,856 - INFO - 127.0.0.1 - - [23/Feb/2026 02:06:30] "GET / HTTP/1.1" 200 -
+2026-02-23 02:06:30,874 - INFO - 127.0.0.1 - - [23/Feb/2026 02:06:30] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-02-23 02:06:30,875 - INFO - 127.0.0.1 - - [23/Feb/2026 02:06:30] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-02-23 02:06:46,194 - INFO - 127.0.0.1 - - [23/Feb/2026 02:06:46] "GET / HTTP/1.1" 200 -
+2026-02-23 02:06:46,207 - INFO - 127.0.0.1 - - [23/Feb/2026 02:06:46] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 02:06:46,207 - INFO - 127.0.0.1 - - [23/Feb/2026 02:06:46] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 02:06:46,737 - INFO - 127.0.0.1 - - [23/Feb/2026 02:06:46] "GET / HTTP/1.1" 200 -
+2026-02-23 02:06:46,749 - INFO - 127.0.0.1 - - [23/Feb/2026 02:06:46] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 02:06:46,749 - INFO - 127.0.0.1 - - [23/Feb/2026 02:06:46] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 02:06:47,138 - INFO - 127.0.0.1 - - [23/Feb/2026 02:06:47] "GET / HTTP/1.1" 200 -
+2026-02-23 02:06:47,149 - INFO - 127.0.0.1 - - [23/Feb/2026 02:06:47] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 02:06:47,150 - INFO - 127.0.0.1 - - [23/Feb/2026 02:06:47] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 02:07:34,918 - INFO - 127.0.0.1 - - [23/Feb/2026 02:07:34] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 02:09:27,416 - INFO - 127.0.0.1 - - [23/Feb/2026 02:09:27] "GET / HTTP/1.1" 200 -
+2026-02-23 02:09:27,433 - INFO - 127.0.0.1 - - [23/Feb/2026 02:09:27] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 02:09:27,436 - INFO - 127.0.0.1 - - [23/Feb/2026 02:09:27] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-02-23 02:09:29,972 - INFO - 127.0.0.1 - - [23/Feb/2026 02:09:29] "GET / HTTP/1.1" 200 -
+2026-02-23 02:09:29,986 - INFO - 127.0.0.1 - - [23/Feb/2026 02:09:29] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 02:09:29,989 - INFO - 127.0.0.1 - - [23/Feb/2026 02:09:29] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 02:09:41,716 - INFO - 127.0.0.1 - - [23/Feb/2026 02:09:41] "GET / HTTP/1.1" 200 -
+2026-02-23 02:09:41,731 - INFO - 127.0.0.1 - - [23/Feb/2026 02:09:41] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 02:09:41,732 - INFO - 127.0.0.1 - - [23/Feb/2026 02:09:41] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-02-23 02:09:50,338 - INFO - 127.0.0.1 - - [23/Feb/2026 02:09:50] "GET / HTTP/1.1" 200 -
+2026-02-23 02:09:50,353 - INFO - 127.0.0.1 - - [23/Feb/2026 02:09:50] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 02:09:50,354 - INFO - 127.0.0.1 - - [23/Feb/2026 02:09:50] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-02-23 02:09:59,612 - INFO - 127.0.0.1 - - [23/Feb/2026 02:09:59] "GET / HTTP/1.1" 200 -
+2026-02-23 02:09:59,625 - INFO - 127.0.0.1 - - [23/Feb/2026 02:09:59] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 02:09:59,625 - INFO - 127.0.0.1 - - [23/Feb/2026 02:09:59] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-02-23 02:10:18,151 - INFO - 127.0.0.1 - - [23/Feb/2026 02:10:18] "GET / HTTP/1.1" 200 -
+2026-02-23 02:10:18,182 - INFO - 127.0.0.1 - - [23/Feb/2026 02:10:18] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 02:10:18,185 - INFO - 127.0.0.1 - - [23/Feb/2026 02:10:18] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-02-23 02:10:24,634 - INFO - 127.0.0.1 - - [23/Feb/2026 02:10:24] "GET / HTTP/1.1" 200 -
+2026-02-23 02:10:24,648 - INFO - 127.0.0.1 - - [23/Feb/2026 02:10:24] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 02:10:24,649 - INFO - 127.0.0.1 - - [23/Feb/2026 02:10:24] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-02-23 02:11:15,579 - INFO - 127.0.0.1 - - [23/Feb/2026 02:11:15] "GET / HTTP/1.1" 200 -
+2026-02-23 02:11:15,597 - INFO - 127.0.0.1 - - [23/Feb/2026 02:11:15] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 02:11:15,600 - INFO - 127.0.0.1 - - [23/Feb/2026 02:11:15] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-02-23 02:11:49,215 - INFO - 127.0.0.1 - - [23/Feb/2026 02:11:49] "GET / HTTP/1.1" 200 -
+2026-02-23 02:11:49,230 - INFO - 127.0.0.1 - - [23/Feb/2026 02:11:49] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 02:11:49,231 - INFO - 127.0.0.1 - - [23/Feb/2026 02:11:49] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-02-23 02:12:00,065 - INFO - 127.0.0.1 - - [23/Feb/2026 02:12:00] "GET / HTTP/1.1" 200 -
+2026-02-23 02:12:00,078 - INFO - 127.0.0.1 - - [23/Feb/2026 02:12:00] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 02:12:00,078 - INFO - 127.0.0.1 - - [23/Feb/2026 02:12:00] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-02-23 02:12:01,527 - INFO - 127.0.0.1 - - [23/Feb/2026 02:12:01] "GET / HTTP/1.1" 200 -
+2026-02-23 02:12:01,552 - INFO - 127.0.0.1 - - [23/Feb/2026 02:12:01] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 02:12:01,553 - INFO - 127.0.0.1 - - [23/Feb/2026 02:12:01] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 02:12:22,075 - INFO - 127.0.0.1 - - [23/Feb/2026 02:12:22] "GET / HTTP/1.1" 200 -
+2026-02-23 02:12:22,090 - INFO - 127.0.0.1 - - [23/Feb/2026 02:12:22] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 02:12:22,090 - INFO - 127.0.0.1 - - [23/Feb/2026 02:12:22] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:15:58,375 - INFO - Logging initialized
+2026-02-23 10:15:58,384 - INFO -  * Running on all addresses (0.0.0.0)
+   WARNING: This is a development server. Do not use it in a production deployment.
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.143:5000 (Press CTRL+C to quit)
+2026-02-23 10:15:58,385 - INFO -  * Restarting with stat
+2026-02-23 10:15:58,566 - INFO - Logging initialized
+2026-02-23 10:15:58,571 - WARNING -  * Debugger is active!
+2026-02-23 10:15:58,577 - INFO -  * Debugger PIN: 246-578-344
+2026-02-23 10:15:59,834 - INFO - 127.0.0.1 - - [23/Feb/2026 10:15:59] "GET / HTTP/1.1" 200 -
+2026-02-23 10:15:59,866 - INFO - 127.0.0.1 - - [23/Feb/2026 10:15:59] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-02-23 10:15:59,871 - INFO - 127.0.0.1 - - [23/Feb/2026 10:15:59] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-02-23 10:15:59,978 - INFO - 127.0.0.1 - - [23/Feb/2026 10:15:59] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-23 10:18:11,147 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:11] "GET / HTTP/1.1" 200 -
+2026-02-23 10:18:11,158 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:11] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-02-23 10:18:11,159 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:11] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:18:11,775 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:11] "GET / HTTP/1.1" 200 -
+2026-02-23 10:18:11,783 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:11] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:18:11,783 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:11] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:18:12,032 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:12] "GET / HTTP/1.1" 200 -
+2026-02-23 10:18:12,042 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:12] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:18:12,042 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:12] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:18:12,226 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:12] "GET / HTTP/1.1" 200 -
+2026-02-23 10:18:12,235 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:12] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:18:12,235 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:12] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:18:12,418 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:12] "GET / HTTP/1.1" 200 -
+2026-02-23 10:18:12,427 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:12] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:18:12,428 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:12] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:18:43,079 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:43] "GET / HTTP/1.1" 200 -
+2026-02-23 10:18:43,088 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:43] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:18:43,088 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:43] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-02-23 10:18:50,731 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:50] "GET / HTTP/1.1" 200 -
+2026-02-23 10:18:50,738 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:50] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:18:50,739 - INFO - 127.0.0.1 - - [23/Feb/2026 10:18:50] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-02-23 10:19:29,775 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:29] "GET / HTTP/1.1" 200 -
+2026-02-23 10:19:29,934 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:29] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:19:29,934 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:29] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-02-23 10:19:30,317 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:30] "GET / HTTP/1.1" 200 -
+2026-02-23 10:19:30,326 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:30] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:19:30,326 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:30] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:19:30,765 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:30] "GET / HTTP/1.1" 200 -
+2026-02-23 10:19:30,775 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:30] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:19:30,776 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:30] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:19:37,641 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:37] "GET / HTTP/1.1" 200 -
+2026-02-23 10:19:37,651 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:37] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:19:37,651 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:37] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-02-23 10:19:38,385 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:38] "GET / HTTP/1.1" 200 -
+2026-02-23 10:19:38,393 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:38] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:19:38,394 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:38] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:19:45,343 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:45] "GET / HTTP/1.1" 200 -
+2026-02-23 10:19:45,352 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:45] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-02-23 10:19:45,353 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:45] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:19:45,918 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:45] "GET / HTTP/1.1" 200 -
+2026-02-23 10:19:45,925 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:45] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:19:45,925 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:45] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:19:53,277 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:53] "GET / HTTP/1.1" 200 -
+2026-02-23 10:19:53,285 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:53] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:19:53,286 - INFO - 127.0.0.1 - - [23/Feb/2026 10:19:53] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-02-23 10:20:00,303 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:00] "GET / HTTP/1.1" 200 -
+2026-02-23 10:20:00,314 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:00] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:20:00,314 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:00] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-02-23 10:20:00,574 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:00] "GET / HTTP/1.1" 200 -
+2026-02-23 10:20:00,582 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:00] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:20:00,585 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:00] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:20:00,784 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:00] "GET / HTTP/1.1" 200 -
+2026-02-23 10:20:00,793 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:00] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:20:00,793 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:00] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:20:00,960 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:00] "GET / HTTP/1.1" 200 -
+2026-02-23 10:20:00,968 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:00] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:20:00,968 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:00] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:20:01,744 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:01] "GET / HTTP/1.1" 200 -
+2026-02-23 10:20:01,753 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:01] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:20:01,753 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:01] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:20:02,370 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:02] "GET / HTTP/1.1" 200 -
+2026-02-23 10:20:02,378 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:02] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:20:02,379 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:02] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:20:13,315 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:13] "GET / HTTP/1.1" 200 -
+2026-02-23 10:20:13,326 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:13] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-02-23 10:20:13,326 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:13] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:20:13,872 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:13] "GET / HTTP/1.1" 200 -
+2026-02-23 10:20:13,880 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:13] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:20:13,881 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:13] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:20:14,096 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:14] "GET / HTTP/1.1" 200 -
+2026-02-23 10:20:14,104 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:14] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:20:14,104 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:14] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:20:14,320 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:14] "GET / HTTP/1.1" 200 -
+2026-02-23 10:20:14,328 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:14] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:20:14,329 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:14] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:20:23,721 - INFO - 127.0.0.1 - - [23/Feb/2026 10:20:23] "POST /download HTTP/1.1" 200 -
+2026-02-23 10:21:02,278 - INFO - Generating branch pull SQL
+2026-02-23 10:21:02,278 - INFO - 127.0.0.1 - - [23/Feb/2026 10:21:02] "POST /branch/pull HTTP/1.1" 200 -
+2026-02-23 10:24:00,383 - INFO - Logging initialized
+2026-02-23 10:24:00,393 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.143:5000
+2026-02-23 10:24:00,393 - INFO - [33mPress CTRL+C to quit[0m
+2026-02-23 10:24:00,393 - INFO -  * Restarting with stat
+2026-02-23 10:24:00,600 - INFO - Logging initialized
+2026-02-23 10:24:00,607 - WARNING -  * Debugger is active!
+2026-02-23 10:24:00,611 - INFO -  * Debugger PIN: 412-670-815
+2026-02-23 10:24:01,874 - INFO - 127.0.0.1 - - [23/Feb/2026 10:24:01] "GET / HTTP/1.1" 200 -
+2026-02-23 10:24:01,909 - INFO - 127.0.0.1 - - [23/Feb/2026 10:24:01] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:24:01,909 - INFO - 127.0.0.1 - - [23/Feb/2026 10:24:01] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:24:55,671 - INFO - 127.0.0.1 - - [23/Feb/2026 10:24:55] "GET / HTTP/1.1" 200 -
+2026-02-23 10:24:55,681 - INFO - 127.0.0.1 - - [23/Feb/2026 10:24:55] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-02-23 10:24:55,681 - INFO - 127.0.0.1 - - [23/Feb/2026 10:24:55] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:24:56,725 - INFO - 127.0.0.1 - - [23/Feb/2026 10:24:56] "GET / HTTP/1.1" 200 -
+2026-02-23 10:24:56,733 - INFO - 127.0.0.1 - - [23/Feb/2026 10:24:56] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:24:56,734 - INFO - 127.0.0.1 - - [23/Feb/2026 10:24:56] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:24:57,213 - INFO - 127.0.0.1 - - [23/Feb/2026 10:24:57] "GET / HTTP/1.1" 200 -
+2026-02-23 10:24:57,223 - INFO - 127.0.0.1 - - [23/Feb/2026 10:24:57] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:24:57,223 - INFO - 127.0.0.1 - - [23/Feb/2026 10:24:57] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:25:03,168 - INFO - 127.0.0.1 - - [23/Feb/2026 10:25:03] "GET / HTTP/1.1" 200 -
+2026-02-23 10:25:03,179 - INFO - 127.0.0.1 - - [23/Feb/2026 10:25:03] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:25:03,180 - INFO - 127.0.0.1 - - [23/Feb/2026 10:25:03] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-02-23 10:25:03,776 - INFO - 127.0.0.1 - - [23/Feb/2026 10:25:03] "GET / HTTP/1.1" 200 -
+2026-02-23 10:25:03,784 - INFO - 127.0.0.1 - - [23/Feb/2026 10:25:03] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-23 10:25:03,785 - INFO - 127.0.0.1 - - [23/Feb/2026 10:25:03] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:25:12,295 - INFO - 127.0.0.1 - - [23/Feb/2026 10:25:12] "GET / HTTP/1.1" 200 -
+2026-02-23 10:25:12,306 - INFO - 127.0.0.1 - - [23/Feb/2026 10:25:12] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-23 10:25:12,306 - INFO - 127.0.0.1 - - [23/Feb/2026 10:25:12] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-02-24 19:09:01,106 - INFO - Logging initialized
+2026-02-24 19:09:01,127 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.143:5000
+2026-02-24 19:09:01,127 - INFO - [33mPress CTRL+C to quit[0m
+2026-02-24 19:09:01,128 - INFO -  * Restarting with stat
+2026-02-24 19:09:01,454 - INFO - Logging initialized
+2026-02-24 19:09:01,464 - WARNING -  * Debugger is active!
+2026-02-24 19:09:01,472 - INFO -  * Debugger PIN: 103-009-579
+2026-02-24 19:09:03,578 - INFO - 127.0.0.1 - - [24/Feb/2026 19:09:03] "GET / HTTP/1.1" 200 -
+2026-02-24 19:09:03,625 - INFO - 127.0.0.1 - - [24/Feb/2026 19:09:03] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-02-24 19:09:03,625 - INFO - 127.0.0.1 - - [24/Feb/2026 19:09:03] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-02-24 19:09:03,730 - INFO - 127.0.0.1 - - [24/Feb/2026 19:09:03] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-24 19:22:20,807 - INFO - Generating branch pull SQL
+2026-02-24 19:22:20,807 - INFO - 127.0.0.1 - - [24/Feb/2026 19:22:20] "POST /branch/pull HTTP/1.1" 200 -
+2026-02-24 19:23:06,347 - INFO - Generating workflow pull SQL
+2026-02-24 19:23:06,347 - INFO - 127.0.0.1 - - [24/Feb/2026 19:23:06] "POST /workflow/pull HTTP/1.1" 200 -
+2026-02-24 19:23:17,371 - INFO - Generating workflow final SQL
+2026-02-24 19:23:17,373 - INFO - 127.0.0.1 - - [24/Feb/2026 19:23:17] "POST /workflow/final HTTP/1.1" 200 -
+2026-02-24 19:24:02,149 - INFO - Generating workflow final SQL
+2026-02-24 19:24:02,151 - INFO - 127.0.0.1 - - [24/Feb/2026 19:24:02] "POST /workflow/final HTTP/1.1" 200 -
+2026-02-24 21:04:22,300 - INFO - 127.0.0.1 - - [24/Feb/2026 21:04:22] "GET / HTTP/1.1" 200 -
+2026-02-24 21:04:22,319 - INFO - 127.0.0.1 - - [24/Feb/2026 21:04:22] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-24 21:04:22,321 - INFO - 127.0.0.1 - - [24/Feb/2026 21:04:22] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-24 21:04:22,726 - INFO - 127.0.0.1 - - [24/Feb/2026 21:04:22] "GET / HTTP/1.1" 200 -
+2026-02-24 21:04:22,742 - INFO - 127.0.0.1 - - [24/Feb/2026 21:04:22] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-24 21:04:22,745 - INFO - 127.0.0.1 - - [24/Feb/2026 21:04:22] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-24 21:05:16,746 - INFO - 127.0.0.1 - - [24/Feb/2026 21:05:16] "GET / HTTP/1.1" 200 -
+2026-02-24 21:05:16,763 - INFO - 127.0.0.1 - - [24/Feb/2026 21:05:16] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-24 21:05:16,765 - INFO - 127.0.0.1 - - [24/Feb/2026 21:05:16] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-24 21:10:08,618 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_refined_scroll_icons/scripts/feature_flag.py', reloading
+2026-02-24 21:10:08,708 - INFO -  * Restarting with stat
+2026-02-24 21:10:09,183 - INFO - Logging initialized
+2026-02-24 21:10:09,199 - WARNING -  * Debugger is active!
+2026-02-24 21:10:09,205 - INFO -  * Debugger PIN: 103-009-579
+2026-02-24 21:11:12,628 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_refined_scroll_icons/scripts/feature_flag.py', reloading
+2026-02-24 21:11:12,716 - INFO -  * Restarting with stat
+2026-02-24 21:11:13,181 - INFO - Logging initialized
+2026-02-24 21:11:13,195 - WARNING -  * Debugger is active!
+2026-02-24 21:11:13,201 - INFO -  * Debugger PIN: 103-009-579
+2026-02-24 21:11:17,932 - INFO - 127.0.0.1 - - [24/Feb/2026 21:11:17] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-24 21:11:21,892 - INFO - 127.0.0.1 - - [24/Feb/2026 21:11:21] "GET / HTTP/1.1" 200 -
+2026-02-24 21:11:21,911 - INFO - 127.0.0.1 - - [24/Feb/2026 21:11:21] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-24 21:11:21,913 - INFO - 127.0.0.1 - - [24/Feb/2026 21:11:21] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-24 21:11:23,935 - INFO - 127.0.0.1 - - [24/Feb/2026 21:11:23] "GET / HTTP/1.1" 200 -
+2026-02-24 21:11:23,954 - INFO - 127.0.0.1 - - [24/Feb/2026 21:11:23] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-24 21:11:23,956 - INFO - 127.0.0.1 - - [24/Feb/2026 21:11:23] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-24 21:15:47,018 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_refined_scroll_icons/scripts/feature_flag.py', reloading
+2026-02-24 21:15:47,183 - INFO -  * Restarting with stat
+2026-02-24 21:15:47,616 - INFO - Logging initialized
+2026-02-24 21:15:47,629 - WARNING -  * Debugger is active!
+2026-02-24 21:15:47,633 - INFO -  * Debugger PIN: 103-009-579
+2026-02-24 21:17:52,435 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_refined_scroll_icons/scripts/feature_flag.py', reloading
+2026-02-24 21:17:52,516 - INFO -  * Restarting with stat
+2026-02-24 21:17:52,931 - INFO - Logging initialized
+2026-02-24 21:17:52,944 - WARNING -  * Debugger is active!
+2026-02-24 21:17:52,948 - INFO -  * Debugger PIN: 103-009-579
+2026-02-24 21:18:18,122 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_refined_scroll_icons/scripts/feature_flag.py', reloading
+2026-02-24 21:18:18,209 - INFO -  * Restarting with stat
+2026-02-24 21:18:18,636 - INFO - Logging initialized
+2026-02-24 21:18:18,648 - WARNING -  * Debugger is active!
+2026-02-24 21:18:18,653 - INFO -  * Debugger PIN: 103-009-579
+2026-02-24 21:19:27,096 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_refined_scroll_icons/scripts/feature_flag.py', reloading
+2026-02-24 21:19:27,186 - INFO -  * Restarting with stat
+2026-02-24 21:19:27,644 - INFO - Logging initialized
+2026-02-24 21:19:27,659 - WARNING -  * Debugger is active!
+2026-02-24 21:19:27,664 - INFO -  * Debugger PIN: 103-009-579
+2026-02-24 21:20:38,116 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_refined_scroll_icons/scripts/feature_flag.py', reloading
+2026-02-24 21:20:38,228 - INFO -  * Restarting with stat
+2026-02-24 21:20:38,656 - INFO - Logging initialized
+2026-02-24 21:20:38,669 - WARNING -  * Debugger is active!
+2026-02-24 21:20:38,674 - INFO -  * Debugger PIN: 103-009-579
+2026-02-24 21:21:52,150 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_refined_scroll_icons/scripts/feature_flag.py', reloading
+2026-02-24 21:21:52,238 - INFO -  * Restarting with stat
+2026-02-24 21:21:52,682 - INFO - Logging initialized
+2026-02-24 21:21:52,697 - WARNING -  * Debugger is active!
+2026-02-24 21:21:52,703 - INFO -  * Debugger PIN: 103-009-579
+2026-02-24 21:33:27,081 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_refined_scroll_icons/scripts/feature_flag.py', reloading
+2026-02-24 21:33:27,165 - INFO -  * Restarting with stat
+2026-02-24 21:33:27,597 - INFO - Logging initialized
+2026-02-24 21:33:27,609 - WARNING -  * Debugger is active!
+2026-02-24 21:33:27,615 - INFO -  * Debugger PIN: 103-009-579
+2026-02-25 01:56:04,812 - INFO - Logging initialized
+2026-02-25 01:56:04,830 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.104:5000
+2026-02-25 01:56:04,831 - INFO - [33mPress CTRL+C to quit[0m
+2026-02-25 01:56:04,833 - INFO -  * Restarting with stat
+2026-02-25 01:56:04,953 - INFO - Logging initialized
+2026-02-25 01:56:04,960 - WARNING -  * Debugger is active!
+2026-02-25 01:56:04,964 - INFO -  * Debugger PIN: 646-114-511
+2026-02-25 01:56:07,954 - INFO - 127.0.0.1 - - [25/Feb/2026 01:56:07] "GET / HTTP/1.1" 200 -
+2026-02-25 01:56:07,979 - INFO - 127.0.0.1 - - [25/Feb/2026 01:56:07] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-02-25 01:56:07,980 - INFO - 127.0.0.1 - - [25/Feb/2026 01:56:07] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-02-25 01:56:08,522 - INFO - 127.0.0.1 - - [25/Feb/2026 01:56:08] "GET / HTTP/1.1" 200 -
+2026-02-25 01:56:08,531 - INFO - 127.0.0.1 - - [25/Feb/2026 01:56:08] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-02-25 01:56:08,532 - INFO - 127.0.0.1 - - [25/Feb/2026 01:56:08] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-02-25 01:56:12,380 - INFO - Generating branch pull SQL
+2026-02-25 01:56:12,381 - INFO - 127.0.0.1 - - [25/Feb/2026 01:56:12] "POST /branch/pull HTTP/1.1" 200 -
+2026-02-25 01:56:19,944 - INFO - Generating workflow pull SQL
+2026-02-25 01:56:19,945 - INFO - 127.0.0.1 - - [25/Feb/2026 01:56:19] "POST /workflow/pull HTTP/1.1" 200 -
+2026-02-25 01:56:29,605 - INFO - Generating branch pull SQL
+2026-02-25 01:56:29,605 - INFO - 127.0.0.1 - - [25/Feb/2026 01:56:29] "POST /branch/pull HTTP/1.1" 200 -
+2026-02-25 01:57:10,759 - INFO - Generating branch pull SQL
+2026-02-25 01:57:10,760 - INFO - 127.0.0.1 - - [25/Feb/2026 01:57:10] "POST /branch/pull HTTP/1.1" 200 -
+2026-02-25 01:57:26,981 - INFO - Generating branch final SQL
+2026-02-25 01:57:26,982 - INFO - 127.0.0.1 - - [25/Feb/2026 01:57:26] "POST /branch/final HTTP/1.1" 200 -
+2026-02-25 01:58:06,036 - INFO - Generating workflow pull SQL
+2026-02-25 01:58:06,036 - INFO - 127.0.0.1 - - [25/Feb/2026 01:58:06] "POST /workflow/pull HTTP/1.1" 200 -
+2026-02-25 01:58:20,307 - INFO - Generating workflow final SQL
+2026-02-25 01:58:20,308 - INFO - 127.0.0.1 - - [25/Feb/2026 01:58:20] "POST /workflow/final HTTP/1.1" 200 -
+2026-03-17 17:33:03,314 - INFO - Logging initialized
+2026-03-17 17:33:03,330 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-03-17 17:33:03,330 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-17 17:33:03,331 - INFO -  * Restarting with stat
+2026-03-17 17:33:03,447 - INFO - Logging initialized
+2026-03-17 17:33:03,452 - WARNING -  * Debugger is active!
+2026-03-17 17:33:03,461 - INFO -  * Debugger PIN: 214-140-333
+2026-03-17 17:33:06,139 - INFO - 127.0.0.1 - - [17/Mar/2026 17:33:06] "GET / HTTP/1.1" 200 -
+2026-03-17 17:33:06,165 - INFO - 127.0.0.1 - - [17/Mar/2026 17:33:06] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-03-17 17:33:06,166 - INFO - 127.0.0.1 - - [17/Mar/2026 17:33:06] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-03-17 17:33:06,248 - INFO - 127.0.0.1 - - [17/Mar/2026 17:33:06] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-03-17 17:33:06,316 - INFO - 127.0.0.1 - - [17/Mar/2026 17:33:06] "GET / HTTP/1.1" 200 -
+2026-03-17 17:33:06,335 - INFO - 127.0.0.1 - - [17/Mar/2026 17:33:06] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-17 17:33:06,335 - INFO - 127.0.0.1 - - [17/Mar/2026 17:33:06] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-03-17 18:12:22,898 - INFO - 127.0.0.1 - - [17/Mar/2026 18:12:22] "GET / HTTP/1.1" 200 -
+2026-03-17 18:12:22,915 - INFO - 127.0.0.1 - - [17/Mar/2026 18:12:22] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-17 18:12:22,921 - INFO - 127.0.0.1 - - [17/Mar/2026 18:12:22] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-03-17 18:12:23,074 - INFO - 127.0.0.1 - - [17/Mar/2026 18:12:23] "GET / HTTP/1.1" 200 -
+2026-03-17 18:12:23,104 - INFO - 127.0.0.1 - - [17/Mar/2026 18:12:23] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-17 18:12:23,105 - INFO - 127.0.0.1 - - [17/Mar/2026 18:12:23] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-03-17 18:18:44,410 - INFO - Generating branch pull SQL
+2026-03-17 18:18:44,411 - INFO - 127.0.0.1 - - [17/Mar/2026 18:18:44] "POST /branch/pull HTTP/1.1" 200 -
+2026-03-17 18:19:33,988 - INFO - Generating branch final SQL
+2026-03-17 18:19:33,994 - INFO - 127.0.0.1 - - [17/Mar/2026 18:19:33] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 14:51:46,049 - INFO - Logging initialized
+2026-03-18 14:51:46,067 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-03-18 14:51:46,067 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-18 14:51:46,069 - INFO -  * Restarting with stat
+2026-03-18 14:51:46,172 - INFO - Logging initialized
+2026-03-18 14:51:46,178 - WARNING -  * Debugger is active!
+2026-03-18 14:51:46,188 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 15:07:17,908 - INFO - 127.0.0.1 - - [18/Mar/2026 15:07:17] "GET / HTTP/1.1" 200 -
+2026-03-18 15:07:17,931 - INFO - 127.0.0.1 - - [18/Mar/2026 15:07:17] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 15:07:17,936 - INFO - 127.0.0.1 - - [18/Mar/2026 15:07:17] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-03-18 15:07:18,015 - INFO - 127.0.0.1 - - [18/Mar/2026 15:07:18] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-03-18 15:07:18,078 - INFO - 127.0.0.1 - - [18/Mar/2026 15:07:18] "GET / HTTP/1.1" 200 -
+2026-03-18 15:07:18,102 - INFO - 127.0.0.1 - - [18/Mar/2026 15:07:18] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-03-18 15:07:18,102 - INFO - 127.0.0.1 - - [18/Mar/2026 15:07:18] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 15:07:36,954 - INFO - Generating branch pull SQL
+2026-03-18 15:07:36,954 - INFO - 127.0.0.1 - - [18/Mar/2026 15:07:36] "POST /branch/pull HTTP/1.1" 200 -
+2026-03-18 15:08:36,388 - INFO - Generating branch pull SQL
+2026-03-18 15:08:36,388 - INFO - 127.0.0.1 - - [18/Mar/2026 15:08:36] "POST /branch/pull HTTP/1.1" 200 -
+2026-03-18 15:14:14,683 - INFO - Generating branch final SQL
+2026-03-18 15:14:14,693 - INFO - 127.0.0.1 - - [18/Mar/2026 15:14:14] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-03-18 15:20:58,274 - INFO - Generating branch final SQL
+2026-03-18 15:20:58,278 - INFO - 127.0.0.1 - - [18/Mar/2026 15:20:58] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-03-18 15:22:16,763 - INFO - Generating branch final SQL
+2026-03-18 15:22:16,768 - INFO - 127.0.0.1 - - [18/Mar/2026 15:22:16] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-03-18 15:22:29,343 - INFO - Generating branch final SQL
+2026-03-18 15:22:29,347 - INFO - 127.0.0.1 - - [18/Mar/2026 15:22:29] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-03-18 15:22:48,786 - INFO - Generating branch final SQL
+2026-03-18 15:22:48,791 - INFO - 127.0.0.1 - - [18/Mar/2026 15:22:48] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-03-18 15:23:54,379 - INFO - Generating branch final SQL
+2026-03-18 15:23:54,383 - INFO - 127.0.0.1 - - [18/Mar/2026 15:23:54] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-03-18 15:24:04,558 - INFO - Generating branch final SQL
+2026-03-18 15:24:04,563 - INFO - 127.0.0.1 - - [18/Mar/2026 15:24:04] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-03-18 15:24:43,821 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 15:24:43,856 - INFO -  * Restarting with stat
+2026-03-18 15:24:44,037 - INFO - Logging initialized
+2026-03-18 15:24:44,052 - WARNING -  * Debugger is active!
+2026-03-18 15:24:44,058 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 15:24:45,792 - INFO - Logging initialized
+2026-03-18 15:24:45,864 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-03-18 15:24:45,864 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-18 15:24:45,866 - INFO -  * Restarting with stat
+2026-03-18 15:24:46,337 - INFO - Logging initialized
+2026-03-18 15:24:46,351 - WARNING -  * Debugger is active!
+2026-03-18 15:24:46,355 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 15:24:49,054 - INFO - Generating branch final SQL
+2026-03-18 15:24:49,067 - INFO - 127.0.0.1 - - [18/Mar/2026 15:24:49] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 15:35:53,268 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py', reloading
+2026-03-18 15:35:53,321 - INFO -  * Restarting with stat
+2026-03-18 15:35:53,818 - INFO - Logging initialized
+2026-03-18 15:35:53,837 - WARNING -  * Debugger is active!
+2026-03-18 15:35:53,844 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 15:38:17,441 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py', reloading
+2026-03-18 15:38:17,493 - INFO -  * Restarting with stat
+2026-03-18 15:38:17,982 - INFO - Logging initialized
+2026-03-18 15:38:17,997 - WARNING -  * Debugger is active!
+2026-03-18 15:38:18,002 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 15:42:03,487 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py', reloading
+2026-03-18 15:42:03,574 - INFO -  * Restarting with stat
+2026-03-18 15:42:04,072 - INFO - Logging initialized
+2026-03-18 15:42:04,089 - WARNING -  * Debugger is active!
+2026-03-18 15:42:04,094 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 15:43:47,269 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/workflow_sync.py', reloading
+2026-03-18 15:43:47,329 - INFO -  * Restarting with stat
+2026-03-18 15:43:47,898 - INFO - Logging initialized
+2026-03-18 15:43:47,917 - WARNING -  * Debugger is active!
+2026-03-18 15:43:47,921 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 15:44:02,138 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 15:44:02,231 - INFO -  * Restarting with stat
+2026-03-18 15:44:02,775 - INFO - Logging initialized
+2026-03-18 15:44:02,792 - WARNING -  * Debugger is active!
+2026-03-18 15:44:02,796 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 15:44:41,263 - INFO - Logging initialized
+2026-03-18 15:44:41,299 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-03-18 15:44:41,299 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-18 15:44:41,300 - INFO -  * Restarting with stat
+2026-03-18 15:44:41,696 - INFO - Logging initialized
+2026-03-18 15:44:41,710 - WARNING -  * Debugger is active!
+2026-03-18 15:44:41,713 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 15:44:44,708 - INFO - Generating branch final SQL
+2026-03-18 15:44:44,716 - INFO - 127.0.0.1 - - [18/Mar/2026 15:44:44] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 15:44:51,440 - INFO - Generating branch final SQL
+2026-03-18 15:44:51,449 - INFO - 127.0.0.1 - - [18/Mar/2026 15:44:51] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 15:44:57,551 - INFO - Generating branch final SQL
+2026-03-18 15:44:57,561 - INFO - 127.0.0.1 - - [18/Mar/2026 15:44:57] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 15:44:57,950 - INFO - Generating branch final SQL
+2026-03-18 15:44:57,960 - INFO - 127.0.0.1 - - [18/Mar/2026 15:44:57] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 15:45:06,476 - INFO - Generating branch final SQL
+2026-03-18 15:45:06,484 - INFO - 127.0.0.1 - - [18/Mar/2026 15:45:06] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 15:45:13,168 - INFO - Generating branch final SQL
+2026-03-18 15:45:13,175 - INFO - 127.0.0.1 - - [18/Mar/2026 15:45:13] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 15:47:10,895 - INFO - Generating branch final SQL
+2026-03-18 15:47:10,904 - INFO - 127.0.0.1 - - [18/Mar/2026 15:47:10] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 15:47:12,838 - INFO - 127.0.0.1 - - [18/Mar/2026 15:47:12] "GET / HTTP/1.1" 200 -
+2026-03-18 15:47:12,874 - INFO - 127.0.0.1 - - [18/Mar/2026 15:47:12] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-03-18 15:47:12,875 - INFO - 127.0.0.1 - - [18/Mar/2026 15:47:12] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 15:47:19,829 - INFO - Generating branch pull SQL
+2026-03-18 15:47:19,830 - INFO - 127.0.0.1 - - [18/Mar/2026 15:47:19] "POST /branch/pull HTTP/1.1" 200 -
+2026-03-18 15:47:51,905 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 15:47:51,961 - INFO -  * Restarting with stat
+2026-03-18 15:47:52,406 - INFO - Logging initialized
+2026-03-18 15:47:52,421 - WARNING -  * Debugger is active!
+2026-03-18 15:47:52,425 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 15:48:13,585 - INFO - Generating branch final SQL
+2026-03-18 15:48:13,598 - INFO - 127.0.0.1 - - [18/Mar/2026 15:48:13] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 15:52:34,431 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 15:52:34,480 - INFO -  * Restarting with stat
+2026-03-18 15:52:35,019 - INFO - Logging initialized
+2026-03-18 15:52:35,036 - WARNING -  * Debugger is active!
+2026-03-18 15:52:35,047 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 16:08:07,466 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 16:08:07,499 - INFO -  * Restarting with stat
+2026-03-18 16:08:07,947 - INFO - Logging initialized
+2026-03-18 16:08:07,961 - WARNING -  * Debugger is active!
+2026-03-18 16:08:07,967 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 16:08:12,052 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 16:08:12,099 - INFO -  * Restarting with stat
+2026-03-18 16:08:12,511 - INFO - Logging initialized
+2026-03-18 16:08:12,524 - WARNING -  * Debugger is active!
+2026-03-18 16:08:12,528 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 16:09:38,596 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 16:09:38,627 - INFO -  * Restarting with stat
+2026-03-18 16:09:44,261 - INFO - Logging initialized
+2026-03-18 16:09:44,298 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-03-18 16:09:44,298 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-18 16:09:44,299 - INFO -  * Restarting with stat
+2026-03-18 16:09:44,722 - INFO - Logging initialized
+2026-03-18 16:09:44,738 - WARNING -  * Debugger is active!
+2026-03-18 16:09:44,741 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 16:09:47,671 - INFO - Generating branch final SQL
+2026-03-18 16:09:50,807 - INFO - 127.0.0.1 - - [18/Mar/2026 16:09:50] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 16:09:58,018 - INFO - Generating branch final SQL
+2026-03-18 16:09:58,033 - INFO - 127.0.0.1 - - [18/Mar/2026 16:09:58] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 16:19:21,086 - INFO - Generating branch final SQL
+2026-03-18 16:19:51,241 - INFO - Logging initialized
+2026-03-18 16:19:51,279 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-03-18 16:19:51,279 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-18 16:19:51,280 - INFO -  * Restarting with stat
+2026-03-18 16:19:51,672 - INFO - Logging initialized
+2026-03-18 16:19:51,686 - WARNING -  * Debugger is active!
+2026-03-18 16:19:51,697 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 16:19:57,463 - INFO - Generating branch final SQL
+2026-03-18 16:21:22,834 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 16:21:22,902 - INFO -  * Restarting with stat
+2026-03-18 16:21:23,439 - INFO - Logging initialized
+2026-03-18 16:21:23,456 - WARNING -  * Debugger is active!
+2026-03-18 16:21:23,463 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 16:22:56,480 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 16:22:56,548 - INFO -  * Restarting with stat
+2026-03-18 16:22:57,002 - INFO - Logging initialized
+2026-03-18 16:22:57,015 - WARNING -  * Debugger is active!
+2026-03-18 16:22:57,019 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 16:36:06,114 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 16:36:06,154 - INFO -  * Restarting with stat
+2026-03-18 16:36:06,619 - INFO - Logging initialized
+2026-03-18 16:36:06,634 - WARNING -  * Debugger is active!
+2026-03-18 16:36:06,639 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 16:36:10,722 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 16:36:10,765 - INFO -  * Restarting with stat
+2026-03-18 16:36:11,149 - INFO - Logging initialized
+2026-03-18 16:36:11,161 - WARNING -  * Debugger is active!
+2026-03-18 16:36:11,165 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 16:37:31,086 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 16:37:31,119 - INFO -  * Restarting with stat
+2026-03-18 16:37:31,504 - INFO - Logging initialized
+2026-03-18 16:37:31,517 - WARNING -  * Debugger is active!
+2026-03-18 16:37:31,520 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 16:38:00,875 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 16:38:00,907 - INFO -  * Restarting with stat
+2026-03-18 16:38:01,294 - INFO - Logging initialized
+2026-03-18 16:38:01,306 - WARNING -  * Debugger is active!
+2026-03-18 16:38:01,309 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 16:42:39,744 - INFO - Logging initialized
+2026-03-18 16:42:39,776 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-03-18 16:42:39,776 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-18 16:42:39,777 - INFO -  * Restarting with stat
+2026-03-18 16:42:40,199 - INFO - Logging initialized
+2026-03-18 16:42:40,213 - WARNING -  * Debugger is active!
+2026-03-18 16:42:40,218 - INFO -  * Debugger PIN: 793-028-318
+2026-03-18 16:42:41,749 - INFO - Generating branch final SQL
+2026-03-18 16:42:44,925 - INFO - 127.0.0.1 - - [18/Mar/2026 16:42:44] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 17:02:07,630 - INFO - 127.0.0.1 - - [18/Mar/2026 17:02:07] "GET / HTTP/1.1" 200 -
+2026-03-18 17:02:07,662 - INFO - 127.0.0.1 - - [18/Mar/2026 17:02:07] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 17:02:07,663 - INFO - 127.0.0.1 - - [18/Mar/2026 17:02:07] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-03-18 17:02:15,755 - INFO - Generating branch pull SQL
+2026-03-18 17:02:15,756 - INFO - 127.0.0.1 - - [18/Mar/2026 17:02:15] "POST /branch/pull HTTP/1.1" 200 -
+2026-03-18 17:21:59,432 - INFO - Generating branch final SQL
+2026-03-18 17:21:59,458 - INFO - 127.0.0.1 - - [18/Mar/2026 17:21:59] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 17:29:59,051 - INFO - Logging initialized
+2026-03-18 17:29:59,067 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-03-18 17:29:59,067 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-18 17:29:59,069 - INFO -  * Restarting with stat
+2026-03-18 17:29:59,173 - INFO - Logging initialized
+2026-03-18 17:29:59,179 - WARNING -  * Debugger is active!
+2026-03-18 17:29:59,186 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 17:30:00,839 - INFO - 127.0.0.1 - - [18/Mar/2026 17:30:00] "GET / HTTP/1.1" 200 -
+2026-03-18 17:30:00,868 - INFO - 127.0.0.1 - - [18/Mar/2026 17:30:00] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 17:30:00,868 - INFO - 127.0.0.1 - - [18/Mar/2026 17:30:00] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-03-18 17:30:00,963 - INFO - 127.0.0.1 - - [18/Mar/2026 17:30:00] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-03-18 17:30:00,979 - INFO - 127.0.0.1 - - [18/Mar/2026 17:30:00] "GET / HTTP/1.1" 200 -
+2026-03-18 17:30:01,015 - INFO - 127.0.0.1 - - [18/Mar/2026 17:30:01] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 17:30:01,016 - INFO - 127.0.0.1 - - [18/Mar/2026 17:30:01] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-03-18 17:30:21,177 - INFO - Generating workflow pull SQL
+2026-03-18 17:30:21,178 - INFO - 127.0.0.1 - - [18/Mar/2026 17:30:21] "POST /workflow/pull HTTP/1.1" 200 -
+2026-03-18 17:35:53,239 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 17:35:53,267 - INFO -  * Restarting with stat
+2026-03-18 17:35:53,374 - INFO - Logging initialized
+2026-03-18 17:35:53,379 - WARNING -  * Debugger is active!
+2026-03-18 17:35:53,383 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 17:36:06,619 - INFO - Generating branch pull SQL
+2026-03-18 17:36:06,619 - INFO - 127.0.0.1 - - [18/Mar/2026 17:36:06] "POST /branch/pull HTTP/1.1" 200 -
+2026-03-18 17:38:22,379 - INFO - Generating branch final SQL
+2026-03-18 17:38:22,387 - INFO - 127.0.0.1 - - [18/Mar/2026 17:38:22] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 17:41:57,429 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 17:41:57,455 - INFO -  * Restarting with stat
+2026-03-18 17:41:57,559 - INFO - Logging initialized
+2026-03-18 17:41:57,564 - WARNING -  * Debugger is active!
+2026-03-18 17:41:57,567 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 17:42:10,619 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 17:42:10,700 - INFO -  * Restarting with stat
+2026-03-18 17:42:10,879 - INFO - Logging initialized
+2026-03-18 17:42:10,892 - WARNING -  * Debugger is active!
+2026-03-18 17:42:10,897 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 17:51:05,466 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/workflow_sync.py', reloading
+2026-03-18 17:51:05,515 - INFO -  * Restarting with stat
+2026-03-18 17:51:05,661 - INFO - Logging initialized
+2026-03-18 17:51:05,670 - WARNING -  * Debugger is active!
+2026-03-18 17:51:05,674 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 17:51:24,759 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 17:51:24,830 - INFO -  * Restarting with stat
+2026-03-18 17:51:25,014 - INFO - Logging initialized
+2026-03-18 17:51:25,023 - WARNING -  * Debugger is active!
+2026-03-18 17:51:25,028 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 17:51:39,096 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 17:51:39,147 - INFO -  * Restarting with stat
+2026-03-18 17:51:39,305 - INFO - Logging initialized
+2026-03-18 17:51:39,312 - WARNING -  * Debugger is active!
+2026-03-18 17:51:39,316 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 17:52:04,412 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py', reloading
+2026-03-18 17:52:04,447 - INFO -  * Restarting with stat
+2026-03-18 17:52:04,619 - INFO - Logging initialized
+2026-03-18 17:52:04,630 - WARNING -  * Debugger is active!
+2026-03-18 17:52:04,635 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 17:52:17,702 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/workflow_sync.py', reloading
+2026-03-18 17:52:17,777 - INFO -  * Restarting with stat
+2026-03-18 17:52:17,939 - INFO - Logging initialized
+2026-03-18 17:52:17,948 - WARNING -  * Debugger is active!
+2026-03-18 17:52:17,953 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 17:52:24,996 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 17:52:25,052 - INFO -  * Restarting with stat
+2026-03-18 17:52:25,180 - INFO - Logging initialized
+2026-03-18 17:52:25,187 - WARNING -  * Debugger is active!
+2026-03-18 17:52:25,191 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 17:52:31,225 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py', reloading
+2026-03-18 17:52:31,265 - INFO -  * Restarting with stat
+2026-03-18 17:52:31,387 - INFO - Logging initialized
+2026-03-18 17:52:31,394 - WARNING -  * Debugger is active!
+2026-03-18 17:52:31,398 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 17:53:19,564 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py', reloading
+2026-03-18 17:53:19,632 - INFO -  * Restarting with stat
+2026-03-18 17:53:19,803 - INFO - Logging initialized
+2026-03-18 17:53:19,809 - WARNING -  * Debugger is active!
+2026-03-18 17:53:19,813 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 17:54:10,985 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/workflow_sync.py', reloading
+2026-03-18 17:54:11,091 - INFO -  * Restarting with stat
+2026-03-18 17:54:11,287 - INFO - Logging initialized
+2026-03-18 17:54:11,297 - WARNING -  * Debugger is active!
+2026-03-18 17:54:11,302 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 17:54:14,336 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 17:54:14,414 - INFO -  * Restarting with stat
+2026-03-18 17:54:14,570 - INFO - Logging initialized
+2026-03-18 17:54:14,578 - WARNING -  * Debugger is active!
+2026-03-18 17:54:14,583 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 17:54:16,609 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py', reloading
+2026-03-18 17:54:16,681 - INFO -  * Restarting with stat
+2026-03-18 17:54:16,867 - INFO - Logging initialized
+2026-03-18 17:54:16,877 - WARNING -  * Debugger is active!
+2026-03-18 17:54:16,881 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 17:54:32,725 - INFO - Logging initialized
+2026-03-18 17:54:32,760 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-03-18 17:54:32,760 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-18 17:54:32,761 - INFO -  * Restarting with stat
+2026-03-18 17:54:33,155 - INFO - Logging initialized
+2026-03-18 17:54:33,170 - WARNING -  * Debugger is active!
+2026-03-18 17:54:33,174 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 17:54:37,781 - INFO - Generating branch final SQL
+2026-03-18 17:54:41,386 - INFO - 127.0.0.1 - - [18/Mar/2026 17:54:41] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 17:58:05,211 - INFO - Generating workflow pull SQL
+2026-03-18 17:58:05,212 - INFO - 127.0.0.1 - - [18/Mar/2026 17:58:05] "POST /workflow/pull HTTP/1.1" 200 -
+2026-03-18 17:58:30,080 - INFO - Generating workflow final SQL
+2026-03-18 17:58:30,086 - INFO - 127.0.0.1 - - [18/Mar/2026 17:58:30] "POST /workflow/final HTTP/1.1" 200 -
+2026-03-18 18:10:16,396 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/workflow_sync.py', reloading
+2026-03-18 18:10:16,462 - INFO -  * Restarting with stat
+2026-03-18 18:10:16,840 - INFO - Logging initialized
+2026-03-18 18:10:16,854 - WARNING -  * Debugger is active!
+2026-03-18 18:10:16,857 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 18:12:31,316 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/workflow_sync.py', reloading
+2026-03-18 18:12:31,375 - INFO -  * Restarting with stat
+2026-03-18 18:12:31,905 - INFO - Logging initialized
+2026-03-18 18:12:31,922 - WARNING -  * Debugger is active!
+2026-03-18 18:12:31,928 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 18:16:34,149 - INFO - Logging initialized
+2026-03-18 18:16:34,187 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-03-18 18:16:34,187 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-18 18:16:34,188 - INFO -  * Restarting with stat
+2026-03-18 18:16:34,593 - INFO - Logging initialized
+2026-03-18 18:16:34,606 - WARNING -  * Debugger is active!
+2026-03-18 18:16:34,610 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 18:16:39,065 - INFO - 127.0.0.1 - - [18/Mar/2026 18:16:39] "GET / HTTP/1.1" 200 -
+2026-03-18 18:16:39,084 - INFO - 127.0.0.1 - - [18/Mar/2026 18:16:39] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-03-18 18:16:39,085 - INFO - 127.0.0.1 - - [18/Mar/2026 18:16:39] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 18:17:19,150 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/workflow_service.py', reloading
+2026-03-18 18:17:19,247 - INFO -  * Restarting with stat
+2026-03-18 18:17:19,757 - INFO - Logging initialized
+2026-03-18 18:17:19,775 - WARNING -  * Debugger is active!
+2026-03-18 18:17:19,780 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 18:17:22,868 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/app.py', reloading
+2026-03-18 18:17:22,938 - INFO -  * Restarting with stat
+2026-03-18 18:17:23,386 - INFO - Logging initialized
+2026-03-18 18:17:23,401 - WARNING -  * Debugger is active!
+2026-03-18 18:17:23,405 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 18:17:27,163 - INFO - 127.0.0.1 - - [18/Mar/2026 18:17:27] "GET / HTTP/1.1" 200 -
+2026-03-18 18:17:27,193 - INFO - 127.0.0.1 - - [18/Mar/2026 18:17:27] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-03-18 18:17:27,194 - INFO - 127.0.0.1 - - [18/Mar/2026 18:17:27] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 18:17:28,001 - INFO - 127.0.0.1 - - [18/Mar/2026 18:17:28] "GET / HTTP/1.1" 200 -
+2026-03-18 18:17:28,015 - INFO - 127.0.0.1 - - [18/Mar/2026 18:17:28] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 18:17:28,016 - INFO - 127.0.0.1 - - [18/Mar/2026 18:17:28] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-03-18 18:17:30,567 - INFO - 127.0.0.1 - - [18/Mar/2026 18:17:30] "GET / HTTP/1.1" 200 -
+2026-03-18 18:17:30,582 - INFO - 127.0.0.1 - - [18/Mar/2026 18:17:30] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-03-18 18:17:30,582 - INFO - 127.0.0.1 - - [18/Mar/2026 18:17:30] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-03-18 18:17:30,606 - INFO - 127.0.0.1 - - [18/Mar/2026 18:17:30] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-03-18 18:17:36,478 - INFO - 127.0.0.1 - - [18/Mar/2026 18:17:36] "GET / HTTP/1.1" 200 -
+2026-03-18 18:17:36,492 - INFO - 127.0.0.1 - - [18/Mar/2026 18:17:36] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 18:17:36,493 - INFO - 127.0.0.1 - - [18/Mar/2026 18:17:36] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-03-18 18:20:32,923 - INFO - Generating workflow pull SQL
+2026-03-18 18:20:32,924 - INFO - 127.0.0.1 - - [18/Mar/2026 18:20:32] "POST /workflow/pull HTTP/1.1" 200 -
+2026-03-18 18:22:04,687 - INFO - Generating workflow final SQL
+2026-03-18 18:22:04,699 - INFO - 127.0.0.1 - - [18/Mar/2026 18:22:04] "POST /workflow/final HTTP/1.1" 200 -
+2026-03-18 18:57:04,853 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 18:57:04,891 - INFO -  * Restarting with stat
+2026-03-18 18:57:05,342 - INFO - Logging initialized
+2026-03-18 18:57:05,357 - WARNING -  * Debugger is active!
+2026-03-18 18:57:05,367 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 20:51:31,069 - INFO - Generating branch pull SQL
+2026-03-18 20:51:31,070 - INFO - 127.0.0.1 - - [18/Mar/2026 20:51:31] "POST /branch/pull HTTP/1.1" 200 -
+2026-03-18 20:53:05,576 - INFO - Generating branch final SQL
+2026-03-18 20:53:05,588 - INFO - 127.0.0.1 - - [18/Mar/2026 20:53:05] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-03-18 20:53:19,960 - INFO - Generating branch final SQL
+2026-03-18 20:53:19,969 - INFO - 127.0.0.1 - - [18/Mar/2026 20:53:19] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-03-18 20:54:13,303 - INFO - Generating branch final SQL
+2026-03-18 20:54:13,312 - INFO - 127.0.0.1 - - [18/Mar/2026 20:54:13] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-03-18 20:54:19,785 - INFO - Generating branch final SQL
+2026-03-18 20:54:19,792 - INFO - 127.0.0.1 - - [18/Mar/2026 20:54:19] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-03-18 20:55:13,268 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 20:55:13,313 - INFO -  * Restarting with stat
+2026-03-18 20:55:13,779 - INFO - Logging initialized
+2026-03-18 20:55:13,794 - WARNING -  * Debugger is active!
+2026-03-18 20:55:13,798 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 21:06:04,066 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 21:06:04,108 - INFO -  * Restarting with stat
+2026-03-18 21:06:04,529 - INFO - Logging initialized
+2026-03-18 21:06:04,546 - WARNING -  * Debugger is active!
+2026-03-18 21:06:04,550 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 21:06:54,188 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 21:06:54,219 - INFO -  * Restarting with stat
+2026-03-18 21:06:54,596 - INFO - Logging initialized
+2026-03-18 21:06:54,609 - WARNING -  * Debugger is active!
+2026-03-18 21:06:54,612 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 21:07:43,219 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 21:07:43,251 - INFO -  * Restarting with stat
+2026-03-18 21:07:43,647 - INFO - Logging initialized
+2026-03-18 21:07:43,661 - WARNING -  * Debugger is active!
+2026-03-18 21:07:43,665 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 21:07:57,866 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 21:07:57,907 - INFO -  * Restarting with stat
+2026-03-18 21:07:58,314 - INFO - Logging initialized
+2026-03-18 21:07:58,329 - WARNING -  * Debugger is active!
+2026-03-18 21:07:58,333 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 21:08:22,677 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 21:08:22,714 - INFO -  * Restarting with stat
+2026-03-18 21:08:23,115 - INFO - Logging initialized
+2026-03-18 21:08:23,129 - WARNING -  * Debugger is active!
+2026-03-18 21:08:23,132 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 21:08:28,229 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 21:08:28,259 - INFO -  * Restarting with stat
+2026-03-18 21:08:28,666 - INFO - Logging initialized
+2026-03-18 21:08:28,678 - WARNING -  * Debugger is active!
+2026-03-18 21:08:28,682 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 21:08:41,876 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 21:08:41,966 - INFO -  * Restarting with stat
+2026-03-18 21:08:42,362 - INFO - Logging initialized
+2026-03-18 21:08:42,378 - WARNING -  * Debugger is active!
+2026-03-18 21:08:42,382 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 21:08:46,989 - INFO - Generating branch final SQL
+2026-03-18 21:08:46,998 - INFO - 127.0.0.1 - - [18/Mar/2026 21:08:46] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-03-18 21:08:51,524 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 21:08:51,556 - INFO -  * Restarting with stat
+2026-03-18 21:08:52,013 - INFO - Logging initialized
+2026-03-18 21:08:52,029 - WARNING -  * Debugger is active!
+2026-03-18 21:08:52,033 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 21:08:57,136 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 21:08:57,184 - INFO -  * Restarting with stat
+2026-03-18 21:08:57,682 - INFO - Logging initialized
+2026-03-18 21:08:57,697 - WARNING -  * Debugger is active!
+2026-03-18 21:08:57,702 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 21:08:58,573 - INFO - Generating branch final SQL
+2026-03-18 21:08:58,584 - INFO - 127.0.0.1 - - [18/Mar/2026 21:08:58] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-03-18 21:09:00,496 - INFO - Generating branch final SQL
+2026-03-18 21:09:00,504 - INFO - 127.0.0.1 - - [18/Mar/2026 21:09:00] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-03-18 21:09:24,038 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 21:09:24,092 - INFO -  * Restarting with stat
+2026-03-18 21:09:24,497 - INFO - Logging initialized
+2026-03-18 21:09:24,511 - WARNING -  * Debugger is active!
+2026-03-18 21:09:24,515 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 21:09:25,780 - INFO - Generating branch final SQL
+2026-03-18 21:09:25,791 - INFO - 127.0.0.1 - - [18/Mar/2026 21:09:25] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-03-18 21:13:15,239 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 21:13:15,279 - INFO -  * Restarting with stat
+2026-03-18 21:13:15,675 - INFO - Logging initialized
+2026-03-18 21:13:15,688 - WARNING -  * Debugger is active!
+2026-03-18 21:13:15,691 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 21:13:21,334 - INFO - Generating branch final SQL
+2026-03-18 21:13:21,342 - INFO - 127.0.0.1 - - [18/Mar/2026 21:13:21] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 21:13:30,911 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 21:13:31,036 - INFO -  * Restarting with stat
+2026-03-18 21:13:31,503 - INFO - Logging initialized
+2026-03-18 21:13:31,522 - WARNING -  * Debugger is active!
+2026-03-18 21:13:31,527 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 21:13:32,412 - INFO - Generating branch final SQL
+2026-03-18 21:13:32,424 - INFO - 127.0.0.1 - - [18/Mar/2026 21:13:32] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 21:16:23,496 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py', reloading
+2026-03-18 21:16:23,564 - INFO -  * Restarting with stat
+2026-03-18 21:16:24,048 - INFO - Logging initialized
+2026-03-18 21:16:24,069 - WARNING -  * Debugger is active!
+2026-03-18 21:16:24,075 - INFO -  * Debugger PIN: 129-473-111
+2026-03-18 21:16:32,910 - INFO - Generating branch final SQL
+2026-03-18 21:16:32,917 - INFO - 127.0.0.1 - - [18/Mar/2026 21:16:32] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 21:18:48,694 - INFO - Generating workflow pull SQL
+2026-03-18 21:18:48,695 - INFO - 127.0.0.1 - - [18/Mar/2026 21:18:48] "POST /workflow/pull HTTP/1.1" 200 -
+2026-03-18 21:19:11,519 - INFO - Generating workflow final SQL
+2026-03-18 21:19:11,527 - INFO - 127.0.0.1 - - [18/Mar/2026 21:19:11] "POST /workflow/final HTTP/1.1" 200 -
+2026-03-18 21:44:50,696 - INFO - Logging initialized
+2026-03-18 21:44:50,717 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.102:5000
+2026-03-18 21:44:50,717 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-18 21:44:50,719 - INFO -  * Restarting with stat
+2026-03-18 21:44:50,878 - INFO - Logging initialized
+2026-03-18 21:44:50,888 - WARNING -  * Debugger is active!
+2026-03-18 21:44:50,896 - INFO -  * Debugger PIN: 868-379-235
+2026-03-18 21:44:55,897 - INFO - 127.0.0.1 - - [18/Mar/2026 21:44:55] "GET / HTTP/1.1" 200 -
+2026-03-18 21:44:55,921 - INFO - 127.0.0.1 - - [18/Mar/2026 21:44:55] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-18 21:44:55,927 - INFO - 127.0.0.1 - - [18/Mar/2026 21:44:55] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-03-18 21:44:56,058 - INFO - 127.0.0.1 - - [18/Mar/2026 21:44:56] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-03-18 21:45:13,963 - INFO - Generating branch pull SQL
+2026-03-18 21:45:13,964 - INFO - 127.0.0.1 - - [18/Mar/2026 21:45:13] "POST /branch/pull HTTP/1.1" 200 -
+2026-03-18 21:49:51,345 - INFO - Generating branch final SQL
+2026-03-18 21:49:51,351 - INFO - 127.0.0.1 - - [18/Mar/2026 21:49:51] "POST /branch/final HTTP/1.1" 200 -
+2026-03-18 21:50:37,578 - INFO - Generating workflow pull SQL
+2026-03-18 21:50:37,579 - INFO - 127.0.0.1 - - [18/Mar/2026 21:50:37] "POST /workflow/pull HTTP/1.1" 200 -
+2026-03-18 21:51:29,414 - INFO - Generating workflow final SQL
+2026-03-18 21:51:29,419 - INFO - 127.0.0.1 - - [18/Mar/2026 21:51:29] "POST /workflow/final HTTP/1.1" 200 -
+2026-03-18 22:09:34,687 - INFO - 127.0.0.1 - - [18/Mar/2026 22:09:34] "GET / HTTP/1.1" 200 -
+2026-03-18 22:09:34,711 - INFO - 127.0.0.1 - - [18/Mar/2026 22:09:34] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-03-18 22:09:34,713 - INFO - 127.0.0.1 - - [18/Mar/2026 22:09:34] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-03-18 22:09:40,420 - INFO - Generating branch pull SQL
+2026-03-18 22:09:40,420 - INFO - 127.0.0.1 - - [18/Mar/2026 22:09:40] "POST /branch/pull HTTP/1.1" 200 -
+2026-03-18 22:09:51,899 - INFO - Generating workflow pull SQL
+2026-03-18 22:09:51,900 - INFO - 127.0.0.1 - - [18/Mar/2026 22:09:51] "POST /workflow/pull HTTP/1.1" 200 -
+2026-03-18 22:10:44,618 - INFO - Generating workflow pull SQL
+2026-03-18 22:10:44,619 - INFO - 127.0.0.1 - - [18/Mar/2026 22:10:44] "POST /workflow/pull HTTP/1.1" 200 -
+2026-03-18 22:15:23,270 - INFO - Generating workflow final SQL
+2026-03-18 22:15:23,280 - INFO - 127.0.0.1 - - [18/Mar/2026 22:15:23] "POST /workflow/final HTTP/1.1" 200 -
+2026-03-18 22:29:42,427 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/config.py', reloading
+2026-03-18 22:29:42,503 - INFO -  * Restarting with stat
+2026-03-18 22:29:43,007 - INFO - Logging initialized

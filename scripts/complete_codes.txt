@@ -1,0 +1,22 @@
+SELECT JSON_OBJECT(
+    'product_codes', (
+        SELECT JSON_ARRAYAGG(p.code)
+        FROM product p
+    ),
+    'module_codes', (
+        SELECT JSON_ARRAYAGG(m.code)
+        FROM module m
+    ),
+    'transaction_type_codes', (
+        SELECT JSON_ARRAYAGG(ttm.code)
+        FROM transaction_type_master ttm
+    ),
+    'product_tag_codes', (
+        SELECT JSON_ARRAYAGG(pt.code)
+        FROM product_tag pt
+    ),
+    'branch_codes', (
+        SELECT JSON_ARRAYAGG(b.code)
+        FROM branch b join tenant t on b.tenant_id = t.tenant_id  and t.organization_code = {tenant_code_str}
+    )
+) AS result;
