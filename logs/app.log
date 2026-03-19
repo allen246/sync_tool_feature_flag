@@ -822,3 +822,64 @@
 2026-03-18 22:29:42,427 - INFO -  * Detected change in '/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/config.py', reloading
 2026-03-18 22:29:42,503 - INFO -  * Restarting with stat
 2026-03-18 22:29:43,007 - INFO - Logging initialized
+2026-03-19 11:43:17,437 - INFO - Logging initialized
+2026-03-19 11:43:17,457 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-03-19 11:43:17,457 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-19 11:43:50,018 - INFO - 127.0.0.1 - - [19/Mar/2026 11:43:50] "GET / HTTP/1.1" 200 -
+2026-03-19 11:43:50,057 - INFO - 127.0.0.1 - - [19/Mar/2026 11:43:50] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-19 11:43:50,057 - INFO - 127.0.0.1 - - [19/Mar/2026 11:43:50] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-03-19 11:43:50,126 - INFO - 127.0.0.1 - - [19/Mar/2026 11:43:50] "GET / HTTP/1.1" 200 -
+2026-03-19 11:43:50,139 - INFO - 127.0.0.1 - - [19/Mar/2026 11:43:50] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-19 11:43:50,140 - INFO - 127.0.0.1 - - [19/Mar/2026 11:43:50] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-03-19 11:43:50,149 - INFO - 127.0.0.1 - - [19/Mar/2026 11:43:50] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-03-19 11:46:10,608 - INFO - Logging initialized
+2026-03-19 11:46:10,622 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-03-19 11:46:10,622 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-19 11:46:35,807 - INFO - Generating workflow pull SQL
+2026-03-19 11:46:35,807 - INFO - 127.0.0.1 - - [19/Mar/2026 11:46:35] "POST /workflow/pull HTTP/1.1" 200 -
+2026-03-19 11:47:43,857 - INFO - Generating workflow final SQL
+2026-03-19 11:47:43,862 - INFO - 127.0.0.1 - - [19/Mar/2026 11:47:43] "POST /workflow/final HTTP/1.1" 200 -
+2026-03-19 11:54:15,033 - INFO - Generating branch pull SQL
+2026-03-19 11:54:15,034 - INFO - 127.0.0.1 - - [19/Mar/2026 11:54:15] "POST /branch/pull HTTP/1.1" 200 -
+2026-03-19 11:54:29,635 - INFO - Generating workflow pull SQL
+2026-03-19 11:54:29,636 - INFO - 127.0.0.1 - - [19/Mar/2026 11:54:29] "POST /workflow/pull HTTP/1.1" 200 -
+2026-03-19 11:55:00,870 - INFO - Logging initialized
+2026-03-19 11:55:00,904 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-03-19 11:55:00,904 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-19 11:55:04,762 - INFO - Generating workflow pull SQL
+2026-03-19 11:55:04,763 - INFO - 127.0.0.1 - - [19/Mar/2026 11:55:04] "POST /workflow/pull HTTP/1.1" 200 -
+2026-03-19 11:55:44,174 - INFO - Generating workflow final SQL
+2026-03-19 11:55:44,175 - INFO - 127.0.0.1 - - [19/Mar/2026 11:55:44] "POST /workflow/final HTTP/1.1" 200 -
+2026-03-19 11:59:44,615 - INFO - Generating workflow final SQL
+2026-03-19 11:59:44,617 - INFO - 127.0.0.1 - - [19/Mar/2026 11:59:44] "POST /workflow/final HTTP/1.1" 200 -
+2026-03-19 12:00:23,203 - INFO - Logging initialized
+2026-03-19 12:00:23,262 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-03-19 12:00:23,262 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-19 12:00:29,333 - INFO - Generating workflow final SQL
+2026-03-19 12:00:29,335 - INFO - 127.0.0.1 - - [19/Mar/2026 12:00:29] "POST /workflow/final HTTP/1.1" 200 -
+2026-03-19 15:06:06,968 - INFO - Logging initialized
+2026-03-19 15:06:06,982 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-03-19 15:06:06,982 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-19 15:06:09,130 - INFO - 127.0.0.1 - - [19/Mar/2026 15:06:09] "GET / HTTP/1.1" 200 -
+2026-03-19 15:06:09,149 - INFO - 127.0.0.1 - - [19/Mar/2026 15:06:09] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-03-19 15:06:09,149 - INFO - 127.0.0.1 - - [19/Mar/2026 15:06:09] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-03-19 15:06:09,214 - INFO - 127.0.0.1 - - [19/Mar/2026 15:06:09] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-03-19 15:08:04,069 - INFO - Generating workflow pull SQL
+2026-03-19 15:08:04,070 - INFO - 127.0.0.1 - - [19/Mar/2026 15:08:04] "POST /workflow/pull HTTP/1.1" 200 -
+2026-03-19 15:08:29,801 - INFO - Generating workflow final SQL
+2026-03-19 15:08:29,804 - INFO - 127.0.0.1 - - [19/Mar/2026 15:08:29] "POST /workflow/final HTTP/1.1" 200 -

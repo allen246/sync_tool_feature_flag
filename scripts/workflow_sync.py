@@ -62,7 +62,13 @@ class WorkflowSync:
                 WHERE b.code = '{branch}'
                   AND p.code = '{product}'
                   AND m.code = '{module}'
-                  AND tr.organization_code = '{tenant_code}';
+                  AND tr.organization_code = '{tenant_code}'
+                AND NOT EXISTS (
+                      SELECT 1
+                      FROM workflow w
+                      WHERE w.workflow_name = '{workflow_name}'
+                        AND w.branch_product_module_id = bpm.tenant_product_module
+                  );
                 """.format(**row)
 
             insert_transition_query = """
@@ -83,6 +89,7 @@ class WorkflowSync:
                 WHERE b.code = '{branch}'
                   AND p.code = '{product}'
                   AND m.code = '{module}'
+                  AND w.workflow_name = '{workflow_name}'
                   AND tr.organization_code = '{tenant_code}';
                 """.format(**row)
             self._collect_query(insert_workflow_query)
@@ -192,7 +199,7 @@ def generate_source_data_query(tenant_code, branch_codes, product_codes=None):
                     ) AS result
                     FROM transition t
                     JOIN workflow w 
-                        ON w.workflow_id = t.workflow_id
+                        ON w.workflow_id = t.workflow_id and t.is_disabled = 0
                     JOIN branch_product_module bpm 
                         ON w.branch_product_module_id = bpm.tenant_product_module
                     JOIN branch b 
