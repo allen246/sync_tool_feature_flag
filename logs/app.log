@@ -883,3 +883,401 @@
 2026-03-19 15:08:04,070 - INFO - 127.0.0.1 - - [19/Mar/2026 15:08:04] "POST /workflow/pull HTTP/1.1" 200 -
 2026-03-19 15:08:29,801 - INFO - Generating workflow final SQL
 2026-03-19 15:08:29,804 - INFO - 127.0.0.1 - - [19/Mar/2026 15:08:29] "POST /workflow/final HTTP/1.1" 200 -
+2026-04-15 16:05:32,749 - INFO - Logging initialized
+2026-04-15 16:05:32,771 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-04-15 16:05:32,772 - INFO - [33mPress CTRL+C to quit[0m
+2026-04-15 16:06:15,860 - INFO - 127.0.0.1 - - [15/Apr/2026 16:06:15] "GET / HTTP/1.1" 200 -
+2026-04-15 16:06:15,933 - INFO - 127.0.0.1 - - [15/Apr/2026 16:06:15] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-04-15 16:06:15,933 - INFO - 127.0.0.1 - - [15/Apr/2026 16:06:15] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-04-15 16:06:16,063 - INFO - 127.0.0.1 - - [15/Apr/2026 16:06:16] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-15 16:06:24,647 - INFO - Generating branch pull SQL
+2026-04-15 16:06:24,648 - INFO - 127.0.0.1 - - [15/Apr/2026 16:06:24] "POST /branch/pull HTTP/1.1" 200 -
+2026-04-15 16:08:21,199 - INFO - Generating branch final SQL
+2026-04-15 16:08:21,222 - ERROR - Exception on /branch/final [POST]
+Traceback (most recent call last):
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 2529, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/app.py", line 34, in branch_final
+    sql, notes = branch_service.generate_final(d["tenant"], d["source_json"], d["existing_json"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/branch_service.py", line 55, in generate_final
+    result = capture(sync.read_branch_product_backup_csv)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/branch_service.py", line 8, in capture
+    func(*args)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py", line 446, in read_branch_product_backup_csv
+    self.generate_query(row)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py", line 420, in generate_query
+    for table_name in self.identify_missing_data(row):
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py", line 372, in identify_missing_data
+    product_configurations = row["product_configurations"]
+                             ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: string indices must be integers, not 'str'
+2026-04-15 16:08:21,229 - INFO - 127.0.0.1 - - [15/Apr/2026 16:08:21] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-04-15 17:36:14,547 - INFO - Logging initialized
+2026-04-15 17:36:14,569 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-04-15 17:36:14,570 - INFO - [33mPress CTRL+C to quit[0m
+2026-04-15 17:36:32,137 - INFO - 127.0.0.1 - - [15/Apr/2026 17:36:32] "GET / HTTP/1.1" 200 -
+2026-04-15 17:36:32,176 - INFO - 127.0.0.1 - - [15/Apr/2026 17:36:32] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-04-15 17:36:32,176 - INFO - 127.0.0.1 - - [15/Apr/2026 17:36:32] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-04-15 17:36:32,295 - INFO - 127.0.0.1 - - [15/Apr/2026 17:36:32] "GET / HTTP/1.1" 200 -
+2026-04-15 17:36:32,306 - INFO - 127.0.0.1 - - [15/Apr/2026 17:36:32] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-15 17:36:32,315 - INFO - 127.0.0.1 - - [15/Apr/2026 17:36:32] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-04-15 17:36:32,315 - INFO - 127.0.0.1 - - [15/Apr/2026 17:36:32] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-04-15 17:36:38,331 - INFO - Generating branch pull SQL
+2026-04-15 17:36:38,332 - INFO - 127.0.0.1 - - [15/Apr/2026 17:36:38] "POST /branch/pull HTTP/1.1" 200 -
+2026-04-15 17:37:11,865 - INFO - Generating branch final SQL
+2026-04-15 17:37:11,871 - ERROR - Exception on /branch/final [POST]
+Traceback (most recent call last):
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 2529, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/app.py", line 34, in branch_final
+    sql, notes = branch_service.generate_final(d["tenant"], d["source_json"], d["existing_json"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/branch_service.py", line 55, in generate_final
+    result = capture(sync.read_branch_product_backup_csv)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/branch_service.py", line 8, in capture
+    func(*args)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py", line 446, in read_branch_product_backup_csv
+    self.generate_query(row)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py", line 420, in generate_query
+    for table_name in self.identify_missing_data(row):
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py", line 372, in identify_missing_data
+    product_configurations = row["product_configurations"]
+                             ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: string indices must be integers, not 'str'
+2026-04-15 17:37:11,873 - INFO - 127.0.0.1 - - [15/Apr/2026 17:37:11] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-04-15 17:37:35,261 - INFO - Generating branch final SQL
+2026-04-15 17:39:15,771 - ERROR - Exception on /branch/final [POST]
+Traceback (most recent call last):
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 2529, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/app.py", line 34, in branch_final
+    sql, notes = branch_service.generate_final(d["tenant"], d["source_json"], d["existing_json"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/branch_service.py", line 55, in generate_final
+    result = capture(sync.read_branch_product_backup_csv)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/branch_service.py", line 8, in capture
+    func(*args)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py", line 446, in read_branch_product_backup_csv
+    self.generate_query(row)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py", line 420, in generate_query
+    for table_name in self.identify_missing_data(row):
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py", line 372, in identify_missing_data
+    product_configurations = row["product_configurations"]
+                             ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: string indices must be integers, not 'str'
+2026-04-15 17:39:15,774 - INFO - 127.0.0.1 - - [15/Apr/2026 17:39:15] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-04-15 17:39:19,173 - INFO - Generating branch final SQL
+2026-04-15 18:02:53,713 - INFO - Generating branch final SQL
+2026-04-15 18:02:59,649 - ERROR - Exception on /branch/final [POST]
+Traceback (most recent call last):
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 2529, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/app.py", line 34, in branch_final
+    sql, notes = branch_service.generate_final(d["tenant"], d["source_json"], d["existing_json"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/branch_service.py", line 55, in generate_final
+    result = capture(sync.read_branch_product_backup_csv)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/branch_service.py", line 8, in capture
+    func(*args)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py", line 446, in read_branch_product_backup_csv
+    self.generate_query(row)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py", line 420, in generate_query
+    for table_name in self.identify_missing_data(row):
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/branch_product_sync.py", line 372, in identify_missing_data
+    product_configurations = row["product_configurations"]
+                             ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: string indices must be integers, not 'str'
+2026-04-15 18:02:59,652 - INFO - 127.0.0.1 - - [15/Apr/2026 18:02:59] "[35m[1mPOST /branch/final HTTP/1.1[0m" 500 -
+2026-04-15 18:03:05,620 - INFO - 127.0.0.1 - - [15/Apr/2026 18:03:05] "POST /branch/final HTTP/1.1" 200 -
+2026-04-15 18:21:16,322 - INFO - Generating workflow pull SQL
+2026-04-15 18:21:16,322 - INFO - 127.0.0.1 - - [15/Apr/2026 18:21:16] "POST /workflow/pull HTTP/1.1" 200 -
+2026-04-15 18:21:29,278 - INFO - Generating workflow pull SQL
+2026-04-15 18:21:29,278 - INFO - 127.0.0.1 - - [15/Apr/2026 18:21:29] "POST /workflow/pull HTTP/1.1" 200 -
+2026-04-15 18:22:05,405 - INFO - Generating workflow final SQL
+2026-04-15 18:22:05,413 - INFO - 127.0.0.1 - - [15/Apr/2026 18:22:05] "POST /workflow/final HTTP/1.1" 200 -
+2026-04-15 18:22:37,943 - INFO - Generating feature flag pull SQL
+2026-04-15 18:22:37,944 - INFO - 127.0.0.1 - - [15/Apr/2026 18:22:37] "POST /feature-flag/pull HTTP/1.1" 200 -
+2026-04-15 18:31:16,876 - INFO - Generating feature flag final SQL
+2026-04-15 18:31:16,876 - ERROR - Exception on /feature-flag/final [POST]
+Traceback (most recent call last):
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 2529, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/app.py", line 75, in feature_flag_final
+    sql, notes = feature_flag_service.generate_final(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/feature_flag_service.py", line 66, in generate_final
+    raw = capture(ff.read_features_backup)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/feature_flag_service.py", line 8, in capture
+    func(*args)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py", line 229, in read_features_backup
+    self.generate_query(source_rows, destination_rows)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py", line 188, in generate_query
+    getattr(self, table_name)(source_rows, destination_rows)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py", line 78, in generate_tenant_product_feature_query
+    set(source_rows.get('enabled_product_features')) or []).union(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not iterable
+2026-04-15 18:31:16,878 - INFO - 127.0.0.1 - - [15/Apr/2026 18:31:16] "[35m[1mPOST /feature-flag/final HTTP/1.1[0m" 500 -
+2026-04-15 18:32:21,481 - INFO - Generating feature flag final SQL
+2026-04-15 18:32:21,482 - ERROR - Exception on /feature-flag/final [POST]
+Traceback (most recent call last):
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 2529, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/app.py", line 75, in feature_flag_final
+    sql, notes = feature_flag_service.generate_final(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/feature_flag_service.py", line 66, in generate_final
+    raw = capture(ff.read_features_backup)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/feature_flag_service.py", line 8, in capture
+    func(*args)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py", line 229, in read_features_backup
+    self.generate_query(source_rows, destination_rows)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py", line 188, in generate_query
+    getattr(self, table_name)(source_rows, destination_rows)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py", line 78, in generate_tenant_product_feature_query
+    set(source_rows.get('enabled_product_features')) or []).union(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not iterable
+2026-04-15 18:32:21,483 - INFO - 127.0.0.1 - - [15/Apr/2026 18:32:21] "[35m[1mPOST /feature-flag/final HTTP/1.1[0m" 500 -
+2026-04-15 18:32:29,348 - INFO - Generating feature flag final SQL
+2026-04-15 18:32:29,348 - ERROR - Exception on /feature-flag/final [POST]
+Traceback (most recent call last):
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 2529, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/app.py", line 75, in feature_flag_final
+    sql, notes = feature_flag_service.generate_final(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/feature_flag_service.py", line 66, in generate_final
+    raw = capture(ff.read_features_backup)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/feature_flag_service.py", line 8, in capture
+    func(*args)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py", line 229, in read_features_backup
+    self.generate_query(source_rows, destination_rows)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py", line 188, in generate_query
+    getattr(self, table_name)(source_rows, destination_rows)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py", line 78, in generate_tenant_product_feature_query
+    set(source_rows.get('enabled_product_features')) or []).union(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not iterable
+2026-04-15 18:32:29,349 - INFO - 127.0.0.1 - - [15/Apr/2026 18:32:29] "[35m[1mPOST /feature-flag/final HTTP/1.1[0m" 500 -
+2026-04-15 18:33:00,864 - INFO - Generating feature flag final SQL
+2026-04-15 18:33:00,864 - ERROR - Exception on /feature-flag/final [POST]
+Traceback (most recent call last):
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 2529, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/.pyenv/versions/test/lib/python3.12/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/app.py", line 75, in feature_flag_final
+    sql, notes = feature_flag_service.generate_final(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/feature_flag_service.py", line 66, in generate_final
+    raw = capture(ff.read_features_backup)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/services/feature_flag_service.py", line 8, in capture
+    func(*args)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py", line 229, in read_features_backup
+    self.generate_query(source_rows, destination_rows)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py", line 188, in generate_query
+    getattr(self, table_name)(source_rows, destination_rows)
+  File "/home/allen/Downloads/sync_tool_feature_flag (3)/sync_tool_feature_flag/scripts/feature_flag.py", line 78, in generate_tenant_product_feature_query
+    set(source_rows.get('enabled_product_features')) or []).union(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not iterable
+2026-04-15 18:33:00,866 - INFO - 127.0.0.1 - - [15/Apr/2026 18:33:00] "[35m[1mPOST /feature-flag/final HTTP/1.1[0m" 500 -
+2026-04-15 18:35:17,337 - INFO - Generating feature flag final SQL
+2026-04-15 18:35:17,338 - INFO - 127.0.0.1 - - [15/Apr/2026 18:35:17] "POST /feature-flag/final HTTP/1.1" 200 -
+2026-04-15 23:15:48,311 - INFO - Logging initialized
+2026-04-15 23:15:48,325 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.110.1:5000
+2026-04-15 23:15:48,325 - INFO - [33mPress CTRL+C to quit[0m
+2026-04-15 23:16:12,904 - INFO - 127.0.0.1 - - [15/Apr/2026 23:16:12] "GET / HTTP/1.1" 200 -
+2026-04-15 23:16:12,942 - INFO - 127.0.0.1 - - [15/Apr/2026 23:16:12] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-04-15 23:16:12,943 - INFO - 127.0.0.1 - - [15/Apr/2026 23:16:12] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-04-15 23:16:13,018 - INFO - 127.0.0.1 - - [15/Apr/2026 23:16:13] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-15 23:16:33,912 - INFO - Generating workflow pull SQL
+2026-04-15 23:16:33,912 - INFO - 127.0.0.1 - - [15/Apr/2026 23:16:33] "POST /workflow/pull HTTP/1.1" 200 -
+2026-04-15 23:18:00,713 - INFO - Generating workflow final SQL
+2026-04-15 23:36:09,123 - INFO - Logging initialized
+2026-04-15 23:36:09,137 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.110.1:5000
+2026-04-15 23:36:09,137 - INFO - [33mPress CTRL+C to quit[0m
+2026-04-15 23:37:19,231 - INFO - Generating workflow final SQL
+2026-04-15 23:37:23,084 - INFO - 127.0.0.1 - - [15/Apr/2026 23:37:23] "POST /workflow/final HTTP/1.1" 200 -
+2026-04-15 23:49:22,983 - INFO - Logging initialized
+2026-04-15 23:49:23,001 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.110.1:5000
+2026-04-15 23:49:23,001 - INFO - [33mPress CTRL+C to quit[0m
+2026-04-15 23:49:48,107 - INFO - 127.0.0.1 - - [15/Apr/2026 23:49:48] "GET / HTTP/1.1" 200 -
+2026-04-15 23:49:48,149 - INFO - 127.0.0.1 - - [15/Apr/2026 23:49:48] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-04-15 23:49:48,149 - INFO - 127.0.0.1 - - [15/Apr/2026 23:49:48] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-04-15 23:49:58,181 - INFO - Generating branch pull SQL
+2026-04-15 23:49:58,182 - INFO - 127.0.0.1 - - [15/Apr/2026 23:49:58] "POST /branch/pull HTTP/1.1" 200 -
+2026-04-15 23:50:18,562 - INFO - Generating workflow pull SQL
+2026-04-15 23:50:18,563 - INFO - 127.0.0.1 - - [15/Apr/2026 23:50:18] "POST /workflow/pull HTTP/1.1" 200 -
+2026-04-15 23:50:28,349 - INFO - Generating workflow final SQL
+2026-04-15 23:50:28,360 - INFO - 127.0.0.1 - - [15/Apr/2026 23:50:28] "POST /workflow/final HTTP/1.1" 200 -
+2026-04-16 00:16:32,242 - INFO - 127.0.0.1 - - [16/Apr/2026 00:16:32] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-04-16 00:16:32,243 - INFO - 127.0.0.1 - - [16/Apr/2026 00:16:32] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-04-16 00:16:54,673 - INFO - Generating workflow pull SQL
+2026-04-16 00:16:54,674 - INFO - 127.0.0.1 - - [16/Apr/2026 00:16:54] "POST /workflow/pull HTTP/1.1" 200 -
+2026-04-16 00:17:21,316 - INFO - Generating branch pull SQL
+2026-04-16 00:17:21,317 - INFO - 127.0.0.1 - - [16/Apr/2026 00:17:21] "POST /branch/pull HTTP/1.1" 200 -
+2026-04-16 00:24:26,510 - INFO - Generating branch final SQL
+2026-04-16 00:24:26,530 - INFO - 127.0.0.1 - - [16/Apr/2026 00:24:26] "POST /branch/final HTTP/1.1" 200 -
+2026-04-16 00:26:47,802 - INFO - Generating branch final SQL
+2026-04-16 00:59:01,871 - INFO - Logging initialized
+2026-04-16 00:59:01,887 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.110.1:5000
+2026-04-16 00:59:01,887 - INFO - [33mPress CTRL+C to quit[0m
+2026-04-16 00:59:10,313 - INFO - Generating branch final SQL
+2026-04-16 00:59:10,356 - INFO - 127.0.0.1 - - [16/Apr/2026 00:59:10] "POST /branch/final HTTP/1.1" 200 -
+2026-04-16 01:05:15,330 - INFO - Logging initialized
+2026-04-16 01:05:15,347 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.110.1:5000
+2026-04-16 01:05:15,347 - INFO - [33mPress CTRL+C to quit[0m
+2026-04-16 01:05:18,120 - INFO - Generating branch final SQL
+2026-04-16 01:05:18,136 - INFO - 127.0.0.1 - - [16/Apr/2026 01:05:18] "POST /branch/final HTTP/1.1" 200 -
+2026-04-16 10:16:15,318 - INFO - Logging initialized
+2026-04-16 10:16:15,335 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-04-16 10:16:15,335 - INFO - [33mPress CTRL+C to quit[0m
+2026-04-16 10:16:19,393 - INFO - 127.0.0.1 - - [16/Apr/2026 10:16:19] "GET / HTTP/1.1" 200 -
+2026-04-16 10:16:19,408 - INFO - 127.0.0.1 - - [16/Apr/2026 10:16:19] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-04-16 10:16:19,409 - INFO - 127.0.0.1 - - [16/Apr/2026 10:16:19] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-04-16 10:16:19,445 - INFO - 127.0.0.1 - - [16/Apr/2026 10:16:19] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-16 10:16:28,409 - INFO - 127.0.0.1 - - [16/Apr/2026 10:16:28] "GET / HTTP/1.1" 200 -
+2026-04-16 10:16:28,416 - INFO - 127.0.0.1 - - [16/Apr/2026 10:16:28] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-04-16 10:16:28,417 - INFO - 127.0.0.1 - - [16/Apr/2026 10:16:28] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-04-16 10:16:48,642 - INFO - Generating branch pull SQL
+2026-04-16 10:16:48,642 - INFO - 127.0.0.1 - - [16/Apr/2026 10:16:48] "POST /branch/pull HTTP/1.1" 200 -
+2026-04-16 10:46:11,637 - INFO - Logging initialized
+2026-04-16 10:46:11,649 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-04-16 10:46:11,649 - INFO - [33mPress CTRL+C to quit[0m
+2026-04-16 10:47:21,585 - INFO - Generating branch pull SQL
+2026-04-16 10:47:21,586 - INFO - 127.0.0.1 - - [16/Apr/2026 10:47:21] "POST /branch/pull HTTP/1.1" 200 -
+2026-04-16 10:47:27,204 - INFO - 127.0.0.1 - - [16/Apr/2026 10:47:27] "GET / HTTP/1.1" 200 -
+2026-04-16 10:47:27,215 - INFO - 127.0.0.1 - - [16/Apr/2026 10:47:27] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-04-16 10:47:27,215 - INFO - 127.0.0.1 - - [16/Apr/2026 10:47:27] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-04-16 10:47:42,703 - INFO - Generating branch pull SQL
+2026-04-16 10:47:42,704 - INFO - 127.0.0.1 - - [16/Apr/2026 10:47:42] "POST /branch/pull HTTP/1.1" 200 -
+2026-04-16 10:49:00,123 - INFO - Generating branch final SQL
+2026-04-16 10:49:00,139 - INFO - 127.0.0.1 - - [16/Apr/2026 10:49:00] "POST /branch/final HTTP/1.1" 200 -
+2026-04-16 10:54:52,174 - INFO - Generating branch final SQL
+2026-04-16 10:54:52,189 - INFO - 127.0.0.1 - - [16/Apr/2026 10:54:52] "POST /branch/final HTTP/1.1" 200 -
+2026-04-16 10:56:07,835 - INFO - Generating workflow pull SQL
+2026-04-16 10:56:07,836 - INFO - 127.0.0.1 - - [16/Apr/2026 10:56:07] "POST /workflow/pull HTTP/1.1" 200 -
+2026-04-16 10:57:10,766 - INFO - Generating workflow pull SQL
+2026-04-16 10:57:10,766 - INFO - 127.0.0.1 - - [16/Apr/2026 10:57:10] "POST /workflow/pull HTTP/1.1" 200 -
+2026-04-16 10:57:40,403 - INFO - Generating workflow final SQL
+2026-04-16 10:57:40,409 - INFO - 127.0.0.1 - - [16/Apr/2026 10:57:40] "POST /workflow/final HTTP/1.1" 200 -

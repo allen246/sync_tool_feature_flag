@@ -35,7 +35,6 @@ class WorkflowSync:
     def generate_workflow_insert_query(self, rows: list[dict]) -> None:
         existing_keys = []
         for row in rows:
-            existing_keys.append(f"{row['branch']}-{row['module']}-{row['product']}")
             to_grp_name = "-".join(row.get('to_groups', 'None'))
             from_grp = row.get('from_groups', 'None')
             if row['to_groups']:
@@ -45,31 +44,33 @@ class WorkflowSync:
             workflow_name = f"{from_grp}--{to_grp_name}"
             row.update({'tenant_code': self.tenant_code, 'workflow_name': workflow_name})
 
-            insert_workflow_query = """
-                INSERT INTO workflow (workflow_name, branch_product_module_id)
-                SELECT '{workflow_name}', bpm.tenant_product_module
-                FROM branch_product_module bpm
-                JOIN branch b
-                    ON bpm.branch_id = b.branch_id
-                JOIN product_module pm
-                    ON bpm.product_module_id = pm.product_module_id
-                JOIN product p
-                    ON p.product_id = pm.product_id
-                JOIN module m
-                    ON m.module_id = pm.module_id
-                JOIN tenant tr
-                    ON tr.tenant_id = b.tenant_id
-                WHERE b.code = '{branch}'
-                  AND p.code = '{product}'
-                  AND m.code = '{module}'
-                  AND tr.organization_code = '{tenant_code}'
-                AND NOT EXISTS (
-                      SELECT 1
-                      FROM workflow w
-                      WHERE w.workflow_name = '{workflow_name}'
-                        AND w.branch_product_module_id = bpm.tenant_product_module
-                  );
-                """.format(**row)
+            if f"{row['branch']}-{row['module']}-{row['product']}" not in existing_keys:
+                existing_keys.append(f"{row['branch']}-{row['module']}-{row['product']}")
+                insert_workflow_query = """
+                    INSERT INTO workflow (workflow_name, branch_product_module_id)
+                    SELECT '{workflow_name}', bpm.tenant_product_module
+                    FROM branch_product_module bpm
+                    JOIN branch b
+                        ON bpm.branch_id = b.branch_id
+                    JOIN product_module pm
+                        ON bpm.product_module_id = pm.product_module_id
+                    JOIN product p
+                        ON p.product_id = pm.product_id
+                    JOIN module m
+                        ON m.module_id = pm.module_id
+                    JOIN tenant tr
+                        ON tr.tenant_id = b.tenant_id
+                    WHERE b.code = '{branch}'
+                      AND p.code = '{product}'
+                      AND m.code = '{module}'
+                      AND tr.organization_code = '{tenant_code}'
+                    AND NOT EXISTS (
+                          SELECT 1
+                          FROM workflow w
+                          WHERE w.workflow_name = '{workflow_name}'
+                            AND w.branch_product_module_id = bpm.tenant_product_module
+                      );
+                    """.format(**row)
 
             insert_transition_query = """
                 INSERT INTO transition (workflow_id, from_group, to_groups, `condition`, `trigger`, priority)
@@ -89,7 +90,6 @@ class WorkflowSync:
                 WHERE b.code = '{branch}'
                   AND p.code = '{product}'
                   AND m.code = '{module}'
-                  AND w.workflow_name = '{workflow_name}'
                   AND tr.organization_code = '{tenant_code}';
                 """.format(**row)
             self._collect_query(insert_workflow_query)

@@ -10,8 +10,11 @@ class BranchProductSync:
         "branch"
     ])
 
-    BRANCH_PRODUCT_TABLES = frozenset(
-        ["branch_product_transaction_type", "product_transaction_type", "transaction_type_master"])
+    # BRANCH_PRODUCT_TABLES = frozenset(
+    #     ["branch_product_transaction_type", "product_transaction_type", "transaction_type_master"])
+
+    TRANSACTION_TYPE_TABLES = frozenset(
+        ["transaction_type_master"])
 
     MODULE_RELATIONAL_TABLES = frozenset(["module", "tenant_module"])
 
@@ -74,6 +77,8 @@ class BranchProductSync:
 
     def generate_branch_product_transaction_type_insert_query(self, arguments: dict) -> str:
         transaction_type_configuration = arguments["transaction_type_configuration"]
+        if not transaction_type_configuration:
+            return ""
         product_configurations = arguments["product_configurations"]
         branch_configuration = arguments["branch_configuration"]
 
@@ -118,6 +123,8 @@ class BranchProductSync:
     @staticmethod
     def generate_product_transaction_type_insert_query(arguments: dict) -> str:
         transaction_type_configuration = arguments["transaction_type_configuration"]
+        if not transaction_type_configuration:
+            return ""
         product_configurations = arguments["product_configurations"]
 
         query_arguments = {"product_code": f"'{product_configurations['code']}'"}
@@ -148,6 +155,8 @@ class BranchProductSync:
     @staticmethod
     def generate_transaction_type_master_insert_query(arguments: dict) -> str:
         transaction_type_configuration = arguments["transaction_type_configuration"]
+        if not transaction_type_configuration:
+            return ""
         query_arguments = {
             key: (f"'{json.dumps(value)}'" if isinstance(value, dict) else f"'{value}'")
             for key, value in transaction_type_configuration.items()
@@ -372,6 +381,7 @@ class BranchProductSync:
         product_configurations = row["product_configurations"]
         module_configurations = row["module_configurations"]
         branch_configuration = row["branch_configuration"]
+        transaction_type_configuration = row["transaction_type_configuration"]
 
         # FIX 5: Use a list (not set) so insertion order is deterministic
         # and foreign key dependencies are always satisfied.
@@ -404,12 +414,17 @@ class BranchProductSync:
                 if table not in self.BRANCH_RELATIONAL_TABLES
             ]
 
-
-        if branch_configuration["code"] in self.EXISTING_CONFIG.get("branch_codes", []) and product_configurations["code"] in self.EXISTING_CONFIG.get("product_codes", []):
+        if transaction_type_configuration and transaction_type_configuration["code"] in self.EXISTING_CONFIG.get("transaction_type_configuration", []):
             required_tables = [
                 table for table in required_tables
-                if table not in self.BRANCH_PRODUCT_TABLES
+                if table not in self.TRANSACTION_TYPE_TABLES
             ]
+
+        # if branch_configuration["code"] in self.EXISTING_CONFIG.get("branch_codes", []) and product_configurations["code"] in self.EXISTING_CONFIG.get("product_codes", []):
+        #     required_tables = [
+        #         table for table in required_tables
+        #         if table not in self.BRANCH_PRODUCT_TABLES
+        #     ]
 
         return required_tables
 
@@ -551,8 +566,8 @@ def generate_source_destination_initial_data_query(tenant_code, branch_codes, pr
                             LEFT JOIN transaction_type_master tym
                                 ON ptt.transaction_type_id = tym.transaction_type_id
                         
-                            LEFT JOIN branch_product_transaction_type bpt
-                                ON bpt.product_transaction_type_id = ptt.product_transaction_type_id
+                            JOIN branch_product_transaction_type bpt
+                               ON bpt.product_transaction_type_id = ptt.product_transaction_type_id
                                AND b.branch_id = bpt.branch_id
                         ) x;
                         """
