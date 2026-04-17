@@ -13,6 +13,8 @@ const ICONS = {
 function showToast(title, msg, type) {
   const t = document.getElementById("toast");
   const msgHtml = msg ? `<div class="toast-msg">${msg}</div>` : '';
+  t.setAttribute('role', 'status');
+  t.setAttribute('aria-live', 'polite');
   t.innerHTML = `<div class="toast-inner"><div class="toast-icon">${ICONS[type]||ICONS.info}</div><div class="toast-text"><div class="toast-title">${title}</div>${msgHtml}</div></div>`;
   t.className = "toast " + type;
   t.style.display = "block";
@@ -266,6 +268,7 @@ function switchTab(t) {
   if (t === 'branch') loadBranch();
   else if (t === 'workflow') loadWorkflow();
   else if (t === 'feature') loadFeatureFlag();
+  else if (t === 'mq') loadMqComparison();
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -566,6 +569,368 @@ function featureFlagFinal() {
       hasSQL ? "success" : "info"
     );
   }).catch(() => showToast("Server Error", "Note: Failed to generate Final SQL. Check server logs.", "error"));
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MQ COMPARISON
+═══════════════════════════════════════════════════════════════════ */
+function loadMqComparison() {
+  document.getElementById('content').innerHTML = `
+<div class="section-header"><div class="section-badge">1</div><h3>Compare MQ Definitions</h3></div>
+<p class="section-hint">Paste RabbitMQ definition exports from Source and Destination to identify missing queues, exchanges and bindings.</p>
+
+<div class="json-grid">
+  <div class="json-group">
+    <div class="json-label-row">
+      <label>source_mq_definition.json <span class="required">*</span></label>
+      <span class="db-pill source">SOURCE</span>
+    </div>
+    <textarea id="mqSourceJson" class="mq-json-input" placeholder="Paste Source RabbitMQ definition JSON export..."></textarea>
+  </div>
+  <div class="json-group">
+    <div class="json-label-row">
+      <label>destination_mq_definition.json <span class="required">*</span></label>
+      <span class="db-pill dest">DESTINATION</span>
+    </div>
+    <textarea id="mqDestinationJson" class="mq-json-input" placeholder="Paste Destination RabbitMQ definition JSON export..."></textarea>
+  </div>
+</div>
+<div class="btn-row">
+  <button class="primary" onclick="mqCompare()">${FIN_ICON} Compare MQ JSON</button>
+</div>
+
+<hr class="section-divider">
+
+<div class="section-header"><div class="section-badge">2</div><h3>Comparison Result</h3></div>
+<p class="section-hint">Queues are grouped with their related exchange details and queue bindings.</p>
+<div id="mqResult" class="mq-result-empty">Run a comparison to view MQ differences.</div>`;
+}
+
+function mqText(value) {
+  if (value === undefined || value === null || value === '') return '-';
+  if (typeof value === 'object') return JSON.stringify(value);
+  return String(value);
+}
+
+function mqValue(value) {
+  return escapeHtml(mqText(value));
+}
+
+function mqCode(value) {
+  return `<code class="mq-code">${mqValue(value)}</code>`;
+}
+
+function mqCopy(value, label, extraClass = '') {
+  const text = mqText(value);
+  return `
+    <button
+      type="button"
+      class="mq-copy ${extraClass}"
+      data-copy="${escapeHtml(text)}"
+      data-copy-label="${escapeHtml(label)}"
+      onclick="copyMqText(this, event)"
+      aria-label="Copy ${escapeHtml(label)}"
+    >${mqValue(value)}</button>`;
+}
+
+function mqCopyCode(value, label) {
+  return mqCopy(value, label, 'mq-code');
+}
+
+function copyMqText(el, event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  const text = el.dataset.copy || '';
+  const label = el.dataset.copyLabel || 'Value';
+  if (!text || text === '-') {
+    showToast("Nothing to Copy", `No ${label.toLowerCase()} available.`, "warning");
+    return;
+  }
+
+  const done = () => {
+    el.classList.add('copied');
+    clearTimeout(el._copiedTimer);
+    el._copiedTimer = setTimeout(() => el.classList.remove('copied'), 1100);
+    showToast("Copied!", `${label} copied to clipboard.`, "success");
+  };
+  const fallbackCopy = () => {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    done();
+  };
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(fallbackCopy);
+  } else {
+    fallbackCopy();
+  }
+}
+
+function mqQueueKey(vhost, name) {
+  return `${vhost || '/'}::${name || ''}`;
+}
+
+function renderMqCountCard(label, counts, tone) {
+  return `
+    <div class="mq-count-card ${tone || ''}">
+      <div class="mq-count-label">${escapeHtml(label)}</div>
+      <div class="mq-count-row"><span>Queues</span><strong>${counts.queues || 0}</strong></div>
+      <div class="mq-count-row"><span>Exchanges</span><strong>${counts.exchanges || 0}</strong></div>
+      <div class="mq-count-row"><span>Bindings</span><strong>${counts.bindings || 0}</strong></div>
+    </div>`;
+}
+
+function renderMqSummary(summary) {
+  return `
+    <div class="mq-summary-grid">
+      ${renderMqCountCard('Source Export', summary.source || {}, 'source')}
+      ${renderMqCountCard('Destination Export', summary.destination || {}, 'dest')}
+      ${renderMqCountCard('Missing in Destination', summary.missing_in_destination || {}, 'warning')}
+      ${renderMqCountCard('Only in Destination', summary.only_in_destination || {}, 'muted')}
+    </div>`;
+}
+
+function renderMqExchangeChips(exchanges) {
+  if (!exchanges || !exchanges.length) {
+    return `<span class="mq-empty-line">No exchange definition found for these bindings.</span>`;
+  }
+  return exchanges.map(exchange => `
+    <span class="mq-chip">
+      ${mqCopy(exchange.name, 'Exchange name', 'mq-chip-name')}
+      <small>${mqValue(exchange.type)}</small>
+    </span>
+  `).join('');
+}
+
+function renderMqBindingTable(bindings) {
+  if (!bindings || !bindings.length) {
+    return `<div class="mq-empty-line">No queue bindings found.</div>`;
+  }
+  const rows = bindings.map(binding => `
+    <tr>
+      <td>${mqCopyCode(binding.source, 'Exchange name')}</td>
+      <td>${mqCopyCode(binding.routing_key, 'Routing key')}</td>
+      <td>${mqCopyCode(binding.destination, 'Queue name')}</td>
+      <td>${mqCode(binding.arguments)}</td>
+    </tr>
+  `).join('');
+  return `
+    <div class="mq-table-wrap">
+      <table class="mq-table">
+        <thead>
+          <tr>
+            <th>Exchange</th>
+            <th>Routing Key</th>
+            <th>Queue</th>
+            <th>Arguments</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+function renderMqQueueReports(title, reports, emptyText) {
+  if (!reports || !reports.length) {
+    return `
+      <details class="mq-panel">
+        <summary class="mq-panel-header">
+          <h4>${escapeHtml(title)}</h4>
+          <span>0</span>
+        </summary>
+        <div class="mq-empty-line">${escapeHtml(emptyText || 'No queues found.')}</div>
+      </details>`;
+  }
+
+  const items = reports.map(report => {
+    const queue = report.queue || {};
+    return `
+      <article class="mq-queue-item">
+        <div class="mq-queue-head">
+          <div>
+            ${mqCopy(queue.name, 'Queue name', 'mq-queue-name')}
+            <div class="mq-queue-vhost">vhost ${mqValue(queue.vhost || '/')}</div>
+          </div>
+          <div class="mq-queue-flags">
+            <span>durable: ${mqValue(queue.durable)}</span>
+            <span>auto delete: ${mqValue(queue.auto_delete)}</span>
+          </div>
+        </div>
+        <dl class="mq-definition-list">
+          <div>
+            <dt>Queue Arguments</dt>
+            <dd>${mqCode(queue.arguments)}</dd>
+          </div>
+          <div>
+            <dt>Exchange</dt>
+            <dd><div class="mq-chip-row">${renderMqExchangeChips(report.exchanges || [])}</div></dd>
+          </div>
+        </dl>
+        <div class="mq-subtitle">Bindings</div>
+        ${renderMqBindingTable(report.bindings || [])}
+      </article>`;
+  }).join('');
+
+  return `
+    <details class="mq-panel">
+      <summary class="mq-panel-header">
+        <h4>${escapeHtml(title)}</h4>
+        <span>${reports.length}</span>
+      </summary>
+      <div class="mq-queue-list">${items}</div>
+    </details>`;
+}
+
+function renderMqResourceTable(title, resources, type, emptyText) {
+  const count = resources ? resources.length : 0;
+  if (!count) {
+    return `
+      <details class="mq-panel">
+        <summary class="mq-panel-header">
+          <h4>${escapeHtml(title)}</h4>
+          <span>0</span>
+        </summary>
+        <div class="mq-empty-line">${escapeHtml(emptyText || 'No items found.')}</div>
+      </details>`;
+  }
+
+  const rows = resources.map(resource => {
+    if (type === 'binding') {
+      return `
+        <tr>
+          <td>${mqCode(resource.vhost || '/')}</td>
+          <td>${mqCopyCode(resource.source, 'Exchange name')}</td>
+          <td>${mqCopyCode(resource.destination, 'Queue name')}</td>
+          <td>${mqCopyCode(resource.routing_key, 'Routing key')}</td>
+          <td>${mqCode(resource.arguments)}</td>
+        </tr>`;
+    }
+    return `
+      <tr>
+        <td>${mqCode(resource.vhost || '/')}</td>
+        <td>${mqCopyCode(resource.name, 'Exchange name')}</td>
+        <td>${mqCode(resource.type || '-')}</td>
+        <td>${mqCode(resource.durable)}</td>
+        <td>${mqCode(resource.arguments)}</td>
+      </tr>`;
+  }).join('');
+  const header = type === 'binding'
+    ? `<tr><th>Vhost</th><th>Exchange</th><th>Queue</th><th>Routing Key</th><th>Arguments</th></tr>`
+    : `<tr><th>Vhost</th><th>Name</th><th>Type</th><th>Durable</th><th>Arguments</th></tr>`;
+  return `
+    <details class="mq-panel">
+      <summary class="mq-panel-header">
+        <h4>${escapeHtml(title)}</h4>
+        <span>${count}</span>
+      </summary>
+      <div class="mq-table-wrap">
+        <table class="mq-table">
+          <thead>${header}</thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </details>`;
+}
+
+function filterBindingsOutsideQueues(bindings, queueReports) {
+  const queueKeys = new Set((queueReports || []).map(report => {
+    const queue = report.queue || {};
+    return mqQueueKey(queue.vhost, queue.name);
+  }));
+  return (bindings || []).filter(binding => !queueKeys.has(mqQueueKey(binding.vhost, binding.destination)));
+}
+
+function renderMqComparisonGroup(title, group, options = {}) {
+  const queues = group.queues || [];
+  const standaloneBindings = filterBindingsOutsideQueues(group.bindings || [], queues);
+  return `
+    <div class="mq-group">
+      <div class="mq-group-header">
+        <h3>${escapeHtml(title)}</h3>
+        <p>${escapeHtml(options.hint || '')}</p>
+      </div>
+      ${renderMqQueueReports(options.queueTitle || 'Queues', queues, options.queueEmpty)}
+      ${renderMqResourceTable(options.exchangeTitle || 'Exchange Definitions', group.exchanges || [], 'exchange', options.exchangeEmpty)}
+      ${renderMqResourceTable(options.bindingTitle || 'Standalone Binding Differences', standaloneBindings, 'binding', options.bindingEmpty)}
+    </div>`;
+}
+
+function renderMqComparison(data) {
+  const result = document.getElementById('mqResult');
+  const missing = data.missing_in_destination || {};
+  const destinationOnly = data.only_in_destination || {};
+
+  result.className = 'mq-result';
+  let html = renderMqSummary(data.summary || {});
+
+  if (!data.has_differences) {
+    result.innerHTML = html + `<div class="mq-no-diff">Source and Destination MQ definitions are identical for queues, exchanges and bindings.</div>`;
+    return;
+  }
+
+  html += renderMqComparisonGroup('Source Items Missing in Destination', missing, {
+    hint: 'Create or align these items in Destination to match Source.',
+    queueTitle: 'Queues with Exchange and Binding Details',
+    queueEmpty: 'No source queues are missing in Destination.',
+    exchangeTitle: 'Exchange Definitions Missing in Destination',
+    exchangeEmpty: 'No exchange definitions are missing in Destination.',
+    bindingTitle: 'Bindings Missing for Existing Queues',
+    bindingEmpty: 'No standalone binding differences. Queue bindings are shown under each missing queue.',
+  });
+
+  const hasDestinationOnly = (destinationOnly.queues || []).length
+    || (destinationOnly.exchanges || []).length
+    || (destinationOnly.bindings || []).length;
+  if (hasDestinationOnly) {
+    html += `
+      <details class="mq-details">
+        <summary>Review destination-only items</summary>
+        ${renderMqComparisonGroup('Destination-only Items', destinationOnly, {
+          hint: 'These exist in Destination but not in Source.',
+          queueTitle: 'Queues Only in Destination',
+          queueEmpty: 'No destination-only queues found.',
+          exchangeTitle: 'Exchange Definitions Only in Destination',
+          exchangeEmpty: 'No destination-only exchange definitions found.',
+          bindingTitle: 'Bindings Only in Destination for Existing Queues',
+          bindingEmpty: 'No standalone destination-only binding differences.',
+        })}
+      </details>`;
+  }
+
+  result.innerHTML = html;
+}
+
+function mqCompare() {
+  const sourceJson = document.getElementById('mqSourceJson');
+  const destinationJson = document.getElementById('mqDestinationJson');
+  if (!validateJSON([
+    {el: sourceJson, label: 'source_mq_definition.json'},
+    {el: destinationJson, label: 'destination_mq_definition.json'},
+  ])) return;
+
+  fetch("/mq/compare", { method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({source_json: sourceJson.value, destination_json: destinationJson.value}) })
+  .then(r => r.json()).then(data => {
+    renderMqComparison(data);
+    const missing = data.summary?.missing_in_destination || {};
+    const missingCount = (missing.queues || 0) + (missing.exchanges || 0) + (missing.bindings || 0);
+    showToast(
+      missingCount ? "MQ Differences Found" : "No Source Gaps",
+      missingCount ? `Note: ${missingCount} source item${missingCount > 1 ? 's are' : ' is'} missing in Destination.`
+                   : "Note: Destination has all Source queues, exchanges and bindings.",
+      missingCount ? "warning" : "success"
+    );
+  }).catch(() => showToast("Server Error", "Note: Failed to compare MQ JSON. Check server logs.", "error"));
 }
 
 /* ── Init ───────────────────────────────────────────────────────── */

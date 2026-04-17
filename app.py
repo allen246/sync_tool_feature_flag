@@ -1,7 +1,7 @@
 
 from flask import Flask, render_template, request, jsonify, send_file
 from config import Config, configure_logging
-from services import branch_service, workflow_service, feature_flag_service
+from services import branch_service, workflow_service, feature_flag_service, mq_service
 import io
 
 app = Flask(__name__)
@@ -76,6 +76,15 @@ def feature_flag_final():
         d["tenant"], d["source_json"], d["existing_json"]
     )
     return jsonify({"result": sql, "notes": notes})
+
+
+# ── MQ Comparison ───────────────────────────────────────────────────────── #
+
+@app.route("/mq/compare", methods=["POST"])
+def mq_compare():
+    d = request.json
+    result = mq_service.compare_definitions(d["source_json"], d["destination_json"])
+    return jsonify(result)
 
 
 # ── Download ─────────────────────────────────────────────────────────────── #

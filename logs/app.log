@@ -1281,3 +1281,61 @@ TypeError: 'NoneType' object is not iterable
 2026-04-16 10:57:10,766 - INFO - 127.0.0.1 - - [16/Apr/2026 10:57:10] "POST /workflow/pull HTTP/1.1" 200 -
 2026-04-16 10:57:40,403 - INFO - Generating workflow final SQL
 2026-04-16 10:57:40,409 - INFO - 127.0.0.1 - - [16/Apr/2026 10:57:40] "POST /workflow/final HTTP/1.1" 200 -
+2026-04-17 11:37:59,098 - INFO - Logging initialized
+2026-04-17 11:38:14,849 - INFO - Logging initialized
+2026-04-17 11:38:14,857 - INFO - Comparing MQ definitions
+2026-04-17 11:38:29,099 - INFO - Logging initialized
+2026-04-17 11:40:27,763 - INFO - Logging initialized
+2026-04-17 11:40:27,769 - INFO -  * Running on all addresses (0.0.0.0)
+   WARNING: This is a development server. Do not use it in a production deployment.
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000 (Press CTRL+C to quit)
+2026-04-17 11:40:54,523 - INFO - Comparing MQ definitions
+2026-04-17 11:40:54,523 - INFO - 127.0.0.1 - - [17/Apr/2026 11:40:54] "POST /mq/compare HTTP/1.1" 200 -
+2026-04-17 11:41:08,445 - INFO - 127.0.0.1 - - [17/Apr/2026 11:41:08] "GET / HTTP/1.1" 200 -
+2026-04-17 11:41:08,469 - INFO - 127.0.0.1 - - [17/Apr/2026 11:41:08] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-04-17 11:41:08,480 - INFO - 127.0.0.1 - - [17/Apr/2026 11:41:08] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-04-17 11:41:08,579 - INFO - 127.0.0.1 - - [17/Apr/2026 11:41:08] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-17 11:41:45,837 - INFO - Comparing MQ definitions
+2026-04-17 11:41:45,841 - INFO - 127.0.0.1 - - [17/Apr/2026 11:41:45] "POST /mq/compare HTTP/1.1" 200 -
+2026-04-17 11:46:38,580 - INFO - Comparing MQ definitions
+2026-04-17 11:46:38,581 - INFO - 127.0.0.1 - - [17/Apr/2026 11:46:38] "POST /mq/compare HTTP/1.1" 200 -
+2026-04-17 11:48:00,352 - INFO - Comparing MQ definitions
+2026-04-17 11:48:00,356 - INFO - 127.0.0.1 - - [17/Apr/2026 11:48:00] "POST /mq/compare HTTP/1.1" 200 -
+2026-04-17 11:48:07,671 - INFO - 127.0.0.1 - - [17/Apr/2026 11:48:07] "GET / HTTP/1.1" 200 -
+2026-04-17 11:48:07,686 - INFO - 127.0.0.1 - - [17/Apr/2026 11:48:07] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-04-17 11:48:07,686 - INFO - 127.0.0.1 - - [17/Apr/2026 11:48:07] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-04-17 11:48:08,064 - INFO - 127.0.0.1 - - [17/Apr/2026 11:48:08] "GET / HTTP/1.1" 200 -
+2026-04-17 11:48:08,077 - INFO - 127.0.0.1 - - [17/Apr/2026 11:48:08] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-04-17 11:48:08,077 - INFO - 127.0.0.1 - - [17/Apr/2026 11:48:08] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-04-17 11:48:08,289 - INFO - 127.0.0.1 - - [17/Apr/2026 11:48:08] "GET / HTTP/1.1" 200 -
+2026-04-17 11:48:08,301 - INFO - 127.0.0.1 - - [17/Apr/2026 11:48:08] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-04-17 11:48:08,301 - INFO - 127.0.0.1 - - [17/Apr/2026 11:48:08] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-04-17 11:48:08,514 - INFO - 127.0.0.1 - - [17/Apr/2026 11:48:08] "GET / HTTP/1.1" 200 -
+2026-04-17 11:48:08,528 - INFO - 127.0.0.1 - - [17/Apr/2026 11:48:08] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-04-17 11:48:08,529 - INFO - 127.0.0.1 - - [17/Apr/2026 11:48:08] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-04-17 11:48:17,879 - INFO - Comparing MQ definitions
+2026-04-17 11:48:17,881 - INFO - 127.0.0.1 - - [17/Apr/2026 11:48:17] "POST /mq/compare HTTP/1.1" 200 -
+2026-04-17 11:48:29,643 - INFO - Comparing MQ definitions
+2026-04-17 11:48:29,644 - INFO - 127.0.0.1 - - [17/Apr/2026 11:48:29] "POST /mq/compare HTTP/1.1" 200 -
+2026-04-17 11:53:56,121 - INFO - Comparing MQ definitions
+2026-04-17 11:53:56,122 - INFO - 127.0.0.1 - - [17/Apr/2026 11:53:56] "POST /mq/compare HTTP/1.1" 200 -
+2026-04-17 11:57:06,783 - INFO - 127.0.0.1 - - [17/Apr/2026 11:57:06] "GET / HTTP/1.1" 200 -
+2026-04-17 11:57:06,799 - INFO - 127.0.0.1 - - [17/Apr/2026 11:57:06] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-04-17 11:57:06,799 - INFO - 127.0.0.1 - - [17/Apr/2026 11:57:06] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-04-17 11:57:17,477 - INFO - 127.0.0.1 - - [17/Apr/2026 11:57:17] "GET / HTTP/1.1" 200 -
+2026-04-17 11:57:17,494 - INFO - 127.0.0.1 - - [17/Apr/2026 11:57:17] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-04-17 11:57:17,498 - INFO - 127.0.0.1 - - [17/Apr/2026 11:57:17] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-04-17 11:57:24,064 - INFO - 127.0.0.1 - - [17/Apr/2026 11:57:24] "GET / HTTP/1.1" 200 -
+2026-04-17 11:57:24,079 - INFO - 127.0.0.1 - - [17/Apr/2026 11:57:24] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-04-17 11:57:24,079 - INFO - 127.0.0.1 - - [17/Apr/2026 11:57:24] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-04-17 11:57:28,167 - INFO - 127.0.0.1 - - [17/Apr/2026 11:57:28] "GET / HTTP/1.1" 200 -
+2026-04-17 11:57:28,180 - INFO - 127.0.0.1 - - [17/Apr/2026 11:57:28] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-04-17 11:57:28,181 - INFO - 127.0.0.1 - - [17/Apr/2026 11:57:28] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2026-04-17 11:57:36,288 - INFO - Comparing MQ definitions
+2026-04-17 11:57:36,290 - INFO - 127.0.0.1 - - [17/Apr/2026 11:57:36] "POST /mq/compare HTTP/1.1" 200 -
+2026-04-17 12:14:06,712 - INFO - 127.0.0.1 - - [17/Apr/2026 12:14:06] "GET / HTTP/1.1" 200 -
+2026-04-17 12:14:06,739 - INFO - 127.0.0.1 - - [17/Apr/2026 12:14:06] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-04-17 12:14:06,739 - INFO - 127.0.0.1 - - [17/Apr/2026 12:14:06] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-04-17 12:14:17,124 - INFO - Comparing MQ definitions
+2026-04-17 12:14:17,126 - INFO - 127.0.0.1 - - [17/Apr/2026 12:14:17] "POST /mq/compare HTTP/1.1" 200 -
