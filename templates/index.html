@@ -3,37 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sync Management Tool</title>
+<title>SYNC.MGMT // SQL Migration Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
+<div class="progress-bar" id="progressBar" aria-hidden="true"></div>
 <div class="container">
 
-  <div class="app-header">
-    <div class="app-header-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="22" height="22">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-      </svg>
+  <header class="app-header">
+    <div class="app-header-meta">
+      <span class="app-header-meta-left">
+        <span class="app-header-meta-dot"></span>
+        <span class="app-header-meta-tag">— SYSTEM ONLINE —</span>
+      </span>
+      <span class="app-header-meta-right">
+        <span>2026.01</span>
+        <span>v1.0.3</span>
+      </span>
     </div>
-    <div>
-      <h1>Sync Management Tool</h1>
-      <p>Database migration SQL generator</p>
-    </div>
-  </div>
 
-  <div class="tabs">
-    <button onclick="switchTab('branch')" class="active">Branch Sync</button>
-    <button onclick="switchTab('workflow')">Workflow Sync</button>
-    <button onclick="switchTab('feature')">Feature Flag Sync</button>
-    <button onclick="switchTab('mq')">MQ Comparison</button>
-  </div>
+    <div class="app-header-main">
+      <div class="app-header-identity">
+        <h1>SYNC.MGMT<span class="cursor"></span></h1>
+        <div class="app-header-rule" aria-hidden="true"></div>
+        <p class="app-header-lead">SQL Migration Toolkit · Multi-tenant Releases</p>
+        <p class="app-header-sub">
+          Diffs <em class="src">Source</em> against <em class="dst">Destination</em> state and emits ready-to-execute migration SQL.
+        </p>
+        <ul class="app-header-attrs" aria-label="Operational characteristics">
+          <li><span class="attr-glyph" aria-hidden="true">▸</span>Paste-driven</li>
+          <li><span class="attr-glyph" aria-hidden="true">▸</span>Zero-write</li>
+          <li><span class="attr-glyph" aria-hidden="true">▸</span>No DB connection</li>
+          <li><span class="attr-glyph" aria-hidden="true">▸</span>Multi-tenant</li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button onclick="switchTab('branch')" class="active" data-key="BRANCH">Branch Sync</button>
+    <button onclick="switchTab('workflow')" data-key="WORKFLOW">Workflow Sync</button>
+    <button onclick="switchTab('feature')" data-key="FEATURE_FLAG">Feature Flag Sync</button>
+    <button onclick="switchTab('mq')" data-key="MQ_COMPARE">MQ Comparison</button>
+  </nav>
 
   <!-- Notes Modal -->
   <div id="noteModal" class="modal hidden">
     <div class="modal-content">
       <div class="modal-header">
         <div class="modal-title">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
           </svg>
           Manual Action Required
@@ -48,7 +69,7 @@
     <div class="modal-content workflow-remap-modal-content">
       <div class="modal-header">
         <div class="modal-title">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h11M4 12h8m-8 5h16m-4-4l4 4-4 4"/>
           </svg>
           Remap Workflow Groups
@@ -62,7 +83,7 @@
       <div class="workflow-remap-actions">
         <button type="button" class="secondary" onclick="cancelWorkflowGroupRemap()">Cancel</button>
         <button type="button" class="primary" onclick="submitWorkflowGroupRemap()">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
           </svg>
           Continue
@@ -74,6 +95,121 @@
   <div id="toast" class="toast"></div>
   <div id="content"></div>
 </div>
+
+<aside class="statusbar" aria-live="polite">
+  <span class="statusbar-segment">
+    <span class="statusbar-led ready"></span>
+    <span>READY</span>
+  </span>
+  <span class="statusbar-sep">·</span>
+  <span class="statusbar-segment">MODE <strong id="statusbarMode">BRANCH</strong></span>
+  <span class="statusbar-sep hide-sm" id="statusbarEndpointsSep">·</span>
+  <span class="statusbar-segment hide-sm" id="statusbarSrc">SRC <span class="db-pill source">DB</span></span>
+  <span class="statusbar-segment hide-sm" id="statusbarDst">DST <span class="db-pill dest">DB</span></span>
+  <span class="statusbar-spacer"></span>
+  <span class="statusbar-segment hide-sm">UPTIME <strong id="statusbarUptime">00:00:00</strong></span>
+  <span class="statusbar-sep hide-sm">·</span>
+  <span class="statusbar-segment statusbar-clock" title="" id="statusbarClockSegment">
+    <span id="statusbarClock">--:--:--</span>
+    <span id="statusbarTz" class="statusbar-tz">—</span>
+  </span>
+</aside>
+
 <script src="/static/js/app.js"></script>
+<script>
+  // Status bar wiring — keeps statusbar reactive to tab changes without modifying app.js.
+  // Time is local to the user's browser: `new Date()` reads the OS clock, and the
+  // browser's resolved timezone is shown next to it (e.g. "IST", "GMT+5:30").
+  (function () {
+    const modeEl   = document.getElementById('statusbarMode');
+    const clockEl  = document.getElementById('statusbarClock');
+    const tzEl     = document.getElementById('statusbarTz');
+    const clockSeg = document.getElementById('statusbarClockSegment');
+    const uptimeEl = document.getElementById('statusbarUptime');
+
+    // Maps each tab's data-key to what SRC and DST actually represent
+    // in that flow. `null` means the side is not used and gets hidden.
+    const FLOW_ENDPOINTS = {
+      BRANCH:       { src: 'DB',     dst: 'DB' },
+      WORKFLOW:     { src: 'DB',     dst: null },     // pull is source-only
+      FEATURE_FLAG: { src: 'DB',     dst: 'DB' },
+      MQ_COMPARE:   { src: 'BROKER', dst: 'BROKER' }, // RabbitMQ, not DB
+    };
+
+    function updateMode() {
+      const active = document.querySelector('.tabs button.active');
+      const key = (active && active.dataset.key) || 'BRANCH';
+      if (modeEl) modeEl.textContent = key;
+
+      const ep = FLOW_ENDPOINTS[key] || FLOW_ENDPOINTS.BRANCH;
+      const srcEl = document.getElementById('statusbarSrc');
+      const dstEl = document.getElementById('statusbarDst');
+      const sepEl = document.getElementById('statusbarEndpointsSep');
+
+      if (srcEl) {
+        if (ep.src) {
+          srcEl.style.display = '';
+          srcEl.innerHTML = 'SRC <span class="db-pill source">' + ep.src + '</span>';
+        } else srcEl.style.display = 'none';
+      }
+      if (dstEl) {
+        if (ep.dst) {
+          dstEl.style.display = '';
+          dstEl.innerHTML = 'DST <span class="db-pill dest">' + ep.dst + '</span>';
+        } else dstEl.style.display = 'none';
+      }
+      // Hide the leading separator if both endpoints are off (edge case).
+      if (sepEl) sepEl.style.display = (ep.src || ep.dst) ? '' : 'none';
+    }
+
+    document.querySelectorAll('.tabs button').forEach(b => {
+      b.addEventListener('click', () => setTimeout(updateMode, 0));
+    });
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    // Resolve the user's timezone once on load. Two pieces:
+    //  · ianaTz = the IANA zone name ("Asia/Kolkata") — best for tooltips.
+    //  · shortTz = a compact label for the status bar. Try the locale's short
+    //    name first ("IST", "PDT"); fall back to a GMT offset ("GMT+5:30")
+    //    when the runtime doesn't produce a short name.
+    function resolveTz() {
+      let ianaTz = '';
+      try { ianaTz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (_) {}
+      let shortTz = '';
+      try {
+        const parts = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(new Date());
+        const tzPart = parts.find(p => p.type === 'timeZoneName');
+        if (tzPart) shortTz = tzPart.value;
+      } catch (_) {}
+      if (!shortTz) {
+        const offMin = -new Date().getTimezoneOffset();
+        const sign = offMin >= 0 ? '+' : '-';
+        const h = Math.abs(Math.trunc(offMin / 60));
+        const m = Math.abs(offMin % 60);
+        shortTz = 'GMT' + sign + h + (m ? ':' + pad(m) : '');
+      }
+      return { ianaTz, shortTz };
+    }
+
+    const tz = resolveTz();
+    if (tzEl) tzEl.textContent = tz.shortTz;
+    if (clockSeg) clockSeg.title = tz.ianaTz ? (tz.ianaTz + ' · ' + tz.shortTz) : tz.shortTz;
+
+    const start = Date.now();
+    function tick() {
+      const d = new Date();   // reads the user's local clock
+      if (clockEl) clockEl.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+      if (uptimeEl) {
+        const s = Math.floor((Date.now() - start) / 1000);
+        uptimeEl.textContent = pad(Math.floor(s / 3600)) + ':' + pad(Math.floor((s % 3600) / 60)) + ':' + pad(s % 60);
+      }
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    updateMode();
+  })();
+</script>
 </body>
 </html>

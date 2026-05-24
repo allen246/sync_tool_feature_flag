@@ -566,7 +566,7 @@ def generate_source_destination_initial_data_query(tenant_code, branch_codes, pr
                             LEFT JOIN transaction_type_master tym
                                 ON ptt.transaction_type_id = tym.transaction_type_id
                         
-                            JOIN branch_product_transaction_type bpt
+                            LEFT JOIN branch_product_transaction_type bpt
                                ON bpt.product_transaction_type_id = ptt.product_transaction_type_id
                                AND b.branch_id = bpt.branch_id
                         ) x;
