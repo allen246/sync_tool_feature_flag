@@ -44,6 +44,11 @@ import {
   saveTableJsonEditor,
   cancelTableJsonEditor,
   formatTableJsonEditor,
+  addTableRow,
+  duplicateTableRow,
+  clearTableSort,
+  revertTableDiff,
+  backToTableEdit,
 } from './components/table-modal.js';
 import { copyText, downloadSqlFromTextarea } from './lib/data.js';
 import { exposeGlobals }                   from './lib/dom.js';
@@ -76,6 +81,11 @@ exposeGlobals({
   saveTableJsonEditor,
   cancelTableJsonEditor,
   formatTableJsonEditor,
+  addTableRow,
+  duplicateTableRow,
+  clearTableSort,
+  revertTableDiff,
+  backToTableEdit,
   openSqlPreview,
   closeSqlPreview,
   copySqlPreviewAll,

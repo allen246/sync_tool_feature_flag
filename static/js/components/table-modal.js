@@ -4,11 +4,14 @@
  *  Features
  *  ────────
  *  · Substring text filter per column (existing)
- *  · NEW: Multi-select value filter per column (Excel AutoFilter)
- *  · 3-state column sort + multi-column defaultSort
- *  · NEW: Edit mode — toggleable; allows cell edits + row removal
- *  · NEW: Close-with-confirmation when there are pending edits;
- *         shows a diff summary and lets caller persist or discard
+ *  · Multi-select value filter per column (Excel AutoFilter)
+ *  · 3-state column sort with additive multi-column priority
+ *    (click = stack as next priority · Shift+click = collapse to this column only)
+ *  · Edit mode — toggleable; allows cell edits, row removal,
+ *    row insertion (Add Row), and row duplication
+ *  · Close-with-confirmation when there are pending edits;
+ *    shows a diff summary (added · edited · removed) and lets caller
+ *    persist or discard
  *  · CSV export of currently visible rows
  *
  *  Usage
@@ -48,11 +51,12 @@ const state = {
 
   filters:      {},            // { col: substring }
   multi:        {},            // { col: Set<string> of allowed raw-string values }
-  sort:         { col: null, dir: 0 },
+  sort:         [],            // [{ col, dir }, ...] — index 0 = highest priority
 
   editMode:     false,
   edits:        new Map(),     // origIndex → { colKey: newValue }
   removed:      new Set(),     // origIndex
+  added:        new Set(),     // origIndex of rows added in this session
   origIndexes:  new WeakMap(), // row → origIndex (set on open)
   onApply:      null,
 
@@ -96,10 +100,11 @@ export function openTableModal({ title, columns, rows, filename, filenamePrefix,
     defaultSort:  defSort,
     filters:      {},
     multi:        {},
-    sort:         { col: null, dir: 0 },
+    sort:         [],
     editMode:     false,
     edits:        new Map(),
     removed:      new Set(),
+    added:        new Set(),
     origIndexes:  new WeakMap(),
     onApply:      typeof onApply === 'function' ? onApply : null,
   });
@@ -120,7 +125,7 @@ export function openTableModal({ title, columns, rows, filename, filenamePrefix,
 
 /** Used by Esc, backdrop and the × button — triggers confirmation if dirty. */
 export function requestCloseTableModal() {
-  if (state.edits.size || state.removed.size) {
+  if (state.edits.size || state.removed.size || state.added.size) {
     showConfirm();
   } else {
     closeTableModal();
@@ -136,7 +141,7 @@ export function closeTableModal() {
 export function resetTableModalFilters() {
   state.filters = {};
   state.multi = {};
-  state.sort = { col: null, dir: 0 };
+  state.sort = [];
   document.querySelectorAll('#tableModalTable .wt-filter').forEach(i => i.value = '');
   render(true);
 }
@@ -171,6 +176,110 @@ export function downloadTableModalCSV() {
 
 /* ── Edit mode ──────────────────────────────────────────── */
 export function toggleTableEditMode() { setEditMode(!state.editMode); render(true); }
+
+/* ── Row insertion / duplication ──────────────────────────────
+ * Both paths push a row into state.originalData and assign it a
+ * synthetic origIndex (its position in the data array). The row is
+ * tracked in state.added so:
+ *   · the diff summary surfaces it as an "Added row"
+ *   · filters bypass it (always visible until applied)
+ *   · the visual treatment can highlight it (wt-row-new class)
+ * Apply: existing applyTableChanges() naturally includes new rows
+ * since they live in state.originalData; the merge with state.edits
+ * also picks up any cell tweaks the user made on the new row. */
+function makeEmptyRow() {
+  const r = {};
+  state.columns.forEach(c => { r[c.key] = ''; });
+  return r;
+}
+function deepCloneValue(v) {
+  if (v == null)               return v;
+  if (Array.isArray(v))        return v.map(deepCloneValue);
+  if (typeof v === 'object')   { try { return JSON.parse(JSON.stringify(v)); } catch (_) { return v; } }
+  return v;
+}
+function makeClonedRow(srcRow) {
+  const r = {};
+  state.columns.forEach(c => {
+    const v = effectiveValue(srcRow, c.key);
+    r[c.key] = deepCloneValue(v);
+  });
+  return r;
+}
+
+/** Insert a freshly-created row into both originalData (so apply
+ *  picks it up) and data (so it renders). After render, focus the
+ *  new row's first editable cell. */
+function insertNewRow(row, opts = {}) {
+  const { afterOrigIdx = null, label = 'New' } = opts;
+  const newIdx = state.originalData.length;
+  state.originalData.push(row);
+  state.added.add(newIdx);
+  state.origIndexes.set(row, newIdx);
+
+  // Visible-data placement: right after source row if duplicating,
+  // otherwise at the top so the user sees it immediately.
+  if (afterOrigIdx != null) {
+    const i = state.data.findIndex(r => state.origIndexes.get(r) === afterOrigIdx);
+    if (i >= 0) state.data.splice(i + 1, 0, row);
+    else state.data.unshift(row);
+  } else {
+    state.data.unshift(row);
+  }
+
+  render(true);
+  // Scroll & focus the new row's first editable cell
+  setTimeout(() => {
+    const tr = document.querySelector(`#tableModalTable tbody tr[data-orig="${newIdx}"]`);
+    if (tr) {
+      tr.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      const firstEditable = tr.querySelector('.wt-cell-editable');
+      if (firstEditable) {
+        firstEditable.focus();
+        // Place caret at the start
+        const sel = window.getSelection();
+        const range = document.createRange();
+        range.setStart(firstEditable, 0);
+        range.collapse(true);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+    }
+  }, 80);
+  showToast(label + ' Row Added', `Note: Row ${newIdx + 1} created in the working copy. Apply on close to persist.`, 'info');
+}
+
+/** Remove every trace of an added row. Used both by the delete-row
+ *  affordance in the table and by the per-entry Revert button in the
+ *  confirm overlay. Tombstones originalData[origIdx] (leaves a null
+ *  hole) so later origIdx lookups for OTHER rows are unaffected;
+ *  applyTableChanges already filters Boolean over originalData. */
+function purgeAddedRow(origIdx) {
+  if (!state.added.has(origIdx)) return false;
+  state.added.delete(origIdx);
+  state.edits.delete(origIdx);
+  state.removed.delete(origIdx);
+  const row = state.originalData[origIdx];
+  if (row) {
+    const di = state.data.findIndex(r => r === row);
+    if (di >= 0) state.data.splice(di, 1);
+    if (state.origIndexes.delete) state.origIndexes.delete(row);
+  }
+  state.originalData[origIdx] = null;
+  return true;
+}
+
+export function addTableRow() {
+  if (!state.editMode) setEditMode(true);
+  insertNewRow(makeEmptyRow(), { label: 'New' });
+}
+
+export function duplicateTableRow(origIdx) {
+  if (!state.editMode) setEditMode(true);
+  const src = state.originalData[origIdx];
+  if (!src) return showToast('Cannot Duplicate', 'Note: Source row not found.', 'error');
+  insertNewRow(makeClonedRow(src), { afterOrigIdx: origIdx, label: 'Duplicated' });
+}
 
 function setEditMode(on) {
   state.editMode = on;
@@ -349,25 +458,35 @@ function hideConfirm() { qs('#tableModalConfirm')?.classList.add('hidden'); }
 export function applyTableChanges() {
   const finalRows = state.originalData
     .map((row, i) => {
+      if (!row) return null;                // tombstoned (purged added row)
       if (state.removed.has(i)) return null;
       const patch = state.edits.get(i);
       return patch ? { ...row, ...patch } : row;
     })
     .filter(Boolean);
   if (typeof state.onApply === 'function') state.onApply(finalRows);
-  const editCount = state.edits.size;
-  const rmCount   = state.removed.size;
-  showToast('Changes Applied',
-    `${editCount} row${editCount === 1 ? '' : 's'} edited · ${rmCount} removed.`,
-    'success');
+  const editCount  = state.edits.size;
+  // Net deletions: original rows the user removed. Added-then-removed
+  // is already a no-op because purgeAddedRow clears both sets, but we
+  // belt-and-brace here in case some path leaves a row in both states.
+  const rmCount    = Array.from(state.removed).filter(i => !state.added.has(i)).length;
+  // Net added = inserted-but-not-removed
+  const addedNet   = Array.from(state.added).filter(i => !state.removed.has(i)).length;
+  const parts = [];
+  if (addedNet)  parts.push(`${addedNet} added`);
+  if (editCount) parts.push(`${editCount} row${editCount === 1 ? '' : 's'} edited`);
+  if (rmCount)   parts.push(`${rmCount} removed`);
+  showToast('Changes Applied', parts.join(' · ') || 'No changes', 'success');
   state.edits.clear();
   state.removed.clear();
+  state.added.clear();
   closeTableModal();
 }
 
 export function discardTableChanges() {
   state.edits.clear();
   state.removed.clear();
+  state.added.clear();
   closeTableModal();
 }
 
@@ -390,17 +509,26 @@ export function openColumnMultiFilter(col, anchorRect) {
 }
 
 function buildValueCounts(col) {
-  const others = { ...state.multi };
-  delete others[col];                       // ignore this column's own filter
-  const filtersCopy = { ...state.filters };
+  // Excel-style: when re-opening a column's filter, show ALL distinct
+  // values in that column across the working dataset, regardless of
+  // filters applied on OTHER columns. Otherwise a user who has filtered
+  // col-B can never see values of col-A that don't co-occur with their
+  // chosen col-B values — making "deselect to widen" impossible.
+  //
+  // We do still skip rows the user has removed in this session (those
+  // are never coming back) and tombstoned slots (purged added rows).
   const fc = new Map();
-  state.data.forEach((row, i) => {
-    if (state.removed.has(state.origIndexes.get(row))) return;
-    if (!passesTextFilters(row, filtersCopy)) return;
-    if (!passesMultiFilters(row, others)) return;
+  state.data.forEach((row) => {
+    const orig = state.origIndexes.get(row);
+    if (orig != null && state.removed.has(orig)) return;
+    if (orig != null && !state.originalData[orig]) return;
     const v = String(rawCell(effectiveValue(row, col)));
     fc.set(v, (fc.get(v) || 0) + 1);
   });
+  // Ensure any previously-selected value that no longer exists in the
+  // dataset still appears (count 0) so the user can uncheck it.
+  const sel = state.multi[col];
+  if (sel) sel.forEach(v => { if (!fc.has(v)) fc.set(v, 0); });
   return Array.from(fc.entries()).sort((a, b) => a[0].localeCompare(b[0], undefined, { numeric: true }));
 }
 
@@ -538,23 +666,32 @@ function computeRows() {
   const rows = state.data.filter(r => {
     const orig = state.origIndexes.get(r);
     if (state.removed.has(orig)) return false;
+    // Rows added in this session bypass filters so the user can always
+    // see what they just added and edit it before applying.
+    if (state.added.has(orig)) return true;
     return passesTextFilters(r, state.filters) && passesMultiFilters(r, state.multi);
   });
-  const s = state.sort;
-  if (s.col && s.dir) {
-    const col = state.columns.find(c => c.key === s.col);
-    return rows.slice().sort((a, b) => {
-      let av = rawCell(effectiveValue(a, s.col));
-      let bv = rawCell(effectiveValue(b, s.col));
-      if (col && col.numeric) {
+  const sortSpec = state.sort;
+  if (!sortSpec.length) return rows;
+
+  // Multi-column priority sort: spec[0] is the primary key, spec[1] the
+  // tie-breaker, etc. Comparing live values via effectiveValue() so an
+  // in-progress edit reorders correctly without being applied first.
+  const colMap = new Map(state.columns.map(c => [c.key, c]));
+  return rows.slice().sort((a, b) => {
+    for (const { col, dir } of sortSpec) {
+      const def = colMap.get(col);
+      let av = rawCell(effectiveValue(a, col));
+      let bv = rawCell(effectiveValue(b, col));
+      if (def && def.numeric) {
         const an = Number(av), bn = Number(bv);
         if (!Number.isNaN(an) && !Number.isNaN(bn)) { av = an; bv = bn; }
       }
       const cmp = av < bv ? -1 : av > bv ? 1 : 0;
-      return s.dir > 0 ? cmp : -cmp;
-    });
-  }
-  return rows;
+      if (cmp !== 0) return dir > 0 ? cmp : -cmp;
+    }
+    return 0;
+  });
 }
 
 function applyMultiSort(arr, spec, columns) {
@@ -571,6 +708,54 @@ function applyMultiSort(arr, spec, columns) {
     }
     return 0;
   });
+}
+
+/* ── Sort priority strip ──────────────────────────────────────
+ * A horizontal strip above the table that surfaces all active sort
+ * levels in priority order as chips. Each chip shows "{rank} · {col} ▲/▼"
+ * and is clickable: click the chip to flip direction, click the × to
+ * remove just that sort level. The strip hides itself entirely when
+ * no sort is active — it earns its real-estate only when needed. */
+function updateSortStrip() {
+  const strip = qs('#tableModalSortStrip');
+  if (!strip) return;
+  const chipsHost = strip.querySelector('.wt-sort-strip-chips');
+  if (!state.sort.length) {
+    strip.classList.add('hidden');
+    if (chipsHost) chipsHost.innerHTML = '';
+    return;
+  }
+  strip.classList.remove('hidden');
+  chipsHost.innerHTML = state.sort.map((s, i) => {
+    const col = state.columns.find(c => c.key === s.col);
+    const label = col ? col.label : s.col;
+    const arrow = s.dir > 0 ? '▲' : '▼';
+    return `<span class="wt-sort-chip" data-col="${escapeHtml(s.col)}" title="Click to flip direction · × to remove sort level">
+      <span class="wt-sort-chip-rank">${i + 1}</span>
+      <span class="wt-sort-chip-label">${escapeHtml(label)}</span>
+      <span class="wt-sort-chip-arrow ${s.dir > 0 ? 'is-asc' : 'is-desc'}">${arrow}</span>
+      <button type="button" class="wt-sort-chip-x" data-action="remove" aria-label="Remove sort level">×</button>
+    </span>`;
+  }).join('');
+  chipsHost.querySelectorAll('.wt-sort-chip').forEach(chip => {
+    chip.addEventListener('click', (e) => {
+      const colKey = chip.dataset.col;
+      if (e.target.closest('[data-action="remove"]')) {
+        const idx = state.sort.findIndex(s => s.col === colKey);
+        if (idx >= 0) state.sort.splice(idx, 1);
+      } else {
+        const item = state.sort.find(s => s.col === colKey);
+        if (item) item.dir = item.dir > 0 ? -1 : 1;
+      }
+      render(true);
+    });
+  });
+}
+
+export function clearTableSort() {
+  if (!state.sort.length) return;
+  state.sort = [];
+  render(true);
 }
 
 /* ── Rendering ───────────────────────────────────────────── */
@@ -593,7 +778,7 @@ function recountVisibleRows() {
   const clearBtn = qs('#tableModalClear');
   const anyFilter = Object.values(state.filters).some(v => (v || '').trim())
                  || Object.keys(state.multi).length > 0
-                 || state.sort.col;
+                 || state.sort.length > 0;
   if (clearBtn) clearBtn.disabled = !anyFilter;
 }
 
@@ -612,15 +797,23 @@ function render(fullRebuild) {
       <tr class="wt-header-row">
         ${editMode ? '<th class="wt-actions-col" aria-label="Row actions"></th>' : ''}
         ${columns.map(c => {
-          const sorted = sort.col === c.key;
-          const arrow = sorted ? (sort.dir > 0 ? '▲' : '▼') : '↕';
+          const idx = sort.findIndex(s => s.col === c.key);
+          const sortItem = idx >= 0 ? sort[idx] : null;
+          const arrow = sortItem ? (sortItem.dir > 0 ? '▲' : '▼') : '↕';
+          const rankBadge = (sortItem && sort.length > 1)
+            ? `<span class="wt-sort-rank" aria-label="sort priority ${idx + 1}">${idx + 1}</span>`
+            : '';
           const styleW = c.width ? `style="min-width:${c.width}px;max-width:${c.width * 2}px"` : '';
           const hasMulti = !!multi[c.key];
+          const sortTip = sortItem
+            ? `Sort priority ${idx + 1} · ${sortItem.dir > 0 ? 'asc' : 'desc'} — click to flip direction or remove · Shift+click to sort by this column only`
+            : 'Click to add as next sort priority · Shift+click to sort by this column only';
           return `<th data-col="${c.key}" ${styleW} class="${c.numeric ? 'is-numeric' : ''}">
             <div class="wt-th-inner">
-              <button type="button" class="wt-sort-btn" data-col="${c.key}">
+              <button type="button" class="wt-sort-btn ${sortItem ? 'is-sorted' : ''}" data-col="${c.key}" title="${escapeHtml(sortTip)}">
                 <span class="wt-th-label">${c.label}</span>
-                <span class="wt-th-arrow ${sorted ? 'is-active' : ''}">${arrow}</span>
+                <span class="wt-th-arrow ${sortItem ? 'is-active' : ''}">${arrow}</span>
+                ${rankBadge}
               </button>
               <button type="button" class="wt-filter-btn ${hasMulti ? 'is-active' : ''}" data-col="${c.key}" title="Filter values">
                 <span class="wt-filter-glyph">▽</span>
@@ -638,7 +831,7 @@ function render(fullRebuild) {
       </tr>
     `;
     thead.querySelectorAll('.wt-sort-btn').forEach(btn => {
-      btn.addEventListener('click', () => cycleSort(btn.dataset.col));
+      btn.addEventListener('click', (e) => cycleSort(btn.dataset.col, e.shiftKey));
     });
     thead.querySelectorAll('.wt-filter').forEach(inp => {
       inp.addEventListener('input', e => {
@@ -657,10 +850,27 @@ function render(fullRebuild) {
     table.querySelectorAll('.wt-header-row th').forEach(th => {
       const key = th.dataset.col;
       if (!key) return;
+      const idx = sort.findIndex(s => s.col === key);
+      const sortItem = idx >= 0 ? sort[idx] : null;
       const arrow = th.querySelector('.wt-th-arrow');
+      const sortBtn = th.querySelector('.wt-sort-btn');
       if (arrow) {
-        if (sort.col === key) { arrow.textContent = sort.dir > 0 ? '▲' : '▼'; arrow.classList.add('is-active'); }
-        else                  { arrow.textContent = '↕'; arrow.classList.remove('is-active'); }
+        if (sortItem) { arrow.textContent = sortItem.dir > 0 ? '▲' : '▼'; arrow.classList.add('is-active'); }
+        else          { arrow.textContent = '↕'; arrow.classList.remove('is-active'); }
+      }
+      if (sortBtn) sortBtn.classList.toggle('is-sorted', !!sortItem);
+      // Sync (or remove) the priority rank badge in-place
+      let rank = th.querySelector('.wt-sort-rank');
+      if (sortItem && sort.length > 1) {
+        if (!rank) {
+          rank = document.createElement('span');
+          rank.className = 'wt-sort-rank';
+          sortBtn && sortBtn.appendChild(rank);
+        }
+        rank.textContent = String(idx + 1);
+        rank.setAttribute('aria-label', `sort priority ${idx + 1}`);
+      } else if (rank) {
+        rank.remove();
       }
       const fbtn = th.querySelector('.wt-filter-btn');
       if (fbtn) fbtn.classList.toggle('is-active', !!multi[key]);
@@ -677,10 +887,25 @@ function render(fullRebuild) {
     tbody.innerHTML = rows.map((row, i) => {
       const orig = state.origIndexes.get(row);
       const dirty = state.edits.has(orig);
+      const isNew = state.added.has(orig);
+      const trClasses = [
+        i % 2 ? 'wt-row-alt' : '',
+        dirty ? 'wt-row-dirty' : '',
+        isNew ? 'wt-row-new' : '',
+      ].filter(Boolean).join(' ');
       return `
-        <tr class="${i % 2 ? 'wt-row-alt' : ''} ${dirty ? 'wt-row-dirty' : ''}" data-orig="${orig}">
+        <tr class="${trClasses}" data-orig="${orig}">
           ${editMode ? `<td class="wt-actions-col">
-            <button type="button" class="wt-row-delete" data-orig="${orig}" title="Remove row" aria-label="Remove row">×</button>
+            <div class="wt-row-actions">
+              <button type="button" class="wt-row-dup" data-orig="${orig}" title="Duplicate row" aria-label="Duplicate row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="8" y="8" width="12" height="12" rx="1.4"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16V5a1 1 0 011-1h11"/>
+                </svg>
+              </button>
+              <button type="button" class="wt-row-delete" data-orig="${orig}" title="Remove row" aria-label="Remove row">×</button>
+              ${isNew ? '<span class="wt-row-new-badge" title="Added in this session">NEW</span>' : ''}
+            </div>
           </td>` : ''}
           ${columns.map(c => {
             const v = effectiveValue(row, c.key);
@@ -703,9 +928,11 @@ function render(fullRebuild) {
   qs('#tableModalCount').textContent =
     `${rows.length.toLocaleString()} / ${state.originalData.length.toLocaleString()} rows`;
 
+  updateSortStrip();
+
   const anyFilter = Object.values(state.filters).some(v => (v || '').trim())
                  || Object.keys(state.multi).length > 0
-                 || state.sort.col;
+                 || state.sort.length > 0;
   const clearBtn = qs('#tableModalClear');
   if (clearBtn) clearBtn.disabled = !anyFilter;
 
@@ -755,12 +982,28 @@ function wireEditableCells(tbody) {
       openJsonEditor(orig, col);
     });
   });
+  tbody.querySelectorAll('.wt-row-dup').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const orig = +btn.dataset.orig;
+      if (Number.isNaN(orig)) return;
+      duplicateTableRow(orig);
+    });
+  });
   tbody.querySelectorAll('.wt-row-delete').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const orig = +btn.dataset.orig;
       if (Number.isNaN(orig)) return;
-      state.removed.add(orig);
+
+      // If this row was added in this session, deleting it should leave
+      // NO trace — it never existed in the saved data, so it must not
+      // surface as a "removed row" in the diff or apply path. Purge it
+      // from every tracking set. We tombstone the originalData slot
+      // (rather than splice) so other rows' origIdx values stay stable.
+      const wasAdded = state.added.has(orig);
+      if (wasAdded) purgeAddedRow(orig);
+      else          state.removed.add(orig);
 
       // Surgical remove: drop just this <tr> from the DOM and update
       // the row-count badge. Avoids a full innerHTML rebuild that would
@@ -779,24 +1022,53 @@ function wireEditableCells(tbody) {
       } else {
         recountVisibleRows();
       }
-      showToast('Row Removed', 'Note: Removed from the working copy. Apply on close to persist.', 'info');
+      const msg = wasAdded
+        ? 'Note: This row was added in this session and has been discarded — no delete will be recorded.'
+        : 'Note: Removed from the working copy. Apply on close to persist.';
+      showToast(wasAdded ? 'Added Row Discarded' : 'Row Removed', msg, 'info');
     });
   });
 }
 
-function cycleSort(col) {
-  const s = state.sort;
-  if (s.col === col) {
-    s.dir = s.dir === 0 ? 1 : s.dir === 1 ? -1 : 0;
-    if (s.dir === 0) s.col = null;
-  } else { s.col = col; s.dir = 1; }
-  render(false);
+/** Cycle the sort state for a column.
+ *  Plain click: stack as the next priority. asc → desc → remove.
+ *    Multi-sort is the default — clicking a second column adds it
+ *    rather than replacing the first.
+ *  Shift+click: collapse to a single-column sort on this column.
+ *    If already the sole sort, cycle asc → desc → off. */
+function cycleSort(col, shift) {
+  const list = state.sort;
+  const idx = list.findIndex(s => s.col === col);
+  if (shift) {
+    if (idx >= 0 && list.length === 1) {
+      // Lone sort on this column: asc → desc → off
+      if (list[0].dir > 0) list[0].dir = -1;
+      else state.sort = [];
+    } else {
+      // Replace any existing sort(s) with a fresh single-column sort.
+      // If this column was already in the multi-sort, preserve its
+      // direction; otherwise start ascending.
+      const prevDir = idx >= 0 ? list[idx].dir : 1;
+      state.sort = [{ col, dir: prevDir }];
+    }
+  } else {
+    if (idx < 0) list.push({ col, dir: 1 });
+    else if (list[idx].dir > 0) list[idx].dir = -1;
+    else list.splice(idx, 1);
+  }
+  render(true);
 }
 
 /* ── Diff summary ────────────────────────────────────────── */
 function collectDiffs() {
+  // Edits on rows that aren't pure additions — show them in the edits
+  // section. Edits on added rows are folded into the "added" preview
+  // since the displayed values already reflect the patch.
   const edits = [];
   state.edits.forEach((patch, origIdx) => {
+    if (state.added.has(origIdx)) return;
+    // Tombstoned (purged added row) — skip defensively.
+    if (!state.originalData[origIdx]) return;
     const row = state.originalData[origIdx];
     const changed = Object.keys(patch).map(col => ({
       col,
@@ -805,8 +1077,22 @@ function collectDiffs() {
     }));
     edits.push({ origIdx, row, changed });
   });
-  const removed = Array.from(state.removed).map(i => ({ origIdx: i, row: state.originalData[i] }));
-  return { edits, removed };
+  // Net removed: rows the user explicitly deleted that AREN'T also in
+  // `added`. An added-then-deleted row should never appear here.
+  const removed = Array.from(state.removed)
+    .filter(i => !state.added.has(i) && state.originalData[i])
+    .map(i => ({ origIdx: i, row: state.originalData[i] }));
+  // Net added rows: present in `added` but not slated for removal and
+  // not tombstoned.
+  const added = Array.from(state.added)
+    .filter(i => !state.removed.has(i) && state.originalData[i])
+    .map(i => {
+      const row = state.originalData[i];
+      const patch = state.edits.get(i) || {};
+      const merged = { ...row, ...patch };
+      return { origIdx: i, row: merged };
+    });
+  return { edits, removed, added };
 }
 
 /** Pretty-print a cell value for the diff view. Objects/arrays use
@@ -818,15 +1104,50 @@ function displayForDiff(v) {
   return String(v);
 }
 
-function renderDiffSummary({ edits, removed }) {
+/** Per-entry revert button. Inline onclick keeps things consistent
+ *  with the existing overlay buttons (Apply/Discard) and avoids a
+ *  separate delegated handler that would have to live inside the
+ *  diff body's innerHTML lifecycle. The functions referenced are
+ *  exposed as window globals in main.js. */
+function revertBtn(kind, origIdx, label = 'Revert') {
+  return `<button type="button" class="wt-diff-revert"
+    title="Revert this ${kind} (returns the row to its pre-edit state)"
+    onclick="revertTableDiff('${kind}', ${origIdx})">
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 14l-4-4m0 0l4-4m-4 4h11a4 4 0 010 8h-1"/>
+    </svg><span>${label}</span></button>`;
+}
+
+function renderDiffSummary({ edits, removed, added }) {
   const totalEdits = edits.reduce((n, e) => n + e.changed.length, 0);
+  const totalChanges = added.length + edits.length + removed.length;
+  if (totalChanges === 0) {
+    return `<p class="wt-confirm-empty">No pending changes. Close this dialog to return to the table.</p>`;
+  }
   let html = `
     <div class="wt-confirm-stats">
+      <div class="wt-confirm-stat ok"><strong>${added.length}</strong><span>rows added</span></div>
       <div class="wt-confirm-stat"><strong>${edits.length}</strong><span>rows edited</span></div>
       <div class="wt-confirm-stat"><strong>${totalEdits}</strong><span>cell edits</span></div>
       <div class="wt-confirm-stat warn"><strong>${removed.length}</strong><span>rows removed</span></div>
     </div>
-    <p class="wt-confirm-note">Applying will write the modified rows back to the Source Workflow Configuration and proceed to migration SQL generation.</p>`;
+    <p class="wt-confirm-note">Applying will write the modified rows back to the Source Workflow Configuration and proceed to migration SQL generation. Use <strong>Revert</strong> on any individual entry to drop just that change, or <strong>Back to Edit</strong> to keep editing.</p>`;
+
+  if (added.length) {
+    html += `<details class="wt-confirm-section" open>
+      <summary>Added rows <span>${added.length}</span></summary>
+      <div class="wt-confirm-list">
+        ${added.slice(0, 30).map(r => `
+          <div class="wt-diff-added">
+            <span class="wt-diff-idx">+ row ${r.origIdx + 1}</span>
+            <span class="wt-diff-added-body">${escapeHtml(summariseRow(r.row)) || '<em>(empty)</em>'}</span>
+            ${revertBtn('added', r.origIdx, 'Discard')}
+          </div>
+        `).join('')}
+        ${added.length > 30 ? `<div class="wt-diff-more">… and ${added.length - 30} more</div>` : ''}
+      </div>
+    </details>`;
+  }
 
   if (edits.length) {
     html += `<details class="wt-confirm-section" open>
@@ -837,6 +1158,7 @@ function renderDiffSummary({ edits, removed }) {
             <div class="wt-diff-row-head">
               <span class="wt-diff-idx">row ${e.origIdx + 1}</span>
               <span class="wt-diff-row-count">${e.changed.length} change${e.changed.length === 1 ? '' : 's'}</span>
+              ${revertBtn('edit', e.origIdx, 'Revert')}
             </div>
             <div class="wt-diff-cells">
               ${e.changed.map(ch => {
@@ -871,6 +1193,7 @@ function renderDiffSummary({ edits, removed }) {
           <div class="wt-diff-removed">
             <span class="wt-diff-idx">row ${r.origIdx + 1}</span>
             <span class="wt-diff-removed-body">${escapeHtml(summariseRow(r.row))}</span>
+            ${revertBtn('removed', r.origIdx, 'Restore')}
           </div>
         `).join('')}
         ${removed.length > 30 ? `<div class="wt-diff-more">… and ${removed.length - 30} more</div>` : ''}
@@ -878,6 +1201,48 @@ function renderDiffSummary({ edits, removed }) {
     </details>`;
   }
   return html;
+}
+
+/** Single revert dispatcher — keeps the inline onclick surface small
+ *  and lets the overlay re-render once after any kind of revert. */
+export function revertTableDiff(kind, origIdx) {
+  origIdx = +origIdx;
+  if (Number.isNaN(origIdx)) return;
+  if (kind === 'added') {
+    purgeAddedRow(origIdx);
+  } else if (kind === 'edit') {
+    state.edits.delete(origIdx);
+  } else if (kind === 'removed') {
+    state.removed.delete(origIdx);
+  } else {
+    return;
+  }
+  // Re-render the table underneath so the row reappears / disappears /
+  // de-highlights as appropriate. The overlay sits above so the user
+  // won't see flicker; the change is visible the moment they close.
+  render(true);
+  // If reverting cleared every pending change, the overlay has nothing
+  // to confirm. Drop back to the (now clean) table.
+  if (!state.edits.size && !state.removed.size && hasNoRealAdds()) {
+    hideConfirm();
+    return;
+  }
+  // Otherwise refresh the overlay's diff content in place.
+  const body = qs('#tableModalConfirmBody');
+  if (body) body.innerHTML = renderDiffSummary(collectDiffs());
+}
+
+/** state.added may contain origIdx values whose originalData slot has
+ *  been tombstoned (purged). Count only the live ones. */
+function hasNoRealAdds() {
+  for (const i of state.added) if (state.originalData[i]) return false;
+  return true;
+}
+
+/** "Back to Edit" footer action. Just hides the overlay; pending
+ *  state stays intact so the user can keep editing. */
+export function backToTableEdit() {
+  hideConfirm();
 }
 
 function summariseRow(row) {

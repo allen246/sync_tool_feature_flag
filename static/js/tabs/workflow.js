@@ -44,8 +44,9 @@ const TABLE_COLUMNS = [
   { key: 'workflow_id',   label: 'Workflow ID',width: 100, numeric: true },
 ];
 
-/* Initial natural order: branch → product_name → module. Override
- * by clicking any column header (single-column sort takes over). */
+/* Initial natural order: branch → product_name → module. Click a
+ * header to stack it as the next sort priority, Shift+click to
+ * collapse to a single-column sort on that column. */
 const TABLE_DEFAULT_SORT = [
   { col: 'branch',       dir: 1 },
   { col: 'product_name', dir: 1 },
