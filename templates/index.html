@@ -3,13 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SYNC.MGMT // SQL Migration Console</title>
+<meta name="description" content="SYNC.MGMT — paste-driven, zero-write SQL migration toolkit for multi-tenant database releases.">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0a0b08">
+<title>SYNC.MGMT · SQL Migration Toolkit</title>
+<link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+<link rel="alternate icon" type="image/svg+xml" href="/static/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-<div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+<!-- Global loader overlay: shown while any fetch is in-flight; blocks pointer events.
+     Circular amber ring + animated PROCESSING label. CSS-only motion. -->
+<div id="globalLoader" class="global-loader" aria-hidden="true" role="status" aria-live="polite">
+  <div class="global-loader-frame">
+    <span class="global-loader-corner gl-corner-tl" aria-hidden="true"></span>
+    <span class="global-loader-corner gl-corner-tr" aria-hidden="true"></span>
+    <span class="global-loader-corner gl-corner-bl" aria-hidden="true"></span>
+    <span class="global-loader-corner gl-corner-br" aria-hidden="true"></span>
+    <svg class="global-loader-ring" viewBox="0 0 80 80" aria-hidden="true">
+      <circle class="gl-ring-track" cx="40" cy="40" r="32" fill="none" stroke="currentColor" stroke-width="2" opacity="0.14"/>
+      <circle class="gl-ring-spin"  cx="40" cy="40" r="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="68 200"/>
+      <circle class="gl-ring-pulse" cx="40" cy="40" r="4"  fill="currentColor"/>
+    </svg>
+    <div class="global-loader-label">
+      <span>Processing</span><span class="gl-dots"><i></i><i></i><i></i></span>
+    </div>
+    <div class="global-loader-sub" id="globalLoaderSub">running query · please wait</div>
+  </div>
+</div>
 <div class="container">
 
   <header class="app-header">
@@ -92,6 +115,143 @@
     </div>
   </div>
 
+  <!-- SQL Preview Modal — renders the textarea contents as a statement-segmented,
+       syntax-highlighted, issue-flagged view. Opened by the eye icon on any
+       Final SQL output. -->
+  <div id="sqlPreviewModal" class="modal hidden" aria-labelledby="sqlPreviewTitle" role="dialog" aria-modal="true">
+    <div class="modal-content sql-preview-modal-content">
+      <div class="modal-header sql-preview-modal-head">
+        <div class="modal-title" id="sqlPreviewTitle">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+          SQL Preview
+          <span class="sql-preview-meta" id="sqlPreviewMeta"></span>
+        </div>
+        <div class="sql-preview-modal-actions">
+          <button type="button" class="secondary" onclick="copySqlPreviewAll()" title="Copy entire script">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><rect x="9" y="9" width="13" height="13" rx="1.5"/><rect x="2" y="2" width="13" height="13" rx="1.5"/></svg>
+            Copy All
+          </button>
+          <button type="button" class="secondary" onclick="downloadSqlPreviewAll()" title="Download as .sql">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+            Download
+          </button>
+          <span class="close" onclick="closeSqlPreview()" title="Close (Esc)">&times;</span>
+        </div>
+      </div>
+      <div class="sql-preview-modal-body" id="sqlPreviewBody"></div>
+    </div>
+  </div>
+
+  <!-- Generic Table-View Modal (consumed by any tab) -->
+  <div id="tableModal" class="modal hidden" aria-labelledby="tableModalTitle" role="dialog" aria-modal="true">
+    <div class="modal-content workflow-table-modal-content">
+      <div class="modal-header workflow-table-header">
+        <div class="modal-title" id="tableModalTitle">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 6h18M3 12h18M3 18h18M9 3v18M15 3v18"/>
+          </svg>
+          Table View
+          <span class="workflow-table-count" id="tableModalCount">0 / 0 rows</span>
+        </div>
+        <div class="workflow-table-actions">
+          <button type="button" id="tableModalEdit" class="secondary" onclick="toggleTableEditMode()" title="Unlock cells for editing">
+            <svg id="tableModalEditIconLock" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11c1.105 0 2-.895 2-2V7a2 2 0 10-4 0v2c0 1.105.895 2 2 2zm-6 0h12a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6a2 2 0 012-2z"/></svg>
+            <svg id="tableModalEditIconUnlock" class="hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M8 11V7a4 4 0 018 0M6 11h12a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6a2 2 0 012-2z"/></svg>
+            <span id="tableModalEditLabel">Edit</span>
+          </button>
+          <button type="button" id="tableModalClear" class="secondary" onclick="resetTableModalFilters()" title="Clear filters and sort">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5m0 0l6-6m-6 6l6 6"/></svg>
+            Clear
+          </button>
+          <button type="button" class="secondary" onclick="downloadTableModalCSV()" title="Download filtered rows as CSV">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+            Export CSV
+          </button>
+          <span class="close" onclick="requestCloseTableModal()" title="Close (Esc)">&times;</span>
+        </div>
+      </div>
+      <div class="workflow-table-wrap">
+        <table class="workflow-table" id="tableModalTable">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <!-- JSON cell editor overlay: positioned absolute over .modal-content
+           (NOT inside .workflow-table-wrap) so it stays put while the
+           underlying table scrolls. -->
+      <div id="tableModalJsonEditor" class="wt-json-editor hidden" role="dialog" aria-modal="true" aria-labelledby="tableModalJsonEditorTitle">
+        <div class="wt-json-editor-card">
+          <div class="wt-json-editor-head">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l4-4 4 4m-4-4v14m-7-4v6h14v-6"/></svg>
+            <h3 id="tableModalJsonEditorTitle">Edit JSON <span class="wt-je-col" id="tableModalJsonEditorCol">column</span></h3>
+            <span class="wt-je-rowidx" id="tableModalJsonEditorRowIdx">row 1</span>
+          </div>
+          <div class="wt-json-editor-toolbar">
+            <button type="button" class="wt-je-format" onclick="formatTableJsonEditor()" title="Re-indent (2 spaces)">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 6h13M3 12h7M3 18h11M19 9l-3 3 3 3"/></svg>
+              Re-format
+            </button>
+            <span class="wt-json-editor-status" id="tableModalJsonEditorStatus">
+              <span class="wt-je-status-glyph">·</span><span class="wt-je-status-text">—</span>
+            </span>
+            <span class="wt-je-hint"><kbd>Ctrl</kbd>+<kbd>Enter</kbd> save · <kbd>Esc</kbd> cancel · <kbd>Tab</kbd> indent</span>
+          </div>
+          <div class="wt-json-editor-body">
+            <textarea id="tableModalJsonEditorTextarea" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"></textarea>
+          </div>
+          <div class="wt-json-editor-actions">
+            <button type="button" class="secondary" onclick="cancelTableJsonEditor()">Cancel</button>
+            <button type="button" class="primary" id="tableModalJsonEditorSave" onclick="saveTableJsonEditor()" disabled>
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirm-changes overlay: same — sibling of .workflow-table-wrap
+           so scroll doesn't pull it off-screen. -->
+      <div id="tableModalConfirm" class="wt-confirm hidden" role="dialog" aria-modal="true">
+        <div class="wt-confirm-card">
+          <div class="wt-confirm-head">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+            <h3>Review Pending Changes</h3>
+          </div>
+          <div class="wt-confirm-body" id="tableModalConfirmBody"></div>
+          <div class="wt-confirm-actions">
+            <button type="button" class="secondary" onclick="discardTableChanges()">Discard Changes</button>
+            <button type="button" class="primary" onclick="applyTableChanges()">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Apply &amp; Process
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Multi-select filter popover (singleton; positioned per column) -->
+      <div id="tableMultiFilter" class="wt-multifilter hidden" role="dialog" aria-modal="false" aria-label="Column value filter">
+        <div class="wt-multifilter-head">
+          <span class="wt-multifilter-title" id="tableMultiFilterTitle">Filter</span>
+          <button type="button" class="wt-multifilter-clear" onclick="clearColumnMultiFilter()">Clear filter</button>
+        </div>
+        <div class="wt-multifilter-search">
+          <input type="text" id="tableMultiFilterSearch" placeholder="Search values…">
+        </div>
+        <div class="wt-multifilter-bulk">
+          <label><input type="checkbox" id="tableMultiFilterAll"> <span>Select all</span></label>
+          <span class="wt-multifilter-count" id="tableMultiFilterCount">0 values</span>
+        </div>
+        <div class="wt-multifilter-list" id="tableMultiFilterList"></div>
+        <div class="wt-multifilter-footer">
+          <button type="button" class="secondary" onclick="cancelColumnMultiFilter()">Cancel</button>
+          <button type="button" class="primary" onclick="applyColumnMultiFilter()">Apply</button>
+        </div>
+      </div>
+      <div class="workflow-table-footer">
+        <span id="tableModalHint">▸ Click column headers to sort · ▽ to filter values · <kbd>Esc</kbd> to close</span>
+      </div>
+    </div>
+  </div>
+
   <div id="toast" class="toast"></div>
   <div id="content"></div>
 </div>
@@ -115,9 +275,9 @@
   </span>
 </aside>
 
-<script src="/static/js/app.js"></script>
+<script type="module" src="/static/js/main.js"></script>
 <script>
-  // Status bar wiring — keeps statusbar reactive to tab changes without modifying app.js.
+  // Status bar wiring — keeps statusbar reactive to tab changes without modifying main.js.
   // Time is local to the user's browser: `new Date()` reads the OS clock, and the
   // browser's resolved timezone is shown next to it (e.g. "IST", "GMT+5:30").
   (function () {

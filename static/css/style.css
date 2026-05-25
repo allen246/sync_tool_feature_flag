@@ -225,13 +225,17 @@ body::after {
   text-shadow: 0 0 18px rgba(255, 176, 0, 0.05);
 }
 
+/* Blink is driven by --cursor-on (toggled on :root every 525ms by main.js).
+ * All cursor-style indicators read the same variable, so they stay in
+ * lockstep even when active tab changes mid-cycle. */
 .app-header h1 .cursor {
   display: inline-block;
   width: 0.55ch;
   height: 0.78em;
   background: var(--amber);
   margin-left: 6px;
-  animation: blink 1.05s steps(2, start) infinite;
+  opacity: var(--cursor-on, 1);
+  transition: opacity 0.06s linear;
   vertical-align: -0.04em;
   box-shadow: 0 0 14px var(--amber-glow);
 }
@@ -425,7 +429,8 @@ body::after {
   height: 0.85em;
   background: var(--amber);
   margin-left: 4px;
-  animation: blink 1.05s steps(2, start) infinite;
+  opacity: var(--cursor-on, 1);
+  transition: opacity 0.06s linear;
   vertical-align: -0.02em;
 }
 
@@ -998,38 +1003,137 @@ body::after {
   color: var(--text-4);
 }
 
-/* ── Global progress bar ───────────────────────────────────── */
-.progress-bar {
+/* ── Global blocking loader ────────────────────────────────
+ * Full-viewport amber-on-noir overlay. Pointer-events on when
+ * loading; off when idle. Circular SVG ring + bracketed frame
+ * + animated "Processing…" label. Status sub-text is set per
+ * caller via setLoading(btn, on, msg).
+ */
+.global-loader {
   position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: transparent;
-  z-index: 999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.18s var(--ease-out);
-  overflow: hidden;
-}
-.progress-bar[data-loading="true"] { opacity: 1; }
-.progress-bar::before {
-  content: "";
-  position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--amber-lo) 30%,
-    var(--amber) 50%,
-    var(--amber-lo) 70%,
-    transparent 100%
-  );
-  transform: translateX(-100%);
-  animation: progress-slide 1.6s cubic-bezier(.6,.04,.4,.96) infinite;
-  filter: drop-shadow(0 0 8px var(--amber-glow));
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 9, 10, 0.82);
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.18s var(--ease-out), visibility 0s linear 0.18s;
 }
-@keyframes progress-slide {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(200%); }
+.global-loader[data-loading="true"] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+  transition: opacity 0.18s var(--ease-out), visibility 0s;
+}
+
+/* Bracketed frame around the loader content — same vocabulary as
+ * the modal corner accents elsewhere in the app. */
+.global-loader-frame {
+  position: relative;
+  padding: 36px 56px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.global-loader-corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--amber);
+  filter: drop-shadow(0 0 6px var(--amber-glow));
+}
+.gl-corner-tl { top: 0;    left: 0;    border-right: none; border-bottom: none; }
+.gl-corner-tr { top: 0;    right: 0;   border-left: none;  border-bottom: none; }
+.gl-corner-bl { bottom: 0; left: 0;    border-right: none; border-top: none; }
+.gl-corner-br { bottom: 0; right: 0;   border-left: none;  border-top: none; }
+
+/* SVG circular spinner — outer track + rotating amber arc + pulsing centre dot */
+.global-loader-ring {
+  width: 88px;
+  height: 88px;
+  color: var(--amber);
+  filter: drop-shadow(0 0 10px var(--amber-glow));
+  animation: gl-spin 1.6s linear infinite;
+}
+.gl-ring-spin {
+  transform-origin: 40px 40px;
+  animation: gl-arc 1.4s ease-in-out infinite;
+}
+.gl-ring-pulse {
+  transform-origin: 40px 40px;
+  animation: gl-pulse 1.4s ease-in-out infinite;
+}
+@keyframes gl-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes gl-arc {
+  0%   { stroke-dasharray: 28 200; stroke-dashoffset: 0; }
+  50%  { stroke-dasharray: 140 200; stroke-dashoffset: -30; }
+  100% { stroke-dasharray: 28 200; stroke-dashoffset: -200; }
+}
+@keyframes gl-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.6); }
+}
+
+.global-loader-label {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.gl-dots {
+  display: inline-flex;
+  gap: 4px;
+  padding-left: 4px;
+}
+.gl-dots i {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background: var(--amber);
+  border-radius: 50%;
+  animation: gl-dot 1.4s ease-in-out infinite both;
+  box-shadow: 0 0 6px var(--amber-glow);
+}
+.gl-dots i:nth-child(2) { animation-delay: 0.18s; }
+.gl-dots i:nth-child(3) { animation-delay: 0.36s; }
+@keyframes gl-dot {
+  0%, 80%, 100% { opacity: 0.18; transform: scale(0.7); }
+  40%           { opacity: 1;    transform: scale(1); }
+}
+
+.global-loader-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  color: var(--text-2);
+  text-align: center;
+  max-width: 260px;
+}
+.global-loader-sub::before {
+  content: "// ";
+  color: var(--amber-lo);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .global-loader-ring,
+  .gl-ring-spin,
+  .gl-ring-pulse,
+  .gl-dots i { animation: none !important; }
+  .gl-ring-spin { stroke-dasharray: 120 200; }
 }
 
 /* ── JSON Upload button ────────────────────────────────────── */
@@ -1065,6 +1169,230 @@ body::after {
 .json-upload-btn:focus-visible {
   outline: none;
   box-shadow: 0 0 0 2px var(--amber-faint);
+}
+
+/* Upload dropdown wrapper — positions the menu directly below the
+ * trigger. The menu lists every registered upload variant (JSON
+ * always; CSV only on the workflow source). */
+.json-upload-wrap {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+.json-upload-caret {
+  font-size: 9px;
+  opacity: 0.75;
+  margin-left: 1px;
+  transition: transform 0.18s var(--ease-out);
+}
+.json-upload-btn[aria-expanded="true"] .json-upload-caret {
+  transform: rotate(180deg);
+}
+
+/* Single-variant upload button — no chevron, instant action. */
+.json-upload-btn.is-single .json-upload-caret { display: none; }
+
+/* Upload menu — flows horizontally; tile-count determines width so a
+ * single-variant case (impossible here since single → no menu) would
+ * still render correctly. With JSON+CSV the menu is exactly wide enough
+ * for two tiles, no empty space. */
+.json-upload-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 30;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 108px;
+  gap: 5px;
+  padding: 6px;
+  background: var(--bg-1);
+  border: 1px solid var(--amber);
+  box-shadow:
+    0 22px 44px -12px rgba(0,0,0,0.65),
+    0 0 0 1px rgba(255,176,0,0.05),
+    0 0 32px rgba(255,176,0,0.14);
+  animation: json-up-menu-in 0.18s var(--ease-out);
+}
+.json-upload-menu.hidden { display: none; }
+.json-upload-menu::before,
+.json-upload-menu::after {
+  content: "";
+  position: absolute;
+  width: 10px; height: 10px;
+  border: 1px solid var(--amber);
+  pointer-events: none;
+}
+.json-upload-menu::before { top: -1px; left: -1px;  border-right: none; border-bottom: none; }
+.json-upload-menu::after  { bottom: -1px; right: -1px; border-left: none;  border-top: none; }
+@keyframes json-up-menu-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+.json-upload-menu-item {
+  font-family: var(--font-mono);
+  background: var(--bg-2);
+  border: 1px solid var(--line-strong);
+  cursor: pointer;
+  padding: 18px 10px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-1);
+  position: relative;
+  overflow: hidden;
+  transition:
+    color 0.16s var(--ease-out),
+    border-color 0.16s var(--ease-out),
+    background 0.16s var(--ease-out);
+}
+/* Subtle amber wash background that fades in on hover */
+.json-upload-menu-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 30%, rgba(255, 176, 0, 0.10), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.2s var(--ease-out);
+  z-index: 0;
+}
+/* Top-left corner bracket appears on hover — same vocabulary as the
+ * modal corner accents, reinforces the "command palette" feel. */
+.json-upload-menu-item::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 10px;
+  height: 10px;
+  border-top: 1px solid var(--amber);
+  border-left: 1px solid var(--amber);
+  opacity: 0;
+  transform: translate(-2px, -2px);
+  transition: opacity 0.18s var(--ease-out), transform 0.18s var(--ease-out);
+  z-index: 1;
+}
+.json-upload-menu-item > * { position: relative; z-index: 1; }
+
+.json-upload-menu-item:hover,
+.json-upload-menu-item:focus {
+  color: var(--amber-hi);
+  border-color: var(--amber);
+  background: var(--bg-1);
+  outline: none;
+}
+.json-upload-menu-item:hover::before,
+.json-upload-menu-item:focus::before { opacity: 1; }
+.json-upload-menu-item:hover::after,
+.json-upload-menu-item:focus::after { opacity: 1; transform: none; }
+.json-upload-menu-item:focus-visible { box-shadow: inset 0 0 0 1px var(--amber); }
+.json-upload-menu-item:active {
+  color: var(--bg-0);
+  background: var(--amber);
+  border-color: var(--amber);
+}
+.json-upload-menu-item:active::before,
+.json-upload-menu-item:active::after { opacity: 0; }
+
+.up-mi-glyph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid currentColor;
+  border-radius: 1px;
+  opacity: 0.55;
+  position: relative;
+  transition: opacity 0.16s var(--ease-out), transform 0.16s var(--ease-out);
+}
+/* Tiny amber dot in the top-right corner of the glyph — file-format
+ * "tag" marker. Idle = soft, hover = bright. */
+.up-mi-glyph::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 4px;
+  height: 4px;
+  background: var(--amber);
+  opacity: 0.4;
+  transition: opacity 0.16s var(--ease-out), transform 0.16s var(--ease-out);
+}
+.up-mi-glyph svg { width: 16px; height: 16px; }
+.json-upload-menu-item:hover .up-mi-glyph { opacity: 1; transform: translateY(-1px); }
+.json-upload-menu-item:hover .up-mi-glyph::after { opacity: 1; transform: scale(1.4); }
+
+.up-mi-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  text-indent: 0.28em;   /* visually centre tracked text */
+}
+
+/* Row-vanish animation — visual confirmation when × is clicked, before
+ * the <tr> is actually removed from the DOM. */
+.workflow-table tr.wt-row-vanish td {
+  background: rgba(248, 113, 113, 0.10) !important;
+  color: var(--err) !important;
+  text-decoration: line-through;
+  opacity: 0.55;
+  transition: opacity 0.16s ease-out, background 0.16s ease-out;
+}
+.workflow-table tr.wt-row-vanish .wt-row-delete {
+  opacity: 0;
+}
+
+/* Table-view button — pairs with the upload button, slightly more
+ * emphatic since it's a "viewer" action. */
+.json-table-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+  background: transparent;
+  border: 1px solid var(--amber);
+  border-radius: var(--radius);
+  padding: 5px 10px 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.16s var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+.json-table-btn svg { width: 12px; height: 12px; }
+.json-table-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--amber);
+  transform: translateY(101%);
+  transition: transform 0.22s var(--ease-out);
+  z-index: 0;
+}
+.json-table-btn > * { position: relative; z-index: 1; }
+.json-table-btn:hover { color: var(--bg-0); }
+.json-table-btn:hover::before { transform: translateY(0); }
+.json-table-btn:active { transform: translateY(1px); }
+.json-table-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--amber-faint);
+}
+.json-table-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(0.4);
 }
 
 /* ── Buttons ───────────────────────────────────────────────────── */
@@ -1242,29 +1570,8 @@ button.secondary[data-loading="true"] svg {
   animation: btn-spin 0.9s linear infinite;
   transform-origin: center;
 }
-button.primary[data-loading="true"]::after,
-button.secondary[data-loading="true"]::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  width: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--amber) 50%,
-    transparent 100%
-  );
-  animation: btn-stripe 1.2s linear infinite;
-  z-index: 2;
-}
 @keyframes btn-spin {
   to { transform: rotate(360deg); }
-}
-@keyframes btn-stripe {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
 }
 
 /* ── Spinner inline (used inside output cards while pending) ─ */
@@ -1440,6 +1747,344 @@ button.secondary[data-loading="true"]::after {
   gap: 10px;
   margin-bottom: 8px;
 }
+
+/* ── SQL Preview Modal ─────────────────────────────────────
+ * Single shared modal opened by the eye icon on any Final SQL
+ * output. Renders the preview cards inside a generous card so
+ * the user can scan a 50-statement migration without it
+ * dominating the surrounding page. */
+.sql-preview-modal-content {
+  max-width: 1100px;
+  width: 92vw;
+  height: 86vh;
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+.sql-preview-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px 12px;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg-1) 100%);
+  flex-shrink: 0;
+}
+.sql-preview-modal-head .modal-title {
+  font-size: 12.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.sql-preview-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--text-2);
+  background: var(--bg-0);
+  border: 1px solid var(--line);
+  padding: 3px 8px 2px;
+  font-variant-numeric: tabular-nums;
+}
+.sql-preview-modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.sql-preview-modal-actions button {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-1);
+  background: var(--bg-1);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 6px 11px 5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: all 0.16s var(--ease-out);
+}
+.sql-preview-modal-actions button svg { width: 12px; height: 12px; }
+.sql-preview-modal-actions button:hover {
+  color: var(--amber);
+  border-color: var(--amber);
+  background: var(--amber-faint);
+}
+.sql-preview-modal-body {
+  flex: 1;
+  overflow: auto;
+  background: var(--bg-sql);
+  scroll-behavior: smooth;
+}
+
+/* The preview component sits inside the modal body — its own
+ * .sql-preview-body has max-height capped here so the modal
+ * scroll wins over the inner one. */
+.sql-preview-modal-body .sql-preview { height: 100%; }
+.sql-preview-modal-body .sql-preview-body {
+  max-height: none;   /* let the modal body scroll instead */
+  flex: 1;
+}
+
+/* ── SQL Preview (statement-segmented final output) ─────────
+ * Cards per statement, type chip, target table, syntax highlight,
+ * inline issue list. Auto-rendered into #<id>_preview by the
+ * sql-preview module whenever the sibling textarea fires `input`.
+ */
+.sql-wrapper-preview {
+  background: var(--bg-sql);
+  border: 1px solid var(--line);
+  position: relative;
+  border-radius: var(--radius);
+}
+.sql-wrapper-preview .sql-preview-container { display: block; }
+.sql-wrapper-preview > textarea.sql-final-output {
+  display: none;
+  width: 100%;
+  min-height: 240px;
+}
+/* Raw mode — toggle via the eye icon */
+.sql-wrapper-preview.show-raw .sql-preview-container { display: none; }
+.sql-wrapper-preview.show-raw > textarea.sql-final-output { display: block; }
+.sql-wrapper-preview .sql-icons { z-index: 3; }
+
+/* ── Preview shell ─────────────────────────────────────────── */
+.sql-preview {
+  display: flex;
+  flex-direction: column;
+}
+.sql-preview-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 28px 18px;
+  text-align: center;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+}
+.sqp-empty-glyph { font-size: 22px; color: var(--amber-lo); }
+.sqp-empty-text  { max-width: 460px; line-height: 1.55; }
+.sqp-empty-text kbd {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  padding: 1px 6px;
+  margin: 0 2px;
+  color: var(--amber);
+}
+
+/* Header bar — totals + type chips + safety banner */
+.sql-preview-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px 9px 50px;   /* leave room for sql-icons on right */
+  background: var(--bg-1);
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+}
+.sqp-stat {
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.sqp-stat strong {
+  color: var(--amber);
+  font-variant-numeric: tabular-nums;
+  margin-right: 4px;
+}
+.sqp-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+.sqp-type {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 3px 8px 2px;
+  border: 1px solid currentColor;
+  border-radius: 1px;
+  font-weight: 500;
+}
+/* Type colour key — semantic, not just decorative */
+.sqp-t-insert   { color: var(--ok); }
+.sqp-t-update   { color: var(--amber); }
+.sqp-t-delete   { color: var(--err); }
+.sqp-t-select   { color: var(--info); }
+.sqp-t-create   { color: var(--src); }
+.sqp-t-drop     { color: var(--err); }
+.sqp-t-truncate { color: var(--err); }
+.sqp-t-alter    { color: var(--amber-lo); }
+.sqp-t-txn      { color: var(--text-2); }
+.sqp-t-other    { color: var(--text-3); }
+
+.sqp-warn {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 3px 9px 2px;
+  border: 1px solid currentColor;
+  border-radius: 1px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.sqp-w-ok    { color: var(--ok); }
+.sqp-w-info  { color: var(--info); }
+.sqp-w-warn  { color: var(--amber); background: var(--amber-faint); }
+.sqp-w-error { color: var(--err);   background: rgba(248,113,113,0.08); }
+
+/* Body — vertical stack of statement cards */
+.sql-preview-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--line-faint);
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* ── Statement card ───────────────────────────────────────── */
+.sql-stmt {
+  background: var(--bg-sql);
+  position: relative;
+  transition: background 0.16s var(--ease-out);
+}
+.sql-stmt:hover { background: rgba(255, 176, 0, 0.015); }
+.sql-stmt[data-level="error"] { background: rgba(248, 113, 113, 0.04); }
+.sql-stmt[data-level="warn"]  { background: rgba(255, 176, 0,  0.025); }
+
+.sql-stmt-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px 6px;
+  border-bottom: 1px dashed var(--line-faint);
+}
+.sql-stmt-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+  min-width: 22px;
+}
+.sql-stmt-type {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 2px 7px 1px;
+  border: 1px solid currentColor;
+  border-radius: 1px;
+  font-weight: 600;
+}
+.sql-stmt-target {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-1);
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  padding: 2px 7px;
+  letter-spacing: 0.04em;
+}
+.sql-stmt-target::before { content: "▸ "; color: var(--amber-lo); }
+.sql-stmt-issues {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border: 1px solid currentColor;
+  margin-left: auto;
+  margin-right: 8px;
+}
+.sql-stmt-copy {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: 1px;
+  cursor: pointer;
+  padding: 4px 7px;
+  color: var(--text-3);
+  transition: all 0.14s var(--ease-out);
+}
+.sql-stmt-head .sql-stmt-issues + .sql-stmt-copy { margin-left: 0; }
+.sql-stmt-copy svg { width: 12px; height: 12px; }
+.sql-stmt-copy:hover { color: var(--amber); border-color: var(--amber); background: var(--amber-faint); }
+.sql-stmt-copy.is-flash { color: var(--ok); border-color: var(--ok); background: rgba(163,230,53,0.1); }
+
+.sql-stmt-issue-list {
+  list-style: none;
+  margin: 0;
+  padding: 6px 14px 4px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-bottom: 1px dashed var(--line-faint);
+}
+.sql-stmt-issue-list li {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sql-stmt-issue-list li span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border: 1px solid currentColor;
+  font-weight: 700;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+.sql-stmt-issue-list li.sqp-w-error { color: var(--err); }
+.sql-stmt-issue-list li.sqp-w-warn  { color: var(--amber); }
+.sql-stmt-issue-list li.sqp-w-info  { color: var(--text-2); }
+
+/* ── Statement body (highlighted) ─────────────────────────── */
+.sql-stmt-code {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.62;
+  padding: 10px 16px 12px;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--text-0);
+  tab-size: 2;
+  counter-reset: line;
+}
+
+/* Highlight token colours — confident hues, not pastel */
+.sql-kw   { color: var(--amber);    font-weight: 600; }
+.sql-str  { color: var(--ok); }
+.sql-num  { color: var(--dst); }
+.sql-cmt  { color: var(--text-3); font-style: italic; }
+.sql-id   { color: var(--text-0); }
+.sql-ident{ color: var(--src); }       /* backtick identifiers */
+.sql-pun  { color: var(--text-2); }
+.sql-op   { color: var(--amber-lo); }
 
 /* ── SQL output ────────────────────────────────────────────────── */
 .sql-wrapper {
@@ -1704,6 +2349,1138 @@ button.secondary[data-loading="true"]::after {
 @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
 @keyframes modal-in { from { opacity: 0; transform: translateY(8px) scale(0.98); } to { opacity: 1; transform: none; } }
 
+/* ── Workflow source: Excel-style table-view modal ───────────────
+ * Full-bleed modal with a sticky header + sticky filter row.
+ * Sort is a 3-state cycle on header click (none → asc → desc → none).
+ * Each filter input does a case-insensitive substring match on the
+ * raw cell value (objects/arrays are stringified first).
+ */
+/* Table modal sizing — FIXED height so filtering down to one row
+ * doesn't collapse the card (which made the filter row appear "broken"
+ * because the wrap shrank with the content). Always 92vh, min 480px
+ * for very short viewports. */
+.workflow-table-modal-content {
+  max-width: 1500px;
+  width: 96vw;
+  height: 92vh;
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.workflow-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg-1) 100%);
+  flex-shrink: 0;
+}
+.workflow-table-header .modal-title {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  gap: 12px;
+  flex-wrap: wrap;
+  text-transform: uppercase;
+}
+.workflow-table-count {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  color: var(--text-2);
+  background: var(--bg-0);
+  border: 1px solid var(--line);
+  padding: 3px 8px 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.workflow-table-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.workflow-table-actions button {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-1);
+  background: var(--bg-1);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 5px 11px 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.16s var(--ease-out);
+}
+.workflow-table-actions button svg { width: 12px; height: 12px; }
+.workflow-table-actions button:hover {
+  color: var(--amber);
+  border-color: var(--amber);
+  background: var(--amber-faint);
+}
+.workflow-table-actions button:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.workflow-table-wrap {
+  flex: 1;
+  overflow: auto;
+  background: var(--bg-0);
+  position: relative;
+}
+.workflow-table-wrap::-webkit-scrollbar { width: 12px; height: 12px; }
+.workflow-table-wrap::-webkit-scrollbar-track { background: var(--bg-0); }
+.workflow-table-wrap::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border: 3px solid var(--bg-0);
+}
+.workflow-table-wrap::-webkit-scrollbar-thumb:hover { background: var(--amber-lo); }
+
+.workflow-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  table-layout: auto;
+}
+
+.workflow-table thead { position: relative; z-index: 5; }
+
+/* Header row — sticky to top of scroll container */
+.wt-header-row th {
+  position: sticky;
+  top: 0;
+  background: var(--bg-2);
+  color: var(--text-1);
+  text-align: left;
+  border-bottom: 1px solid var(--amber-lo);
+  border-right: 1px solid var(--line);
+  padding: 0;
+  white-space: nowrap;
+  z-index: 4;
+}
+.wt-header-row th:last-child { border-right: none; }
+
+/* Header inner: sort-button (flex 1) + filter-button (fixed) */
+.wt-th-inner {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+
+.wt-sort-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  flex: 1;
+  padding: 10px 8px 8px 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: inherit;
+  transition: color 0.14s var(--ease-out), background 0.14s var(--ease-out);
+}
+
+/* Per-column filter chevron button (Excel-style AutoFilter trigger) */
+.wt-filter-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 26px;
+  background: transparent;
+  border: none;
+  border-left: 1px solid var(--line);
+  color: var(--text-3);
+  cursor: pointer;
+  padding: 0 4px;
+  transition: all 0.14s var(--ease-out);
+}
+.wt-filter-glyph { font-size: 11px; line-height: 1; }
+.wt-filter-btn:hover { color: var(--amber); background: rgba(255,176,0,0.06); }
+.wt-filter-btn.is-active {
+  color: var(--bg-0);
+  background: var(--amber);
+}
+.wt-filter-btn.is-active .wt-filter-glyph::after {
+  content: "●";
+  font-size: 7px;
+  margin-left: 2px;
+  vertical-align: 2px;
+}
+.wt-sort-btn:hover { color: var(--amber); background: rgba(255,176,0,0.04); }
+.wt-sort-btn:focus-visible {
+  outline: 1px solid var(--amber);
+  outline-offset: -1px;
+}
+
+.wt-th-label { text-align: left; }
+.wt-th-arrow {
+  color: var(--text-3);
+  font-size: 9px;
+  letter-spacing: 0;
+  flex-shrink: 0;
+  font-weight: 400;
+  transition: color 0.14s var(--ease-out);
+}
+.wt-th-arrow.is-active { color: var(--amber); font-weight: 700; font-size: 10px; }
+
+/* Filter row — sticky below header row */
+.wt-filter-row th {
+  position: sticky;
+  top: 36px;          /* matches the sort-btn row height */
+  background: var(--bg-1);
+  border-bottom: 1px dashed var(--line);
+  border-right: 1px solid var(--line-faint);
+  padding: 4px 6px;
+  z-index: 3;
+}
+.wt-filter-row th:last-child { border-right: none; }
+
+.wt-filter {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-0);
+  background: var(--bg-0);
+  border: 1px solid var(--line);
+  border-radius: 1px;
+  padding: 4px 8px;
+  outline: none;
+  letter-spacing: 0.02em;
+  transition: border-color 0.14s var(--ease-out), background 0.14s var(--ease-out);
+}
+.wt-filter::placeholder { color: var(--text-3); font-style: normal; opacity: 0.7; }
+.wt-filter:focus {
+  border-color: var(--amber);
+  background: var(--bg-2);
+  box-shadow: inset 0 0 0 1px var(--amber-faint);
+}
+.wt-filter:not(:placeholder-shown) {
+  border-color: var(--amber-lo);
+  color: var(--amber-hi);
+}
+
+/* Body rows */
+.workflow-table tbody td {
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--line-faint);
+  border-right: 1px dashed var(--line-faint);
+  color: var(--text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
+  vertical-align: top;
+}
+.workflow-table tbody td:last-child { border-right: none; }
+.workflow-table tbody tr.wt-row-alt td { background: rgba(255, 255, 255, 0.012); }
+.workflow-table tbody tr:hover td {
+  background: rgba(255, 176, 0, 0.045);
+  color: var(--text-0);
+}
+
+.workflow-table td.is-numeric,
+.workflow-table th.is-numeric .wt-sort-btn { text-align: right; }
+.workflow-table td.is-numeric { font-variant-numeric: tabular-nums; color: var(--amber-hi); }
+.workflow-table td.is-numeric .wt-th-label { text-align: right; }
+.workflow-table th.is-numeric .wt-sort-btn { justify-content: flex-end; flex-direction: row-reverse; }
+
+.workflow-table td.is-json {
+  color: var(--text-2);
+  font-size: 10.5px;
+  letter-spacing: 0;
+}
+.workflow-table td.is-json::before {
+  content: "{ }";
+  color: var(--amber-lo);
+  margin-right: 6px;
+  font-size: 9.5px;
+  opacity: 0.7;
+}
+
+.workflow-table tbody tr.wt-empty td {
+  text-align: center;
+  padding: 36px 16px;
+  color: var(--text-3);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  border-right: none;
+}
+.wt-empty-glyph { color: var(--amber); margin-right: 6px; }
+
+.workflow-table-footer {
+  padding: 8px 18px;
+  border-top: 1px solid var(--line);
+  background: var(--bg-1);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  flex-shrink: 0;
+}
+.workflow-table-footer kbd {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  padding: 1px 5px;
+  margin: 0 2px;
+  color: var(--text-1);
+  border-radius: 1px;
+}
+
+@media (max-width: 900px) {
+  .workflow-table-modal-content { width: 100vw; max-height: 100vh; max-width: none; }
+  .workflow-table-header { flex-wrap: wrap; }
+  .workflow-table { font-size: 10.5px; }
+  .wt-sort-btn { padding: 8px; font-size: 9.5px; letter-spacing: 0.1em; }
+  .workflow-table tbody td { padding: 6px 8px; max-width: 200px; }
+}
+
+/* ── Multi-select filter popover ──────────────────────────── */
+.wt-multifilter {
+  position: absolute;
+  z-index: 50;
+  width: 280px;
+  max-height: 420px;
+  background: var(--bg-1);
+  border: 1px solid var(--amber);
+  box-shadow:
+    0 18px 38px -8px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(255,176,0,0.04),
+    0 0 22px rgba(255,176,0,0.12);
+  display: flex;
+  flex-direction: column;
+  animation: wt-mf-in 0.16s var(--ease-out);
+}
+.wt-multifilter.hidden { display: none; }
+@keyframes wt-mf-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+.wt-multifilter-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px 6px;
+  border-bottom: 1px solid var(--line);
+}
+.wt-multifilter-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.wt-multifilter-clear {
+  background: none;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.wt-multifilter-clear:hover { color: var(--err); }
+
+.wt-multifilter-search {
+  padding: 8px 10px;
+  border-bottom: 1px dashed var(--line);
+}
+.wt-multifilter-search input {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--bg-0);
+  border: 1px solid var(--line);
+  color: var(--text-0);
+  padding: 5px 8px;
+  outline: none;
+  border-radius: 1px;
+}
+.wt-multifilter-search input:focus { border-color: var(--amber); }
+
+.wt-multifilter-bulk {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.wt-multifilter-bulk label { display: inline-flex; gap: 8px; align-items: center; cursor: pointer; }
+.wt-multifilter-bulk input { accent-color: var(--amber); }
+.wt-multifilter-count { color: var(--text-3); font-size: 9.5px; }
+
+.wt-multifilter-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+.wt-mf-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-1);
+  cursor: pointer;
+  transition: background 0.1s var(--ease-out);
+}
+.wt-mf-item:hover { background: rgba(255,176,0,0.05); color: var(--text-0); }
+.wt-mf-item input { accent-color: var(--amber); }
+.wt-mf-value {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.wt-mf-count {
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.wt-multifilter-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px 10px;
+  border-top: 1px solid var(--line);
+}
+.wt-multifilter-footer button {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.14s var(--ease-out);
+}
+.wt-multifilter-footer .secondary {
+  color: var(--text-1);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+}
+.wt-multifilter-footer .secondary:hover { color: var(--text-0); border-color: var(--text-2); }
+.wt-multifilter-footer .primary {
+  color: var(--amber);
+  background: transparent;
+  border: 1px solid var(--amber);
+}
+.wt-multifilter-footer .primary:hover { color: var(--bg-0); background: var(--amber); }
+
+/* ── Edit-mode styling ───────────────────────────────────── */
+#tableModalEdit.is-on {
+  color: var(--amber);
+  border-color: var(--amber);
+  background: var(--amber-faint);
+}
+
+.workflow-table[data-edit-mode="true"] tbody tr:hover .wt-row-delete { opacity: 1; }
+
+.wt-actions-col {
+  width: 32px;
+  min-width: 32px;
+  padding: 0;
+  background: var(--bg-2);
+  border-right: 1px solid var(--amber-lo) !important;
+  text-align: center;
+}
+.wt-header-row .wt-actions-col { position: sticky; top: 0; z-index: 4; }
+.wt-filter-row  .wt-actions-col { position: sticky; top: 36px; z-index: 3; }
+
+.wt-row-delete {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--err);
+  background: transparent;
+  color: var(--err);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: all 0.16s var(--ease-out);
+}
+.wt-row-delete:hover {
+  opacity: 1;
+  background: var(--err);
+  color: var(--bg-0);
+  transform: scale(1.1);
+}
+
+.wt-cell-editable {
+  cursor: text;
+  outline: none;
+}
+.wt-cell-editable:focus {
+  background: var(--bg-2) !important;
+  box-shadow: inset 0 0 0 1px var(--amber);
+  color: var(--text-0) !important;
+}
+.wt-cell-dirty {
+  background: rgba(255,176,0,0.08) !important;
+  color: var(--amber-hi) !important;
+  position: relative;
+}
+.wt-cell-dirty::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 5px;
+  height: 5px;
+  background: var(--amber);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--amber-glow);
+}
+.workflow-table tbody tr.wt-row-dirty td:first-child {
+  border-left: 2px solid var(--amber);
+}
+
+/* ── JSON-editable cell affordance (edit mode only) ────── */
+.wt-cell-json-editable {
+  cursor: pointer;
+  position: relative;
+  transition: background 0.14s var(--ease-out);
+}
+.wt-cell-json-editable:hover {
+  background: rgba(255, 176, 0, 0.06) !important;
+  color: var(--amber-hi) !important;
+}
+.wt-cell-json-editable::after {
+  content: "✎";
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: var(--text-3);
+  opacity: 0;
+  transition: opacity 0.14s var(--ease-out);
+}
+.wt-cell-json-editable:hover::after {
+  opacity: 1;
+  color: var(--amber);
+}
+
+/* ── JSON cell editor overlay ──────────────────────────── */
+.wt-json-editor {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 9, 10, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+}
+.wt-json-editor.hidden { display: none; }
+.wt-json-editor-card {
+  width: min(820px, 100%);
+  max-height: 92%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-1);
+  border: 1px solid var(--amber);
+  box-shadow:
+    0 30px 60px -10px rgba(0,0,0,0.7),
+    0 0 0 1px var(--amber-faint),
+    0 0 40px rgba(255,176,0,0.08);
+  position: relative;
+  animation: wt-je-in 0.22s var(--ease-out);
+}
+.wt-json-editor-card::before,
+.wt-json-editor-card::after {
+  content: "";
+  position: absolute;
+  width: 18px; height: 18px;
+  border: 1px solid var(--amber);
+}
+.wt-json-editor-card::before { top: -1px; left: -1px;  border-right: none; border-bottom: none; }
+.wt-json-editor-card::after  { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+@keyframes wt-je-in { from { opacity: 0; transform: translateY(8px) scale(0.98); } to { opacity: 1; transform: none; } }
+
+.wt-json-editor-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.wt-json-editor-head svg { width: 18px; height: 18px; color: var(--amber); flex-shrink: 0; }
+.wt-json-editor-head h3 {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-0);
+  flex: 1;
+}
+.wt-je-col {
+  margin-left: 6px;
+  color: var(--amber);
+  font-weight: 500;
+}
+.wt-je-rowidx {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  padding: 3px 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.wt-json-editor-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 20px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.wt-je-format {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-1);
+  background: var(--bg-1);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 5px 10px 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.14s var(--ease-out);
+}
+.wt-je-format svg { width: 12px; height: 12px; }
+.wt-je-format:hover { color: var(--amber); border-color: var(--amber); background: var(--amber-faint); }
+
+.wt-json-editor-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  background: var(--bg-1);
+  border-radius: var(--radius);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+.wt-json-editor-status .wt-je-status-glyph {
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 700;
+}
+.wt-json-editor-status .wt-je-status-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.wt-json-editor-status.is-valid {
+  color: var(--ok);
+  border-color: var(--ok);
+  background: rgba(163, 230, 53, 0.06);
+}
+.wt-json-editor-status.is-invalid {
+  color: var(--err);
+  border-color: var(--err);
+  background: rgba(248, 113, 113, 0.06);
+  animation: wt-je-status-shake 0.32s var(--ease-out);
+}
+@keyframes wt-je-status-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+.wt-je-hint {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+.wt-je-hint kbd {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  padding: 1px 5px;
+  margin: 0 2px;
+  color: var(--text-1);
+  border-radius: 1px;
+}
+
+.wt-json-editor-body {
+  flex: 1;
+  display: flex;
+  background: var(--bg-sql);
+  position: relative;
+  overflow: hidden;
+}
+.wt-json-editor-body::before {
+  /* faint vertical guideline at the typical indent width */
+  content: "";
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: calc(14px + 2ch);
+  width: 1px;
+  background: var(--line-faint);
+  pointer-events: none;
+}
+.wt-json-editor-body textarea {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.65;
+  background: transparent;
+  color: var(--text-0);
+  border: none;
+  outline: none;
+  padding: 14px 18px;
+  resize: none;
+  tab-size: 2;
+  caret-color: var(--amber);
+  min-height: 280px;
+  transition: box-shadow 0.16s var(--ease-out);
+  font-feature-settings: "calt" 0;
+}
+.wt-json-editor-body textarea.is-invalid {
+  box-shadow: inset 3px 0 0 var(--err);
+}
+
+.wt-json-editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--line);
+  background: var(--bg-2);
+}
+.wt-json-editor-actions button {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.16s var(--ease-out);
+}
+.wt-json-editor-actions button svg { width: 14px; height: 14px; }
+.wt-json-editor-actions .secondary {
+  color: var(--text-1);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+}
+.wt-json-editor-actions .secondary:hover { color: var(--text-0); border-color: var(--text-2); }
+.wt-json-editor-actions .primary {
+  color: var(--amber);
+  background: transparent;
+  border: 1px solid var(--amber);
+}
+.wt-json-editor-actions .primary:hover { color: var(--bg-0); background: var(--amber); }
+.wt-json-editor-actions .primary:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(0.4);
+}
+
+@media (max-width: 700px) {
+  .wt-json-editor { padding: 12px; }
+  .wt-json-editor-card { max-height: 100%; }
+  .wt-json-editor-toolbar { gap: 8px; }
+  .wt-je-hint { display: none; }
+}
+
+/* ── Confirm Changes overlay ─────────────────────────────── */
+.wt-confirm {
+  position: absolute;
+  inset: 0;
+  background: rgba(8,9,10,0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.wt-confirm.hidden { display: none; }
+.wt-confirm-card {
+  width: min(640px, 100%);
+  max-height: 90%;
+  background: var(--bg-1);
+  border: 1px solid var(--amber);
+  box-shadow:
+    0 30px 60px -10px rgba(0,0,0,0.7),
+    0 0 0 1px var(--amber-faint),
+    0 0 40px rgba(255,176,0,0.06);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  animation: wt-cf-in 0.22s var(--ease-out);
+}
+.wt-confirm-card::before,
+.wt-confirm-card::after {
+  content: "";
+  position: absolute;
+  width: 18px; height: 18px;
+  border: 1px solid var(--amber);
+}
+.wt-confirm-card::before { top: -1px; left: -1px;  border-right: none; border-bottom: none; }
+.wt-confirm-card::after  { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+@keyframes wt-cf-in { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+
+.wt-confirm-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 22px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.wt-confirm-head svg { width: 18px; height: 18px; color: var(--amber); }
+.wt-confirm-head h3 {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.wt-confirm-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 22px;
+}
+
+.wt-confirm-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.wt-confirm-stat {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  padding: 12px 14px;
+  text-align: left;
+  position: relative;
+}
+.wt-confirm-stat::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--amber);
+}
+.wt-confirm-stat.warn::before { background: var(--err); }
+.wt-confirm-stat strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--amber);
+  font-variant-numeric: tabular-nums;
+}
+.wt-confirm-stat.warn strong { color: var(--err); }
+.wt-confirm-stat span {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin-top: 4px;
+  display: block;
+}
+
+.wt-confirm-note {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  color: var(--text-2);
+  line-height: 1.5;
+  padding: 10px 12px;
+  background: rgba(255,176,0,0.04);
+  border-left: 2px solid var(--amber);
+  margin-bottom: 14px;
+}
+
+.wt-confirm-section {
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+  margin-bottom: 10px;
+}
+.wt-confirm-section > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 9px 14px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.wt-confirm-section > summary::-webkit-details-marker { display: none; }
+.wt-confirm-section > summary::before {
+  content: "▸ ";
+  color: var(--amber);
+  margin-right: 6px;
+  transition: transform 0.2s var(--ease-out);
+  display: inline-block;
+}
+.wt-confirm-section[open] > summary::before { content: "▾ "; }
+.wt-confirm-section > summary span {
+  background: var(--amber);
+  color: var(--bg-0);
+  padding: 1px 7px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+.wt-confirm-list {
+  padding: 6px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── Edit diff row: git-style multi-line ────────────────────
+ * One block per edited row. Header shows row number + change count.
+ * Each changed cell renders as { column label + ‒ old + + new },
+ * monospace, wrapped, with max-height scroll so a huge JSON value
+ * doesn't push everything else off-screen. */
+.wt-diff-row {
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--amber);
+  font-family: var(--font-mono);
+  padding: 8px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.wt-diff-row-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.wt-diff-idx {
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: var(--amber);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.wt-diff-row-count {
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: var(--text-3);
+  text-transform: uppercase;
+}
+
+.wt-diff-cells {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.wt-diff-cell {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  column-gap: 6px;
+  row-gap: 2px;
+  border: 1px solid var(--line-faint);
+  background: var(--bg-2);
+  padding: 6px 8px;
+}
+.wt-diff-col {
+  grid-column: 1 / -1;
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin-bottom: 4px;
+  padding: 2px 6px;
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+  border-radius: 1px;
+  display: inline-block;
+  width: max-content;
+  max-width: 100%;
+}
+
+.wt-diff-line {
+  display: contents;
+}
+.wt-diff-marker {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  align-self: start;
+  padding-top: 2px;
+  user-select: none;
+}
+.wt-diff-line-old .wt-diff-marker { color: var(--err); }
+.wt-diff-line-new .wt-diff-marker { color: var(--ok); }
+
+.wt-diff-val {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  margin: 0;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 1px;
+  /* Cap very large JSON values so the diff stays browsable. */
+  max-height: 180px;
+  overflow-y: auto;
+  min-width: 0;
+}
+.wt-diff-val em {
+  font-style: normal;
+  color: var(--text-3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 9.5px;
+}
+.wt-diff-line-old .wt-diff-val {
+  color: var(--err);
+  background: rgba(248, 113, 113, 0.05);
+  text-decoration: line-through;
+  text-decoration-color: rgba(248, 113, 113, 0.45);
+  text-decoration-thickness: 1px;
+}
+.wt-diff-line-new .wt-diff-val {
+  color: var(--ok);
+  background: rgba(163, 230, 53, 0.05);
+}
+
+/* Removed-row block (separate visual treatment) */
+.wt-diff-removed {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 6px 10px;
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--err);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.wt-diff-removed-body {
+  color: var(--text-2);
+  font-size: 10.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.wt-diff-more {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: var(--text-3);
+  padding: 6px;
+  font-style: italic;
+}
+
+.wt-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 22px;
+  border-top: 1px solid var(--line);
+  background: var(--bg-2);
+}
+.wt-confirm-actions button {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.16s var(--ease-out);
+}
+.wt-confirm-actions button svg { width: 14px; height: 14px; }
+.wt-confirm-actions .secondary {
+  color: var(--text-1);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+}
+.wt-confirm-actions .secondary:hover { color: var(--err); border-color: var(--err); }
+.wt-confirm-actions .primary {
+  color: var(--amber);
+  background: transparent;
+  border: 1px solid var(--amber);
+}
+.wt-confirm-actions .primary:hover { color: var(--bg-0); background: var(--amber); }
+
 /* ── Workflow remap modal ──────────────────────────────────────── */
 .workflow-remap-modal-content { max-width: 720px; }
 
@@ -1734,7 +3511,7 @@ button.secondary[data-loading="true"]::after {
 
 .workflow-remap-row {
   display: grid;
-  grid-template-columns: minmax(140px, 0.7fr) 18px 1.6fr;
+  grid-template-columns: minmax(140px, 0.7fr) 36px 1.6fr;
   gap: 10px;
   align-items: center;
   padding: 12px 14px;
@@ -1742,20 +3519,106 @@ button.secondary[data-loading="true"]::after {
   border: 1px solid var(--line);
   position: relative;
 }
-.workflow-remap-row::before {
-  content: "→";
+.workflow-remap-source { grid-column: 1; }
+.workflow-remap-input  { grid-column: 3; }
+
+/* Per-row copy-key button — sits between Current Group and the
+ * input. Click → fills the input with the source value. Useful
+ * when most/all groups are unchanged. */
+.workflow-remap-copy {
   grid-column: 2;
   grid-row: 1 / -1;
+  align-self: center;
+  justify-self: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--amber-lo);
+  background: transparent;
+  color: var(--amber);
+  cursor: pointer;
+  border-radius: 1px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.16s var(--ease-out);
+  position: relative;
+}
+.workflow-remap-copy svg { width: 16px; height: 16px; transition: transform 0.16s var(--ease-out); }
+.workflow-remap-copy:hover {
+  color: var(--bg-0);
+  background: var(--amber);
+  border-color: var(--amber);
+}
+.workflow-remap-copy:hover svg { transform: translateX(2px); }
+.workflow-remap-copy:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--amber-faint);
+}
+.workflow-remap-copy.is-flash {
+  background: var(--ok);
+  border-color: var(--ok);
+  color: var(--bg-0);
+  animation: remap-copy-flash 0.6s ease-out;
+}
+@keyframes remap-copy-flash {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+/* Bulk header — "Keep all unchanged" quick action */
+.workflow-remap-bulk {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 14px;
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--amber);
+  margin-bottom: 10px;
+}
+.workflow-remap-bulk-text {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+.workflow-remap-bulk-text strong {
   color: var(--amber);
   font-family: var(--font-mono);
-  font-size: 15px;
-  pointer-events: none;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  margin-right: 2px;
 }
-.workflow-remap-source { grid-column: 1; }
-.workflow-remap-input  { grid-column: 3; }
+.workflow-remap-bulk-btn {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+  background: transparent;
+  border: 1px solid var(--amber);
+  border-radius: var(--radius);
+  padding: 7px 14px 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.16s var(--ease-out);
+  flex-shrink: 0;
+}
+.workflow-remap-bulk-btn svg { width: 13px; height: 13px; transition: transform 0.16s var(--ease-out); }
+.workflow-remap-bulk-btn:hover {
+  color: var(--bg-0);
+  background: var(--amber);
+}
+.workflow-remap-bulk-btn:hover svg { transform: translateX(3px); }
+.workflow-remap-bulk-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--amber-faint);
+}
 
 @media (max-width: 560px) {
   .workflow-remap-row { grid-template-columns: 1fr; }
