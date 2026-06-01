@@ -2490,3 +2490,595 @@ TypeError: string indices must be integers, not 'str'
 2026-05-25 21:25:16,533 - INFO - 127.0.0.1 - - [25/May/2026 21:25:16] "POST /workflow/pull HTTP/1.1" 200 -
 2026-05-25 21:28:45,218 - INFO - Generating workflow final SQL
 2026-05-25 21:28:45,226 - INFO - 127.0.0.1 - - [25/May/2026 21:28:45] "POST /workflow/final HTTP/1.1" 200 -
+2026-05-29 17:26:37,401 - INFO - Logging initialized
+2026-05-29 17:26:37,420 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.37:5000
+2026-05-29 17:26:37,420 - INFO - [33mPress CTRL+C to quit[0m
+2026-05-29 17:27:04,009 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "GET / HTTP/1.1" 200 -
+2026-05-29 17:27:04,036 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-05-29 17:27:04,036 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-05-29 17:27:04,058 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "[36mGET /static/js/state/registry.js HTTP/1.1[0m" 304 -
+2026-05-29 17:27:04,058 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "GET /static/js/components/table-modal.js HTTP/1.1" 200 -
+2026-05-29 17:27:04,060 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "[36mGET /static/js/state/status-bar.js HTTP/1.1[0m" 304 -
+2026-05-29 17:27:04,060 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "[36mGET /static/js/components/sql-preview.js HTTP/1.1[0m" 304 -
+2026-05-29 17:27:04,061 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "[36mGET /static/js/state/flow-state.js HTTP/1.1[0m" 304 -
+2026-05-29 17:27:04,062 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "[36mGET /static/js/lib/modal.js HTTP/1.1[0m" 304 -
+2026-05-29 17:27:04,062 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "[36mGET /static/js/lib/data.js HTTP/1.1[0m" 304 -
+2026-05-29 17:27:04,068 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "[36mGET /static/js/tabs/feature-flag.js HTTP/1.1[0m" 304 -
+2026-05-29 17:27:04,068 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "[36mGET /static/js/tabs/workflow.js HTTP/1.1[0m" 304 -
+2026-05-29 17:27:04,068 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "[36mGET /static/js/tabs/branch.js HTTP/1.1[0m" 304 -
+2026-05-29 17:27:04,068 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "[36mGET /static/js/lib/dom.js HTTP/1.1[0m" 304 -
+2026-05-29 17:27:04,069 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "[36mGET /static/js/tabs/mq.js HTTP/1.1[0m" 304 -
+2026-05-29 17:27:04,116 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "[36mGET /static/js/lib/toast.js HTTP/1.1[0m" 304 -
+2026-05-29 17:27:04,116 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "[36mGET /static/js/lib/feedback.js HTTP/1.1[0m" 304 -
+2026-05-29 17:27:04,116 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "[36mGET /static/js/components/json-group.js HTTP/1.1[0m" 304 -
+2026-05-29 17:27:04,117 - INFO - 127.0.0.1 - - [29/May/2026 17:27:04] "[36mGET /static/js/components/sections.js HTTP/1.1[0m" 304 -
+2026-05-29 17:33:32,683 - INFO - Generating branch pull SQL
+2026-05-29 17:33:32,684 - INFO - 127.0.0.1 - - [29/May/2026 17:33:32] "POST /branch/pull HTTP/1.1" 200 -
+2026-05-29 17:47:15,913 - INFO - Logging initialized
+2026-05-29 17:47:15,937 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.37:5000
+2026-05-29 17:47:15,937 - INFO - [33mPress CTRL+C to quit[0m
+2026-05-29 17:47:19,779 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "GET / HTTP/1.1" 200 -
+2026-05-29 17:47:19,801 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,801 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,813 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/components/sql-preview.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,813 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/state/registry.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,815 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/state/status-bar.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,818 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/state/flow-state.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,821 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/lib/modal.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,822 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/components/table-modal.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,825 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/lib/data.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,827 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/lib/dom.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,830 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/tabs/branch.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,831 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/tabs/workflow.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,833 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/tabs/feature-flag.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,836 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/tabs/mq.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,837 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/lib/toast.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,851 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/components/json-group.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,854 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/lib/feedback.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,855 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/js/components/sections.js HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,919 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/favicon.svg HTTP/1.1[0m" 304 -
+2026-05-29 17:47:19,931 - INFO - 127.0.0.1 - - [29/May/2026 17:47:19] "[36mGET /static/favicon.svg HTTP/1.1[0m" 304 -
+2026-05-29 17:47:47,233 - INFO - Generating branch pull SQL
+2026-05-29 17:47:47,233 - INFO - 127.0.0.1 - - [29/May/2026 17:47:47] "POST /branch/pull HTTP/1.1" 200 -
+2026-05-29 18:00:23,210 - INFO - Generating branch final SQL
+2026-05-29 18:00:27,729 - INFO - 127.0.0.1 - - [29/May/2026 18:00:27] "POST /branch/final HTTP/1.1" 200 -
+2026-05-29 18:07:30,377 - INFO - 127.0.0.1 - - [29/May/2026 18:07:30] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-05-29 18:08:19,865 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET / HTTP/1.1" 200 -
+2026-05-29 18:08:19,920 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-05-29 18:08:19,920 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-05-29 18:08:19,943 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/state/status-bar.js HTTP/1.1" 200 -
+2026-05-29 18:08:19,943 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/state/flow-state.js HTTP/1.1" 200 -
+2026-05-29 18:08:19,943 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/state/registry.js HTTP/1.1" 200 -
+2026-05-29 18:08:19,943 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/components/sql-preview.js HTTP/1.1" 200 -
+2026-05-29 18:08:19,945 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/lib/modal.js HTTP/1.1" 200 -
+2026-05-29 18:08:19,947 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/components/table-modal.js HTTP/1.1" 200 -
+2026-05-29 18:08:19,958 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/lib/data.js HTTP/1.1" 200 -
+2026-05-29 18:08:19,958 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/tabs/workflow.js HTTP/1.1" 200 -
+2026-05-29 18:08:19,959 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/lib/dom.js HTTP/1.1" 200 -
+2026-05-29 18:08:19,961 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/tabs/branch.js HTTP/1.1" 200 -
+2026-05-29 18:08:19,963 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/tabs/mq.js HTTP/1.1" 200 -
+2026-05-29 18:08:19,964 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/tabs/feature-flag.js HTTP/1.1" 200 -
+2026-05-29 18:08:19,972 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/lib/toast.js HTTP/1.1" 200 -
+2026-05-29 18:08:19,975 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/lib/feedback.js HTTP/1.1" 200 -
+2026-05-29 18:08:19,976 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/components/json-group.js HTTP/1.1" 200 -
+2026-05-29 18:08:19,976 - INFO - 127.0.0.1 - - [29/May/2026 18:08:19] "GET /static/js/components/sections.js HTTP/1.1" 200 -
+2026-05-29 18:08:20,569 - INFO - 127.0.0.1 - - [29/May/2026 18:08:20] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-05-29 18:08:20,588 - INFO - 127.0.0.1 - - [29/May/2026 18:08:20] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-05-29 18:08:22,457 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET / HTTP/1.1" 200 -
+2026-05-29 18:08:22,472 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-05-29 18:08:22,472 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,497 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/state/flow-state.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,498 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/components/sql-preview.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,499 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/state/registry.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,501 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/state/status-bar.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,503 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/lib/modal.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,503 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/lib/data.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,504 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/components/table-modal.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,516 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/tabs/workflow.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,517 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/tabs/branch.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,518 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/lib/dom.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,519 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/tabs/feature-flag.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,521 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/tabs/mq.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,522 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/components/json-group.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,526 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/lib/toast.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,532 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/components/sections.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,533 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/js/lib/feedback.js HTTP/1.1" 200 -
+2026-05-29 18:08:22,775 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-05-29 18:08:22,790 - INFO - 127.0.0.1 - - [29/May/2026 18:08:22] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-05-29 18:08:29,427 - INFO - Logging initialized
+2026-05-29 18:08:29,454 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.110.2:5000
+2026-05-29 18:08:29,454 - INFO - [33mPress CTRL+C to quit[0m
+2026-05-29 18:08:31,261 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET / HTTP/1.1" 200 -
+2026-05-29 18:08:31,277 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-05-29 18:08:31,277 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,297 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/state/status-bar.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,297 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/components/sql-preview.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,298 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/state/flow-state.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,299 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/state/registry.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,299 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/components/table-modal.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,300 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/lib/modal.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,307 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/lib/data.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,308 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/tabs/workflow.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,308 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/lib/dom.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,308 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/tabs/branch.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,309 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/tabs/feature-flag.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,309 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/tabs/mq.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,317 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/lib/toast.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,317 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/components/json-group.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,318 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/lib/feedback.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,319 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/js/components/sections.js HTTP/1.1" 200 -
+2026-05-29 18:08:31,610 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-05-29 18:08:31,626 - INFO - 127.0.0.1 - - [29/May/2026 18:08:31] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-05-29 20:19:35,616 - INFO - Logging initialized
+2026-05-29 20:19:35,621 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5173
+2026-05-29 20:19:35,621 - INFO - [33mPress CTRL+C to quit[0m
+2026-05-29 20:20:32,096 - INFO - 127.0.0.1 - - [29/May/2026 20:20:32] "GET / HTTP/1.1" 200 -
+2026-05-29 20:20:32,108 - INFO - 127.0.0.1 - - [29/May/2026 20:20:32] "GET /static/js/tabs/branch.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,867 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET / HTTP/1.1" 200 -
+2026-05-29 20:21:56,875 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-05-29 20:21:56,875 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,889 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/components/table-modal.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,889 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/components/sql-preview.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,889 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/state/registry.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,890 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/state/flow-state.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,890 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/state/status-bar.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,890 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/lib/modal.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,902 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/lib/dom.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,902 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/tabs/branch.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,902 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/tabs/workflow.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,903 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/tabs/mq.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,903 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/lib/data.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,903 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/tabs/feature-flag.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,912 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/components/json-group.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,913 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/lib/toast.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,914 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/lib/feedback.js HTTP/1.1" 200 -
+2026-05-29 20:21:56,914 - INFO - 127.0.0.1 - - [29/May/2026 20:21:56] "GET /static/js/components/sections.js HTTP/1.1" 200 -
+2026-05-29 20:21:57,226 - INFO - 127.0.0.1 - - [29/May/2026 20:21:57] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-05-29 20:21:57,239 - INFO - 127.0.0.1 - - [29/May/2026 20:21:57] "[36mGET /static/favicon.svg HTTP/1.1[0m" 304 -
+2026-05-29 20:23:12,777 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET / HTTP/1.1" 200 -
+2026-05-29 20:23:12,784 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-05-29 20:23:12,784 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-05-29 20:23:12,795 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/state/registry.js HTTP/1.1" 200 -
+2026-05-29 20:23:12,796 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/lib/modal.js HTTP/1.1" 200 -
+2026-05-29 20:23:12,796 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/state/status-bar.js HTTP/1.1" 200 -
+2026-05-29 20:23:12,797 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/components/sql-preview.js HTTP/1.1" 200 -
+2026-05-29 20:23:12,797 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/components/table-modal.js HTTP/1.1" 200 -
+2026-05-29 20:23:12,797 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/state/flow-state.js HTTP/1.1" 200 -
+2026-05-29 20:23:12,805 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/lib/data.js HTTP/1.1" 200 -
+2026-05-29 20:23:12,812 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/lib/dom.js HTTP/1.1" 200 -
+2026-05-29 20:23:12,816 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/tabs/workflow.js HTTP/1.1" 200 -
+2026-05-29 20:23:12,816 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/tabs/mq.js HTTP/1.1" 200 -
+2026-05-29 20:23:12,817 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/tabs/feature-flag.js HTTP/1.1" 200 -
+2026-05-29 20:23:12,818 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/tabs/branch.js HTTP/1.1" 200 -
+2026-05-29 20:23:12,818 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/lib/toast.js HTTP/1.1" 200 -
+2026-05-29 20:23:12,819 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/components/json-group.js HTTP/1.1" 200 -
+2026-05-29 20:23:12,831 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/lib/feedback.js HTTP/1.1" 200 -
+2026-05-29 20:23:12,832 - INFO - 127.0.0.1 - - [29/May/2026 20:23:12] "GET /static/js/components/sections.js HTTP/1.1" 200 -
+2026-05-29 20:23:13,177 - INFO - 127.0.0.1 - - [29/May/2026 20:23:13] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-05-29 20:23:13,185 - INFO - 127.0.0.1 - - [29/May/2026 20:23:13] "[36mGET /static/favicon.svg HTTP/1.1[0m" 304 -
+2026-05-29 20:23:50,654 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET / HTTP/1.1" 200 -
+2026-05-29 20:23:50,661 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-05-29 20:23:50,661 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-05-29 20:23:50,675 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/lib/modal.js HTTP/1.1" 200 -
+2026-05-29 20:23:50,676 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/state/flow-state.js HTTP/1.1" 200 -
+2026-05-29 20:23:50,677 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/state/registry.js HTTP/1.1" 200 -
+2026-05-29 20:23:50,677 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/state/status-bar.js HTTP/1.1" 200 -
+2026-05-29 20:23:50,676 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/components/sql-preview.js HTTP/1.1" 200 -
+2026-05-29 20:23:50,679 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/components/table-modal.js HTTP/1.1" 200 -
+2026-05-29 20:23:50,689 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/tabs/feature-flag.js HTTP/1.1" 200 -
+2026-05-29 20:23:50,689 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/tabs/workflow.js HTTP/1.1" 200 -
+2026-05-29 20:23:50,689 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/lib/data.js HTTP/1.1" 200 -
+2026-05-29 20:23:50,690 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/tabs/branch.js HTTP/1.1" 200 -
+2026-05-29 20:23:50,690 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/lib/dom.js HTTP/1.1" 200 -
+2026-05-29 20:23:50,690 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/tabs/mq.js HTTP/1.1" 200 -
+2026-05-29 20:23:50,703 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/lib/feedback.js HTTP/1.1" 200 -
+2026-05-29 20:23:50,704 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/lib/toast.js HTTP/1.1" 200 -
+2026-05-29 20:23:50,704 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/components/sections.js HTTP/1.1" 200 -
+2026-05-29 20:23:50,704 - INFO - 127.0.0.1 - - [29/May/2026 20:23:50] "GET /static/js/components/json-group.js HTTP/1.1" 200 -
+2026-05-29 20:23:51,119 - INFO - 127.0.0.1 - - [29/May/2026 20:23:51] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-05-29 20:23:51,135 - INFO - 127.0.0.1 - - [29/May/2026 20:23:51] "[36mGET /static/favicon.svg HTTP/1.1[0m" 304 -
+2026-05-29 20:25:06,258 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET / HTTP/1.1" 200 -
+2026-05-29 20:25:06,264 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-05-29 20:25:06,264 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,275 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/components/sql-preview.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,276 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/lib/modal.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,276 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/state/status-bar.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,277 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/state/flow-state.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,277 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/components/table-modal.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,277 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/state/registry.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,290 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/tabs/branch.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,290 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/tabs/mq.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,290 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/lib/dom.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,291 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/tabs/feature-flag.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,291 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/tabs/workflow.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,291 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/lib/data.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,302 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/components/json-group.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,302 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/lib/toast.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,302 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/lib/feedback.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,302 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/js/components/sections.js HTTP/1.1" 200 -
+2026-05-29 20:25:06,770 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-05-29 20:25:06,789 - INFO - 127.0.0.1 - - [29/May/2026 20:25:06] "[36mGET /static/favicon.svg HTTP/1.1[0m" 304 -
+2026-05-29 20:25:29,489 - INFO - Logging initialized
+2026-05-29 20:25:29,511 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.110.2:5000
+2026-05-29 20:25:29,512 - INFO - [33mPress CTRL+C to quit[0m
+2026-05-29 20:25:32,914 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET / HTTP/1.1" 200 -
+2026-05-29 20:25:32,935 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-05-29 20:25:32,939 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-05-29 20:25:32,950 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/components/sql-preview.js HTTP/1.1" 200 -
+2026-05-29 20:25:32,950 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/state/registry.js HTTP/1.1" 200 -
+2026-05-29 20:25:32,950 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/state/status-bar.js HTTP/1.1" 200 -
+2026-05-29 20:25:32,952 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/state/flow-state.js HTTP/1.1" 200 -
+2026-05-29 20:25:32,952 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/lib/modal.js HTTP/1.1" 200 -
+2026-05-29 20:25:32,952 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/components/table-modal.js HTTP/1.1" 200 -
+2026-05-29 20:25:32,964 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/lib/data.js HTTP/1.1" 200 -
+2026-05-29 20:25:32,965 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/tabs/branch.js HTTP/1.1" 200 -
+2026-05-29 20:25:32,965 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/tabs/workflow.js HTTP/1.1" 200 -
+2026-05-29 20:25:32,965 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/lib/dom.js HTTP/1.1" 200 -
+2026-05-29 20:25:32,966 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/tabs/mq.js HTTP/1.1" 200 -
+2026-05-29 20:25:32,966 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/tabs/feature-flag.js HTTP/1.1" 200 -
+2026-05-29 20:25:32,980 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/lib/feedback.js HTTP/1.1" 200 -
+2026-05-29 20:25:32,980 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/lib/toast.js HTTP/1.1" 200 -
+2026-05-29 20:25:32,981 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/components/json-group.js HTTP/1.1" 200 -
+2026-05-29 20:25:32,981 - INFO - 127.0.0.1 - - [29/May/2026 20:25:32] "GET /static/js/components/sections.js HTTP/1.1" 200 -
+2026-05-29 20:25:33,502 - INFO - 127.0.0.1 - - [29/May/2026 20:25:33] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-05-29 20:25:33,520 - INFO - 127.0.0.1 - - [29/May/2026 20:25:33] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-05-29 20:25:50,756 - INFO - Generating branch pull SQL
+2026-05-29 20:25:50,757 - INFO - 127.0.0.1 - - [29/May/2026 20:25:50] "POST /branch/pull HTTP/1.1" 200 -
+2026-05-29 20:27:55,292 - INFO - Generating branch pull SQL
+2026-05-29 20:27:55,293 - INFO - 127.0.0.1 - - [29/May/2026 20:27:55] "POST /branch/pull HTTP/1.1" 200 -
+2026-05-29 21:47:16,652 - INFO - Logging initialized
+2026-05-29 21:47:16,674 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.110.2:5000
+2026-05-29 21:47:16,674 - INFO - [33mPress CTRL+C to quit[0m
+2026-05-29 21:47:21,315 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,316 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,341 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/state/registry.js HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,343 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/components/sql-preview.js HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,345 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/state/status-bar.js HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,346 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/state/flow-state.js HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,348 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/lib/modal.js HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,353 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/components/table-modal.js HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,357 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/lib/dom.js HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,358 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/tabs/workflow.js HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,359 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/tabs/branch.js HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,360 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/lib/data.js HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,362 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/tabs/feature-flag.js HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,367 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/tabs/mq.js HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,380 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/components/json-group.js HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,381 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/components/sections.js HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,382 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/lib/feedback.js HTTP/1.1[0m" 304 -
+2026-05-29 21:47:21,383 - INFO - 127.0.0.1 - - [29/May/2026 21:47:21] "[36mGET /static/js/lib/toast.js HTTP/1.1[0m" 304 -
+2026-05-29 21:48:15,161 - INFO - Generating branch pull SQL
+2026-05-29 21:48:15,162 - INFO - 127.0.0.1 - - [29/May/2026 21:48:15] "POST /branch/pull HTTP/1.1" 200 -
+2026-05-29 22:02:09,196 - INFO - Logging initialized
+2026-05-29 22:02:09,214 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.110.2:5000
+2026-05-29 22:02:09,215 - INFO - [33mPress CTRL+C to quit[0m
+2026-05-29 22:02:16,843 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,844 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,862 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/components/sql-preview.js HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,867 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/state/registry.js HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,867 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/state/status-bar.js HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,868 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/state/flow-state.js HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,868 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/lib/modal.js HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,869 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/components/table-modal.js HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,871 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/lib/data.js HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,874 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/lib/dom.js HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,878 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/tabs/workflow.js HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,879 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/tabs/branch.js HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,880 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/tabs/mq.js HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,880 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/tabs/feature-flag.js HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,887 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/lib/toast.js HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,888 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/components/json-group.js HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,893 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/lib/feedback.js HTTP/1.1[0m" 304 -
+2026-05-29 22:02:16,894 - INFO - 127.0.0.1 - - [29/May/2026 22:02:16] "[36mGET /static/js/components/sections.js HTTP/1.1[0m" 304 -
+2026-05-29 22:03:06,035 - INFO - Generating branch pull SQL
+2026-05-29 22:03:06,036 - INFO - 127.0.0.1 - - [29/May/2026 22:03:06] "POST /branch/pull HTTP/1.1" 200 -
+2026-05-29 22:03:34,487 - INFO - Generating workflow pull SQL
+2026-05-29 22:03:34,487 - INFO - 127.0.0.1 - - [29/May/2026 22:03:34] "POST /workflow/pull HTTP/1.1" 200 -
+2026-05-29 22:04:07,033 - INFO - Generating branch pull SQL
+2026-05-29 22:04:07,033 - INFO - 127.0.0.1 - - [29/May/2026 22:04:07] "POST /branch/pull HTTP/1.1" 200 -
+2026-05-29 22:26:17,966 - INFO - Generating branch final SQL
+2026-05-29 22:26:17,982 - INFO - 127.0.0.1 - - [29/May/2026 22:26:17] "POST /branch/final HTTP/1.1" 200 -
+2026-05-29 22:26:22,446 - INFO - Generating branch final SQL
+2026-05-29 22:26:22,463 - INFO - 127.0.0.1 - - [29/May/2026 22:26:22] "POST /branch/final HTTP/1.1" 200 -
+2026-05-29 22:27:08,312 - INFO - Generating branch final SQL
+2026-05-29 22:27:08,329 - INFO - 127.0.0.1 - - [29/May/2026 22:27:08] "POST /branch/final HTTP/1.1" 200 -
+2026-05-29 23:13:56,267 - INFO - Generating branch final SQL
+2026-05-29 23:13:56,267 - INFO - 127.0.0.1 - - [29/May/2026 23:13:56] "POST /branch/final HTTP/1.1" 200 -
+2026-05-29 23:24:55,280 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "GET / HTTP/1.1" 200 -
+2026-05-29 23:24:55,293 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,294 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,312 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/components/sql-preview.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,312 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/state/status-bar.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,313 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/state/registry.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,314 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/state/flow-state.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,315 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/components/table-modal.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,315 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/lib/modal.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,320 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/lib/data.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,322 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/lib/dom.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,322 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/tabs/feature-flag.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,322 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/tabs/mq.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,323 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/tabs/branch.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,323 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/tabs/workflow.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,336 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/lib/toast.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,337 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/components/json-group.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,341 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/components/sections.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,342 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/js/lib/feedback.js HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,418 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/favicon.svg HTTP/1.1[0m" 304 -
+2026-05-29 23:24:55,433 - INFO - 127.0.0.1 - - [29/May/2026 23:24:55] "[36mGET /static/favicon.svg HTTP/1.1[0m" 304 -
+2026-05-29 23:25:11,389 - INFO - Generating branch pull SQL
+2026-05-29 23:25:11,389 - INFO - 127.0.0.1 - - [29/May/2026 23:25:11] "POST /branch/pull HTTP/1.1" 200 -
+2026-05-29 23:30:47,661 - INFO - Generating branch pull SQL
+2026-05-29 23:30:47,662 - INFO - 127.0.0.1 - - [29/May/2026 23:30:47] "POST /branch/pull HTTP/1.1" 200 -
+2026-05-29 23:30:55,270 - INFO - Generating branch pull SQL
+2026-05-29 23:30:55,270 - INFO - 127.0.0.1 - - [29/May/2026 23:30:55] "POST /branch/pull HTTP/1.1" 200 -
+2026-05-29 23:30:59,282 - INFO - Generating branch pull SQL
+2026-05-29 23:30:59,282 - INFO - 127.0.0.1 - - [29/May/2026 23:30:59] "POST /branch/pull HTTP/1.1" 200 -
+2026-05-29 23:32:40,569 - INFO - Generating branch final SQL
+2026-05-29 23:32:40,586 - INFO - 127.0.0.1 - - [29/May/2026 23:32:40] "POST /branch/final HTTP/1.1" 200 -
+2026-05-29 23:45:34,268 - INFO - Generating branch pull SQL
+2026-05-29 23:45:34,269 - INFO - 127.0.0.1 - - [29/May/2026 23:45:34] "POST /branch/pull HTTP/1.1" 200 -
+2026-05-29 23:45:58,607 - INFO - Generating branch final SQL
+2026-05-29 23:45:58,608 - INFO - 127.0.0.1 - - [29/May/2026 23:45:58] "POST /branch/final HTTP/1.1" 200 -
+2026-05-30 00:20:55,630 - INFO - Logging initialized
+2026-05-30 00:20:55,648 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.110.2:5000
+2026-05-30 00:20:55,648 - INFO - [33mPress CTRL+C to quit[0m
+2026-05-30 00:21:07,544 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,545 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,566 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/state/registry.js HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,567 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/components/sql-preview.js HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,568 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/state/status-bar.js HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,569 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/state/flow-state.js HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,571 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/lib/modal.js HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,572 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/components/table-modal.js HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,574 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/lib/data.js HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,576 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/lib/dom.js HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,576 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/tabs/branch.js HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,577 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/tabs/workflow.js HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,579 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/tabs/mq.js HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,579 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/tabs/feature-flag.js HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,588 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/lib/toast.js HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,588 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/components/json-group.js HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,589 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/lib/feedback.js HTTP/1.1[0m" 304 -
+2026-05-30 00:21:07,590 - INFO - 127.0.0.1 - - [30/May/2026 00:21:07] "[36mGET /static/js/components/sections.js HTTP/1.1[0m" 304 -
+2026-05-30 00:22:23,168 - INFO - Generating branch pull SQL
+2026-05-30 00:22:23,169 - INFO - 127.0.0.1 - - [30/May/2026 00:22:23] "POST /branch/pull HTTP/1.1" 200 -
+2026-05-30 00:23:17,588 - INFO - Generating branch final SQL
+2026-05-30 00:23:17,590 - INFO - 127.0.0.1 - - [30/May/2026 00:23:17] "POST /branch/final HTTP/1.1" 200 -
+2026-05-30 00:25:01,815 - INFO - Generating branch pull SQL
+2026-05-30 00:25:01,815 - INFO - 127.0.0.1 - - [30/May/2026 00:25:01] "POST /branch/pull HTTP/1.1" 200 -
+2026-05-30 00:26:18,048 - INFO - Generating branch final SQL
+2026-05-30 00:26:18,072 - INFO - 127.0.0.1 - - [30/May/2026 00:26:18] "POST /branch/final HTTP/1.1" 200 -
+2026-05-30 00:35:11,639 - INFO - Generating branch final SQL
+2026-05-30 00:35:11,661 - INFO - 127.0.0.1 - - [30/May/2026 00:35:11] "POST /branch/final HTTP/1.1" 200 -
+2026-05-30 00:46:18,088 - INFO - Generating branch final SQL
+2026-05-30 00:46:18,111 - INFO - 127.0.0.1 - - [30/May/2026 00:46:18] "POST /branch/final HTTP/1.1" 200 -
+2026-06-01 11:06:44,860 - INFO - Logging initialized
+2026-06-01 11:06:44,877 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-06-01 11:06:44,877 - INFO - [33mPress CTRL+C to quit[0m
+2026-06-01 11:06:47,208 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "GET / HTTP/1.1" 200 -
+2026-06-01 11:06:47,253 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,254 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,268 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/components/sql-preview.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,279 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/state/registry.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,279 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/state/status-bar.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,281 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/state/flow-state.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,282 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/lib/modal.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,285 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/components/table-modal.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,286 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/lib/data.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,291 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/lib/dom.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,292 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/tabs/branch.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,294 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/tabs/workflow.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,295 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/tabs/feature-flag.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,296 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/tabs/mq.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,308 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/lib/toast.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,310 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/components/json-group.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,380 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "GET / HTTP/1.1" 200 -
+2026-06-01 11:06:47,401 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/components/sections.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,402 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/lib/feedback.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,410 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,410 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,455 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/state/registry.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,455 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/state/status-bar.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,456 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/state/flow-state.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,456 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/components/sql-preview.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,457 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/lib/modal.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,458 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/components/table-modal.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,469 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/tabs/workflow.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,471 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/lib/dom.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,472 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/tabs/mq.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,473 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/tabs/branch.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,473 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/tabs/feature-flag.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,473 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/lib/data.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,488 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/lib/toast.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,488 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/components/json-group.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,490 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/lib/feedback.js HTTP/1.1[0m" 304 -
+2026-06-01 11:06:47,491 - INFO - 127.0.0.1 - - [01/Jun/2026 11:06:47] "[36mGET /static/js/components/sections.js HTTP/1.1[0m" 304 -
+2026-06-01 11:07:08,044 - INFO - Generating workflow pull SQL
+2026-06-01 11:07:08,044 - INFO - 127.0.0.1 - - [01/Jun/2026 11:07:08] "POST /workflow/pull HTTP/1.1" 200 -
+2026-06-01 11:07:30,045 - INFO - Generating branch pull SQL
+2026-06-01 11:07:30,045 - INFO - 127.0.0.1 - - [01/Jun/2026 11:07:30] "POST /branch/pull HTTP/1.1" 200 -
+2026-06-01 11:10:09,241 - INFO - Generating branch final SQL
+2026-06-01 11:10:09,241 - INFO - 127.0.0.1 - - [01/Jun/2026 11:10:09] "POST /branch/final HTTP/1.1" 200 -
+2026-06-01 12:15:43,076 - INFO - Logging initialized
+2026-06-01 12:15:43,094 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-06-01 12:15:43,095 - INFO - [33mPress CTRL+C to quit[0m
+2026-06-01 12:15:47,621 - INFO - Generating branch final SQL
+2026-06-01 12:34:05,190 - INFO - Logging initialized
+2026-06-01 12:34:05,203 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-06-01 12:34:05,203 - INFO - [33mPress CTRL+C to quit[0m
+2026-06-01 12:34:10,737 - INFO - Generating branch final SQL
+2026-06-01 12:34:10,738 - INFO - 127.0.0.1 - - [01/Jun/2026 12:34:10] "POST /branch/final HTTP/1.1" 200 -
+2026-06-01 12:36:57,901 - INFO - Generating branch final SQL
+2026-06-01 12:36:57,901 - INFO - 127.0.0.1 - - [01/Jun/2026 12:36:57] "POST /branch/final HTTP/1.1" 200 -
+2026-06-01 12:37:01,923 - INFO - Generating branch pull SQL
+2026-06-01 12:37:01,923 - INFO - 127.0.0.1 - - [01/Jun/2026 12:37:01] "POST /branch/pull HTTP/1.1" 200 -
+2026-06-01 12:38:04,803 - INFO - Generating branch pull SQL
+2026-06-01 12:38:04,803 - INFO - 127.0.0.1 - - [01/Jun/2026 12:38:04] "POST /branch/pull HTTP/1.1" 200 -
+2026-06-01 14:12:58,547 - INFO - Generating branch final SQL
+2026-06-01 14:12:58,575 - INFO - 127.0.0.1 - - [01/Jun/2026 14:12:58] "POST /branch/final HTTP/1.1" 200 -
+2026-06-01 14:29:47,658 - INFO - Logging initialized
+2026-06-01 14:29:47,683 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-06-01 14:29:47,683 - INFO - [33mPress CTRL+C to quit[0m
+2026-06-01 14:29:52,949 - INFO - Generating branch final SQL
+2026-06-01 14:29:52,974 - INFO - 127.0.0.1 - - [01/Jun/2026 14:29:52] "POST /branch/final HTTP/1.1" 200 -
+2026-06-01 14:43:58,416 - INFO - Logging initialized
+2026-06-01 14:43:58,420 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5199
+2026-06-01 14:43:58,420 - INFO - [33mPress CTRL+C to quit[0m
+2026-06-01 14:44:01,262 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:01] "GET / HTTP/1.1" 200 -
+2026-06-01 14:44:10,293 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET / HTTP/1.1" 200 -
+2026-06-01 14:44:10,307 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-01 14:44:10,307 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,318 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/lib/modal.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,319 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/components/sql-preview.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,319 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/state/status-bar.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,319 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/state/registry.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,320 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/state/flow-state.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,320 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/components/table-modal.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,329 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/tabs/workflow.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,329 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/lib/data.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,330 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/tabs/branch.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,331 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/lib/dom.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,331 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/tabs/mq.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,332 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/tabs/feature-flag.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,338 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/components/json-group.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,338 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/lib/toast.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,340 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/lib/feedback.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,340 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/js/components/sections.js HTTP/1.1" 200 -
+2026-06-01 14:44:10,781 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-06-01 14:44:10,797 - INFO - 127.0.0.1 - - [01/Jun/2026 14:44:10] "[36mGET /static/favicon.svg HTTP/1.1[0m" 304 -
+2026-06-01 14:45:29,176 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET / HTTP/1.1" 200 -
+2026-06-01 14:45:29,186 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-01 14:45:29,186 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,198 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/lib/modal.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,199 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/components/sql-preview.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,199 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/state/status-bar.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,199 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/state/flow-state.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,200 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/state/registry.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,200 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/components/table-modal.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,209 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/lib/data.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,211 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/tabs/mq.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,211 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/tabs/branch.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,211 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/tabs/workflow.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,212 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/lib/dom.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,212 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/tabs/feature-flag.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,220 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/components/json-group.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,220 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/lib/toast.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,221 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/lib/feedback.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,222 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/js/components/sections.js HTTP/1.1" 200 -
+2026-06-01 14:45:29,686 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-06-01 14:45:29,695 - INFO - 127.0.0.1 - - [01/Jun/2026 14:45:29] "[36mGET /static/favicon.svg HTTP/1.1[0m" 304 -
+2026-06-01 14:47:03,707 - INFO - Logging initialized
+2026-06-01 14:47:03,723 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-06-01 14:47:03,723 - INFO - [33mPress CTRL+C to quit[0m
+2026-06-01 14:47:08,129 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "GET / HTTP/1.1" 200 -
+2026-06-01 14:47:08,394 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:08,395 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-01 14:47:08,412 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/state/registry.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:08,413 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/components/sql-preview.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:08,414 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/state/status-bar.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:08,415 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/state/flow-state.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:08,417 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/lib/modal.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:08,418 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/lib/data.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:08,418 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/components/table-modal.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:08,420 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/lib/dom.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:08,422 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/tabs/branch.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:08,422 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/tabs/workflow.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:08,423 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/tabs/feature-flag.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:08,428 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/tabs/mq.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:08,432 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/components/json-group.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:08,433 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/lib/feedback.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:08,434 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/lib/toast.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:08,435 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:08] "[36mGET /static/js/components/sections.js HTTP/1.1[0m" 304 -
+2026-06-01 14:47:09,001 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:09] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-06-01 14:47:09,017 - INFO - 127.0.0.1 - - [01/Jun/2026 14:47:09] "[36mGET /static/favicon.svg HTTP/1.1[0m" 304 -
+2026-06-01 14:56:35,008 - INFO - Logging initialized
+2026-06-01 14:56:35,012 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5199
+2026-06-01 14:56:35,012 - INFO - [33mPress CTRL+C to quit[0m
+2026-06-01 14:56:37,844 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:37] "GET / HTTP/1.1" 200 -
+2026-06-01 14:56:38,195 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET / HTTP/1.1" 200 -
+2026-06-01 14:56:38,210 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,211 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-01 14:56:38,219 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/components/sql-preview.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,219 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/state/flow-state.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,220 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/lib/modal.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,220 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/components/table-modal.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,221 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/state/status-bar.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,221 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/state/registry.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,231 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/tabs/feature-flag.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,231 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/lib/dom.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,231 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/lib/data.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,231 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/tabs/workflow.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,232 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/tabs/branch.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,232 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/tabs/mq.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,237 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/components/json-group.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,240 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/lib/toast.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,240 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/components/sections.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,241 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/js/lib/feedback.js HTTP/1.1" 200 -
+2026-06-01 14:56:38,803 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-06-01 14:56:38,811 - INFO - 127.0.0.1 - - [01/Jun/2026 14:56:38] "[36mGET /static/favicon.svg HTTP/1.1[0m" 304 -
+2026-06-01 14:57:19,368 - INFO - Logging initialized
+2026-06-01 14:57:19,381 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.60.8.128:5000
+2026-06-01 14:57:19,381 - INFO - [33mPress CTRL+C to quit[0m
+2026-06-01 14:57:23,278 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "GET / HTTP/1.1" 200 -
+2026-06-01 14:57:23,294 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,295 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-01 14:57:23,309 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/state/registry.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,310 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/components/sql-preview.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,311 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/lib/modal.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,312 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/state/flow-state.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,312 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/components/table-modal.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,314 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/lib/data.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,315 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/state/status-bar.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,316 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/lib/dom.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,317 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/tabs/branch.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,319 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/tabs/workflow.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,320 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/tabs/feature-flag.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,321 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/tabs/mq.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,333 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/lib/toast.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,333 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/components/json-group.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,338 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/lib/feedback.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,340 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/js/components/sections.js HTTP/1.1[0m" 304 -
+2026-06-01 14:57:23,416 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "GET /static/favicon.svg HTTP/1.1" 200 -
+2026-06-01 14:57:23,428 - INFO - 127.0.0.1 - - [01/Jun/2026 14:57:23] "[36mGET /static/favicon.svg HTTP/1.1[0m" 304 -

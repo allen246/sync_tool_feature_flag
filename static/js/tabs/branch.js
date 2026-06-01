@@ -6,8 +6,10 @@ import { ICONS, exposeGlobals } from '../lib/dom.js';
 import { showToast } from '../lib/toast.js';
 import { showNotesModal } from '../lib/modal.js';
 import { setLoading, activeButton } from '../lib/feedback.js';
-import { validateFields, validateJSON, normalizeInput, registerInputs } from '../lib/data.js';
+import { validateFields, validateJSON, normalizeInput, registerInputs, extractJsonArray } from '../lib/data.js';
 import { flowRibbon, sectionHeader, offlineCallout, outputCard, finalSqlBox, jsonGroup, renderPullResult } from '../components/sections.js';
+import { registerJsonGroupAction } from '../components/json-group.js';
+import { openTableModal } from '../components/table-modal.js';
 import { defaultGateFields } from '../state/flow-state.js';
 
 registerInputs({
@@ -121,6 +123,125 @@ function branchFinal() {
   }).catch(() => showToast('Server Error', 'Note: Failed to generate Final SQL. Check server logs.', 'error'))
    .finally(() => setLoading(btn, false));
 }
+
+/* ── Table view (Source Branch & Product Snapshot) ─────────
+ * Rows from the Source DB pull are nested:
+ *   { product_configurations, module_configurations,
+ *     transaction_type_configuration, branch_configuration }
+ * We project read-only scalar columns (Branch / Product / Module /
+ * Transaction Type) for filter/sort, and keep the four nested objects
+ * as editable JSON cells. On apply, only the four object columns are
+ * persisted back (scalars are flat projections; they are not
+ * round-tripped to the DB). */
+const BRANCH_TABLE_COLUMNS = [
+  { key: 'branch_code',                label: 'Branch',          width: 90,  editable: false },
+  { key: 'branch_name',                label: 'Branch Name',     width: 160, editable: false },
+  { key: 'product_code',               label: 'Product',         width: 110, editable: false },
+  { key: 'product_name',               label: 'Product Name',    width: 160, editable: false },
+  { key: 'product_tag',                label: 'Product Tag',     width: 110, editable: false },
+  { key: 'module_code',                label: 'Module',          width: 100, editable: false },
+  { key: 'module_name',                label: 'Module Name',     width: 140, editable: false },
+  { key: 'transaction_type_code',      label: 'Txn Type',        width: 110, editable: false },
+  { key: 'transaction_type_name',      label: 'Txn Type Name',   width: 160, editable: false },
+  { key: 'product_configurations',         label: 'Product (JSON)',     width: 220 },
+  { key: 'module_configurations',          label: 'Module (JSON)',      width: 200 },
+  { key: 'transaction_type_configuration', label: 'Txn Type (JSON)',    width: 220 },
+  { key: 'branch_configuration',           label: 'Branch (JSON)',      width: 200 },
+];
+
+const BRANCH_TABLE_DEFAULT_SORT = [
+  { col: 'branch_code',  dir: 1 },
+  { col: 'product_code', dir: 1 },
+  { col: 'module_code',  dir: 1 },
+];
+
+const pick = (o, k) => (o && typeof o === 'object' && o[k] != null) ? o[k] : '';
+
+function flattenBranchRow(row) {
+  const p = row?.product_configurations || {};
+  const m = row?.module_configurations  || {};
+  const t = row?.transaction_type_configuration || null;
+  const b = row?.branch_configuration   || {};
+  return {
+    branch_code:                     pick(b, 'code'),
+    branch_name:                     pick(b, 'name'),
+    product_code:                    pick(p, 'code'),
+    product_name:                    pick(p, 'name'),
+    product_tag:                     pick(p, 'tag'),
+    module_code:                     pick(m, 'code'),
+    module_name:                     pick(m, 'name'),
+    transaction_type_code:           t ? pick(t, 'code') : '',
+    transaction_type_name:           t ? pick(t, 'name') : '',
+    product_configurations:          row?.product_configurations          ?? {},
+    module_configurations:           row?.module_configurations           ?? {},
+    transaction_type_configuration:  row?.transaction_type_configuration  ?? null,
+    branch_configuration:            row?.branch_configuration            ?? {},
+  };
+}
+
+function unflattenBranchRow(flat) {
+  return {
+    product_configurations:         flat?.product_configurations         ?? {},
+    module_configurations:          flat?.module_configurations          ?? {},
+    transaction_type_configuration: flat?.transaction_type_configuration ?? null,
+    branch_configuration:           flat?.branch_configuration           ?? {},
+  };
+}
+
+function openBranchTable(textarea) {
+  if (!textarea || !textarea.value.trim()) {
+    return showToast('Nothing to View', 'Note: Paste or upload the Source Branch & Product Snapshot first.', 'warning');
+  }
+
+  let result;
+  try { result = extractJsonArray(textarea.value); }
+  catch (e) {
+    return showToast('Invalid JSON',
+      'Note: Could not parse Source Branch & Product Snapshot — ' + e.message, 'error');
+  }
+  const rows = result.rows;
+
+  if (result.unwrapped || result.fixes.length) {
+    textarea.value = JSON.stringify(rows, null, 2);
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    const note = result.unwrapped
+      ? `Unwrapped to ${rows.length} row${rows.length === 1 ? '' : 's'}.`
+      : `Cleaned (${result.fixes.join(', ')}).`;
+    showToast('JSON Normalized', 'Note: ' + note, 'info');
+  }
+
+  const flatRows = rows.map(flattenBranchRow);
+
+  openTableModal({
+    title:       'Source Branch & Product — Table View',
+    filename:    'branch_product',
+    filenamePrefix: () => {
+      const v = (document.getElementById('bTenant')?.value || '').trim();
+      return v ? v.replace(/[^A-Za-z0-9_.-]+/g, '_') : '';
+    },
+    columns:     BRANCH_TABLE_COLUMNS,
+    defaultSort: BRANCH_TABLE_DEFAULT_SORT,
+    rows:        flatRows,
+    onApply:     (modifiedRows) => {
+      const t = document.getElementById('bJson1');
+      if (!t) return;
+      const nested = modifiedRows.map(unflattenBranchRow);
+      t.value = JSON.stringify(nested, null, 2);
+      t.dispatchEvent(new Event('input', { bubbles: true }));
+      showToast('Source Updated',
+        `Note: ${nested.length} row${nested.length === 1 ? '' : 's'} written back. Click Generate Final SQL to process.`,
+        'success');
+    },
+  });
+}
+
+registerJsonGroupAction('bJson1', {
+  cls:   'json-table-btn',
+  icon:  ICONS.table,
+  label: 'Table View',
+  title: 'Open as filterable table',
+  onClick: openBranchTable,
+});
 
 exposeGlobals({ branchPull, branchFinal });
 

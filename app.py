@@ -23,8 +23,8 @@ def branch_pull():
     # Returns {source_query, destination_query} — return directly, no wrapper
     result = branch_service.generate_pull_sql(
         d["tenant"],
-        d["branches"].split(",") if d["branches"] else [],
-        d["products"].split(",") if d["products"] else []
+        [c.strip() for c in d["branches"].split(",")] if d["branches"] else [],
+        [c.strip() for c in d["products"].split(",")] if d["products"] else []
     )
     return jsonify(result)
 
@@ -55,7 +55,7 @@ def workflow_final():
     d = request.json
     r = workflow_service.generate_final(
         d["tenant"],
-        d["branches"].split(",") if d["branches"] else [],
+        [c.strip() for c in d["branches"].split(",")] if d["branches"] else [],
         d["source_json"]
     )
     return jsonify({"result": r})

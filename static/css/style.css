@@ -222,7 +222,7 @@ body::after {
   display: flex;
   align-items: center;
   gap: 6px;
-  text-shadow: 0 0 18px rgba(255, 176, 0, 0.05);
+  text-shadow: 0 0 18px rgba(255,176,0, 0.05);
 }
 
 /* Blink is driven by --cursor-on (toggled on :root every 525ms by main.js).
@@ -1016,7 +1016,7 @@ body::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(8, 9, 10, 0.82);
+  background: rgba(8,9,10, 0.82);
   backdrop-filter: blur(6px) saturate(120%);
   -webkit-backdrop-filter: blur(6px) saturate(120%);
   opacity: 0;
@@ -1254,7 +1254,7 @@ body::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 30%, rgba(255, 176, 0, 0.10), transparent 70%);
+  background: radial-gradient(circle at 50% 30%, rgba(255,176,0, 0.10), transparent 70%);
   opacity: 0;
   transition: opacity 0.2s var(--ease-out);
   z-index: 0;
@@ -1541,8 +1541,8 @@ button.primary:disabled::before { transform: translateY(101%) !important; }
   background:
     repeating-linear-gradient(
       135deg,
-      rgba(8, 9, 10, 0.5) 0, rgba(8, 9, 10, 0.5) 6px,
-      rgba(8, 9, 10, 0.1) 6px, rgba(8, 9, 10, 0.1) 12px
+      rgba(8,9,10, 0.5) 0, rgba(8,9,10, 0.5) 6px,
+      rgba(8,9,10, 0.1) 6px, rgba(8,9,10, 0.1) 12px
     );
   border: 1px dashed var(--amber-lo);
   animation: lock-fade 0.32s var(--ease-out);
@@ -1967,7 +1967,7 @@ button.secondary[data-loading="true"] svg {
   position: relative;
   transition: background 0.16s var(--ease-out);
 }
-.sql-stmt:hover { background: rgba(255, 176, 0, 0.015); }
+.sql-stmt:hover { background: rgba(255,176,0, 0.015); }
 .sql-stmt[data-level="error"] { background: rgba(248, 113, 113, 0.04); }
 .sql-stmt[data-level="warn"]  { background: rgba(255, 176, 0,  0.025); }
 
@@ -2593,7 +2593,7 @@ button.secondary[data-loading="true"] svg {
 .workflow-table tbody td:last-child { border-right: none; }
 .workflow-table tbody tr.wt-row-alt td { background: rgba(255, 255, 255, 0.012); }
 .workflow-table tbody tr:hover td {
-  background: rgba(255, 176, 0, 0.045);
+  background: rgba(255,176,0, 0.045);
   color: var(--text-0);
 }
 
@@ -2873,7 +2873,7 @@ button.secondary[data-loading="true"] svg {
   transition: background 0.14s var(--ease-out);
 }
 .wt-cell-json-editable:hover {
-  background: rgba(255, 176, 0, 0.06) !important;
+  background: rgba(255,176,0, 0.06) !important;
   color: var(--amber-hi) !important;
 }
 .wt-cell-json-editable::after {
@@ -2896,7 +2896,7 @@ button.secondary[data-loading="true"] svg {
 .wt-json-editor {
   position: absolute;
   inset: 0;
-  background: rgba(8, 9, 10, 0.82);
+  background: rgba(8,9,10, 0.82);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   z-index: 50;
@@ -3021,7 +3021,7 @@ button.secondary[data-loading="true"] svg {
 .wt-json-editor-status.is-valid {
   color: var(--ok);
   border-color: var(--ok);
-  background: rgba(163, 230, 53, 0.06);
+  background: rgba(163,230,53, 0.06);
 }
 .wt-json-editor-status.is-invalid {
   color: var(--err);
@@ -3410,7 +3410,7 @@ button.secondary[data-loading="true"] svg {
 }
 .wt-diff-line-new .wt-diff-val {
   color: var(--ok);
-  background: rgba(163, 230, 53, 0.05);
+  background: rgba(163,230,53, 0.05);
 }
 
 /* Removed-row block (separate visual treatment) */
@@ -3490,7 +3490,7 @@ button.secondary[data-loading="true"] svg {
   align-items: center;
   padding: 8px 12px;
   border-left: 2px solid var(--ok);
-  background: rgba(163, 230, 53, 0.06);
+  background: rgba(163,230,53, 0.06);
   font-family: var(--font-mono);
   font-size: 11.5px;
   color: var(--text-1);
@@ -3547,7 +3547,7 @@ button.secondary[data-loading="true"] svg {
 .wt-diff-added .wt-diff-revert:focus-visible {
   color: var(--ok);
   border-color: var(--ok);
-  background: rgba(163, 230, 53, 0.08);
+  background: rgba(163,230,53, 0.08);
 }
 .wt-diff-row .wt-diff-revert:hover,
 .wt-diff-row .wt-diff-revert:focus-visible {
@@ -3624,7 +3624,7 @@ button.secondary[data-loading="true"] svg {
 }
 .wt-sort-btn.is-sorted {
   color: var(--amber-hi);
-  background: rgba(255, 176, 0, 0.05);
+  background: rgba(255,176,0, 0.05);
 }
 
 /* ── Sort priority strip ────────────────────────────────────────
@@ -3800,11 +3800,11 @@ button.secondary[data-loading="true"] svg {
 
 /* ── Newly added rows (this session only) ────────────────────── */
 .workflow-table tbody tr.wt-row-new td {
-  background: rgba(163, 230, 53, 0.05) !important;
+  background: rgba(163,230,53, 0.05) !important;
   color: var(--text-0);
 }
 .workflow-table tbody tr.wt-row-new:hover td {
-  background: rgba(163, 230, 53, 0.10) !important;
+  background: rgba(163,230,53, 0.10) !important;
 }
 .workflow-table tbody tr.wt-row-new td:first-child {
   border-left: 2px solid var(--ok);
@@ -3827,7 +3827,7 @@ button.secondary[data-loading="true"] svg {
   border-radius: 2px;
   line-height: 1;
   pointer-events: none;
-  box-shadow: 0 0 6px rgba(163, 230, 53, 0.45);
+  box-shadow: 0 0 6px rgba(163,230,53, 0.45);
 }
 
 /* ── Add Row toolbar button (matches Edit/Clear/Export styling) ── */
@@ -3837,7 +3837,7 @@ button.secondary[data-loading="true"] svg {
 #tableModalAddRow:hover {
   color: var(--ok);
   border-color: var(--ok);
-  background: rgba(163, 230, 53, 0.06);
+  background: rgba(163,230,53, 0.06);
 }
 #tableModalAddRow svg { color: inherit; }
 

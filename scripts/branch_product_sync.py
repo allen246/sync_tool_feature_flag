@@ -51,12 +51,37 @@ class BranchProductSync:
         self._generated_queries.append(normalized_query)
 
     def _print_collected_queries(self) -> None:
+        replace_mapper = {"'None'": "null", "= null": "is null"}
         for query in self._generated_queries:
-            print(query.replace("'None'", "null"))
+            for replacement_key in replace_mapper:
+                query = query.replace(replacement_key, replace_mapper[replacement_key])
+            print(query)
 
     # ------------------------------------------------------------------ #
     #  Helpers                                                             #
     # ------------------------------------------------------------------ #
+
+    @staticmethod
+    def _is_module_missing_row(row: dict) -> bool:
+        return bool(
+            row.get("module_missing_product_configurations")
+            and not row.get("module_configurations")
+        )
+
+    @staticmethod
+    def _active_product_configurations(row: dict) -> dict:
+        if BranchProductSync._is_module_missing_row(row):
+            return row["module_missing_product_configurations"]
+        return row.get("product_configurations") or row.get("module_missing_product_configurations") or {}
+
+    def _existing_config_values(self, key: str) -> list:
+        values = self.EXISTING_CONFIG.get(key) or []
+        if isinstance(values, str):
+            try:
+                return json.loads(values) or []
+            except json.JSONDecodeError:
+                return [values]
+        return values
 
     @staticmethod
     def _serialize_value(value: Any) -> str:
@@ -79,7 +104,7 @@ class BranchProductSync:
         transaction_type_configuration = arguments["transaction_type_configuration"]
         if not transaction_type_configuration:
             return ""
-        product_configurations = arguments["product_configurations"]
+        product_configurations = self._active_product_configurations(arguments)
         branch_configuration = arguments["branch_configuration"]
 
         query_arguments = {
@@ -125,7 +150,7 @@ class BranchProductSync:
         transaction_type_configuration = arguments["transaction_type_configuration"]
         if not transaction_type_configuration:
             return ""
-        product_configurations = arguments["product_configurations"]
+        product_configurations = BranchProductSync._active_product_configurations(arguments)
 
         query_arguments = {"product_code": f"'{product_configurations['code']}'"}
         query_arguments.update({
@@ -249,15 +274,13 @@ class BranchProductSync:
 
     @staticmethod
     def generate_product_tag_insert_query(arguments: dict) -> str:
-        product_configurations = arguments["product_configurations"]
-        module_configurations = arguments["module_configurations"]
+        product_configurations = BranchProductSync._active_product_configurations(arguments)
         product_tag_configurations = product_configurations.get("product_tag_configurations", {})
 
-        query_arguments = {"module_name": f"'{module_configurations['name']}'"}
-        query_arguments.update({
+        query_arguments = {
             key: (f"'{json.dumps(value)}'" if isinstance(value, dict) else f"'{value}'")
             for key, value in product_tag_configurations.items()
-        })
+        }
 
         return """
             INSERT INTO product_tag (code, name, sequence)
@@ -276,7 +299,7 @@ class BranchProductSync:
     def generate_product_insert_query(arguments: dict) -> str:
         # FIX 6: Use .get() instead of .pop() to avoid mutating the caller's dict.
         # A shallow copy is made so subsequent formatting is safe.
-        product_configurations = arguments["product_configurations"].copy()
+        product_configurations = BranchProductSync._active_product_configurations(arguments).copy()
         product_tag_code = product_configurations.pop("product_tag_configurations", {}).get("code")
 
         query_arguments = {
@@ -303,9 +326,41 @@ class BranchProductSync:
             );""".format(**query_arguments)
 
     def generate_branch_product_module_insert_query(self, arguments: dict) -> str:
-        product_configurations = arguments["product_configurations"]
-        module_configurations = arguments["module_configurations"]
+        product_configurations = self._active_product_configurations(arguments)
+        module_configurations = arguments.get("module_configurations")
         branch_configuration = arguments["branch_configuration"]
+
+        if self._is_module_missing_row(arguments):
+            query_arguments = {
+                **self._get_tenant_arguments(),
+                "product_code": f"'{product_configurations['code']}'",
+                "sequence": f"'{product_configurations.get('product_module_sequence')}'",
+                "branch_code": f"'{branch_configuration['code']}'",
+            }
+
+            return """
+            INSERT INTO branch_product_module (product_module_id, branch_id, created_by)
+            SELECT
+                product_module.product_module_id,
+                branch.branch_id,
+                'SYSTEM'
+            FROM product_module
+            JOIN product
+                ON product.product_id = product_module.product_id
+            JOIN branch
+                ON branch.code = {branch_code}
+            JOIN tenant
+                ON tenant.tenant_id = branch.tenant_id
+                AND tenant.organization_code = {organization_code}
+            WHERE product.code = {product_code}
+              AND product_module.module_id IS NULL
+              AND product_module.sequence = {sequence}
+            AND NOT EXISTS (
+                SELECT 1
+                FROM branch_product_module existing_branch_product_module
+                WHERE existing_branch_product_module.product_module_id = product_module.product_module_id
+                  AND existing_branch_product_module.branch_id = branch.branch_id
+            );""".format(**query_arguments)
 
         query_arguments = {
             **self._get_tenant_arguments(),
@@ -341,8 +396,30 @@ class BranchProductSync:
 
     @staticmethod
     def generate_product_module_insert_query(arguments: dict) -> str:
-        product_configurations = arguments["product_configurations"]
-        module_configurations = arguments["module_configurations"]
+        product_configurations = BranchProductSync._active_product_configurations(arguments)
+        module_configurations = arguments.get("module_configurations")
+
+        if BranchProductSync._is_module_missing_row(arguments):
+            query_arguments = {
+                "product_code": f"'{product_configurations['code']}'",
+                "sequence": f"'{product_configurations.get('product_module_sequence')}'",
+            }
+
+            return """
+            INSERT INTO product_module (product_id, module_id, sequence)
+            SELECT
+                product.product_id,
+                NULL,
+                {sequence}
+            FROM product
+            WHERE product.code = {product_code}
+            AND NOT EXISTS (
+                SELECT 1
+                FROM product_module existing_product_module
+                WHERE existing_product_module.product_id = product.product_id
+                  AND existing_product_module.module_id IS NULL
+                  AND existing_product_module.sequence = {sequence}
+            );""".format(**query_arguments)
 
         query_arguments = {
             "product_code": f"'{product_configurations['code']}'",
@@ -378,43 +455,58 @@ class BranchProductSync:
 
         Returns an ordered list respecting foreign key dependencies.
         """
-        product_configurations = row["product_configurations"]
-        module_configurations = row["module_configurations"]
+        product_configurations = self._active_product_configurations(row)
+        module_configurations = row.get("module_configurations")
         branch_configuration = row["branch_configuration"]
-        transaction_type_configuration = row["transaction_type_configuration"]
+        transaction_type_configuration = row.get("transaction_type_configuration")
+        is_module_missing_row = self._is_module_missing_row(row)
+        has_module_configurations = bool(module_configurations and module_configurations.get("code"))
 
         # FIX 5: Use a list (not set) so insertion order is deterministic
         # and foreign key dependencies are always satisfied.
         required_tables = list(self.SUPPORTED_TABLES)
 
         validation_errors = []
-        if product_configurations['parent_product_id']:
-            validation_errors.append(f"Note: Parent product ID in product table for {product_configurations['code']} exist but need to move manually")
-        if branch_configuration['country_id']:
-            validation_errors.append(f"Note: County ID in branch table for {branch_configuration['code']} exist but need to move manually")
+        if product_configurations.get('parent_product_id'):
+            validation_errors.append(
+                f"Note: Parent product ID in product table for {product_configurations['code']} exist but need to move manually")
+        if branch_configuration.get('country_id'):
+            validation_errors.append(
+                f"Note: County ID in branch table for {branch_configuration['code']} exist but need to move manually")
 
         if validation_errors:
             print("\n".join(validation_errors))
 
-        if product_configurations["code"] in self.EXISTING_CONFIG.get("product_codes", []):
+        if product_configurations["code"] in self._existing_config_values("product_codes"):
             required_tables = [
                 table for table in required_tables
                 if table not in self.PRODUCT_RELATIONAL_TABLES
             ]
 
-        if module_configurations["code"] in self.EXISTING_CONFIG.get("module_codes", []):
+        if is_module_missing_row:
+            required_tables = [
+                table for table in required_tables
+                if table not in self.MODULE_RELATIONAL_TABLES
+            ]
+        elif not has_module_configurations:
+            required_tables = [
+                table for table in required_tables
+                if table not in self.MODULE_RELATIONAL_TABLES
+            ]
+        elif module_configurations["code"] in self._existing_config_values("module_codes"):
             required_tables = [
                 table for table in required_tables
                 if table not in self.MODULE_RELATIONAL_TABLES
             ]
 
-        if branch_configuration["code"] in self.EXISTING_CONFIG.get("branch_codes", []):
+        if branch_configuration["code"] in self._existing_config_values("branch_codes"):
             required_tables = [
                 table for table in required_tables
                 if table not in self.BRANCH_RELATIONAL_TABLES
             ]
 
-        if transaction_type_configuration and transaction_type_configuration["code"] in self.EXISTING_CONFIG.get("transaction_type_configuration", []):
+        if transaction_type_configuration and transaction_type_configuration["code"] in self._existing_config_values(
+                "transaction_type_configuration"):
             required_tables = [
                 table for table in required_tables
                 if table not in self.TRANSACTION_TYPE_TABLES
@@ -463,12 +555,13 @@ class BranchProductSync:
 
 
 def generate_source_destination_initial_data_query(tenant_code, branch_codes, product_codes):
-    branch_codes_str = ", ".join([f"'{branch_code}'" for branch_code in branch_codes])
-    product_codes_str = ", ".join([f"'{product_code}'" for product_code in product_codes])
-    tenant_code_str = f"'{tenant_code}'"
+    branch_codes_str = ", ".join([f"'{c.strip()}'" for c in branch_codes if c and c.strip()])
+    product_codes_str = ", ".join([f"'{c.strip()}'" for c in product_codes if c and c.strip()])
+    tenant_code_str = f"'{tenant_code.strip()}'"
     source_query = """SELECT JSON_ARRAYAGG(
                             JSON_OBJECT(
                                 'product_configurations', product_configurations,
+                                'module_missing_product_configurations', module_missing_product_configurations,
                                 'module_configurations', module_configurations,
                                 'transaction_type_configuration', transaction_type_configuration,
                                 'branch_configuration', branch_configuration
@@ -497,29 +590,64 @@ def generate_source_destination_initial_data_query(tenant_code, branch_codes, pr
                                         ),
                                     'supported_file_formats', p.supported_file_formats
                                 ) AS product_configurations,
+
+                                CASE
+                                    WHEN pm.module_id IS NULL THEN
+                                        JSON_OBJECT(
+                                            'product_module_id', pm.product_module_id,
+                                            'product_id', p.product_id,
+                                            'name', p.name,
+                                            'code', p.code,
+                                            'description', p.description,
+                                            'tag', p.tag,
+                                            'created_by', p.created_by,
+                                            'created_at', p.created_at,
+                                            'sequence', p.sequence,
+                                            'parent_product_id', p.parent_product_id,
+                                            'is_inbound', p.is_inbound,
+                                            'product_module_sequence', pm.sequence,
+                                            'product_tag_configurations',
+                                                JSON_OBJECT(
+                                                    'product_tag_id', pt.product_tag_id,
+                                                    'name', pt.name,
+                                                    'code', pt.code,
+                                                    'sequence', pt.sequence
+                                                ),
+                                            'supported_file_formats', p.supported_file_formats
+                                        )
+                                    ELSE NULL
+                                END AS module_missing_product_configurations,
                         
-                                JSON_OBJECT(
-                                    'module_id', m.module_id,
-                                    'name', m.name,
-                                    'description', m.description,
-                                    'code', m.code,
-                                    'dependent_modules', m.dependent_modules,
-                                    'tenant_module_dependent_modules', tm.dependent_modules
-                                ) AS module_configurations,
+                                CASE
+                                    WHEN m.module_id IS NOT NULL THEN
+                                        JSON_OBJECT(
+                                            'module_id', m.module_id,
+                                            'name', m.name,
+                                            'description', m.description,
+                                            'code', m.code,
+                                            'dependent_modules', m.dependent_modules,
+                                            'tenant_module_dependent_modules', tm.dependent_modules
+                                        )
+                                    ELSE NULL
+                                END AS module_configurations,
                         
                                 bpm.eligibility_config AS branch_product_module_eligibility_config,
-                        
-                                JSON_OBJECT(
-                                    'transaction_type_display_name', bpt.transaction_type_display_name,
-                                    'transaction_type_id', tym.transaction_type_id,
-                                    'code', tym.code,
-                                    'name', tym.name,
-                                    'description', tym.description,
-                                    'transaction_type_master_sequence', tym.sequence,
-                                    'product_transaction_type_sequence', ptt.sequence,
-                                    'created_by', tym.created_by
-                                ) AS transaction_type_configuration,
-                        
+                                
+                                CASE
+                                    WHEN bpt.branch_id IS NOT NULL THEN
+                                        JSON_OBJECT(
+                                            'transaction_type_display_name', bpt.transaction_type_display_name,
+                                            'transaction_type_id', tym.transaction_type_id,
+                                            'code', tym.code,
+                                            'name', tym.name,
+                                            'description', tym.description,
+                                            'transaction_type_master_sequence', tym.sequence,
+                                            'product_transaction_type_sequence', ptt.sequence,
+                                            'created_by', tym.created_by
+                                        )
+                                    ELSE NULL
+                                END AS transaction_type_configuration,
+                                
                                 JSON_OBJECT(
                                     'name', b.name,
                                     'description', b.description,
@@ -542,7 +670,7 @@ def generate_source_destination_initial_data_query(tenant_code, branch_codes, pr
                             JOIN product_module pm
                                 ON pm.product_id = p.product_id
                         
-                            JOIN module m
+                            LEFT JOIN module m
                                 ON m.module_id = pm.module_id
                         
                             JOIN branch_product_module bpm
@@ -606,9 +734,13 @@ def generate_source_destination_initial_data_query(tenant_code, branch_codes, pr
 
 
 if __name__ == "__main__":
-    tenant_code = input("Enter tenant code: ")
-    branch_codes = input("Enter branch code (Multiple supported with comma separation): ").split(",")
-    product_codes = input("Enter product code (Multiple supported with comma separation): ").split(",")
+    tenant_code = input("Enter tenant code: ").strip()
+    branch_codes = [c.strip() for c in input(
+        "Enter branch code (Multiple supported with comma separation): "
+    ).split(",") if c.strip()]
+    product_codes = [c.strip() for c in input(
+        "Enter product code (Multiple supported with comma separation): "
+    ).split(",") if c.strip()]
     generate_source_destination_initial_data_query(tenant_code, branch_codes, product_codes)
 
     branch_product_sync = BranchProductSync(tenant_code)

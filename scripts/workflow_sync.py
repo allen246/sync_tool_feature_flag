@@ -179,9 +179,9 @@ class WorkflowSync:
 
 def generate_source_data_query(tenant_code, branch_codes, product_codes=None):
     product_codes = product_codes or []
-    branch_codes_str = ", ".join([f"'{branch_code}'" for branch_code in branch_codes if branch_code])
-    product_codes_str = ", ".join([f"'{product_code}'" for product_code in product_codes if product_code])
-    tenant_code_str = f"'{tenant_code}'"
+    branch_codes_str = ", ".join([f"'{c.strip()}'" for c in branch_codes if c and c.strip()])
+    product_codes_str = ", ".join([f"'{c.strip()}'" for c in product_codes if c and c.strip()])
+    tenant_code_str = f"'{tenant_code.strip()}'"
     source_query = """SELECT JSON_ARRAYAGG(
                         JSON_OBJECT(
                             'branch', b.code,
