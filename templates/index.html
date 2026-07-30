@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body>
+<body data-schema-version="{{ schema_version }}">
 <!-- Global loader overlay: shown while any fetch is in-flight; blocks pointer events.
      Circular amber ring + animated PROCESSING label. CSS-only motion. -->
 <div id="globalLoader" class="global-loader" aria-hidden="true" role="status" aria-live="polite">
@@ -44,6 +44,9 @@
       <span class="app-header-meta-right">
         <span>2026.01</span>
         <span>v1.0.4</span>
+        <!-- Active DB schema. Click to switch; state is rendered server-side
+             from the schema_version cookie so it never flashes the wrong value. -->
+        <button type="button" id="schemaVersionPill" class="schema-pill">SCHEMA v1</button>
       </span>
     </div>
 
@@ -65,11 +68,47 @@
     </div>
   </header>
 
+  <!-- Schema-version notification. On v1 this is a dismissible upgrade notice;
+       on v2 it is a permanent indicator that generated SQL targets the new
+       tables. Both copies are in the markup and CSS shows the one matching
+       data-version, so no JS string building is involved. -->
+  <div id="schemaVersionNotice" class="schema-notice hidden" role="status" aria-live="polite">
+    <span class="schema-notice-glyph" aria-hidden="true">▸</span>
+    <span class="schema-notice-body">
+      <span class="schema-notice-v1">
+        <strong>New database schema available.</strong>
+        Every tab, field and step stays exactly as it is — only the generated
+        queries change, retargeted to the multi-tenant schema
+        (<code>tenant_product</code>, <code>tenant_branch_product</code>,
+        <code>tenant_feature_config</code>, scoped <code>workflow</code>).
+      </span>
+      <span class="schema-notice-v2">
+        <strong>Multi-tenant schema (v2) active.</strong>
+        Generated SQL targets the new tables. Tabs and inputs are unchanged.
+      </span>
+    </span>
+    <span class="schema-notice-actions">
+      <button type="button" id="schemaVersionAction" class="primary schema-notice-switch">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h11M4 7l3-3M4 7l3 3m13 7H9m11 0l-3-3m3 3l-3 3"/>
+        </svg>
+        <span class="schema-notice-v1">Switch to new version</span>
+        <span class="schema-notice-v2">Back to legacy (v1)</span>
+      </button>
+      <button type="button" id="schemaVersionDismiss" class="schema-notice-dismiss" title="Dismiss this notice">&times;</button>
+    </span>
+  </div>
+
   <nav class="tabs" role="tablist">
     <button onclick="switchTab('branch')" class="active" data-key="BRANCH">Branch Sync</button>
     <button onclick="switchTab('workflow')" data-key="WORKFLOW">Workflow Sync</button>
     <button onclick="switchTab('feature')" data-key="FEATURE_FLAG">Feature Flag Sync</button>
     <button onclick="switchTab('mq')" data-key="MQ_COMPARE">MQ Comparison</button>
+    {% if schema_version == 'v2' %}
+    <!-- Full Tenant Export exists only on the multi-tenant schema; main.js
+         registers the tab under the same condition. -->
+    <button onclick="switchTab('tenant')" data-key="TENANT_EXPORT">Tenant Export</button>
+    {% endif %}
   </nav>
 
   <!-- Notes Modal -->
@@ -110,6 +149,40 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
           </svg>
           Continue
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Environment confirmation gate (Tenant Export).
+       Every environment-specific table selected for generation is listed here
+       with its actual values, and each needs an explicit tick. The Generate
+       button stays disabled until all are confirmed — the backend enforces the
+       same rule, so this cannot be bypassed from the console. -->
+  <div id="tenantEnvModal" class="modal hidden" aria-labelledby="tenantEnvTitle" role="dialog" aria-modal="true">
+    <div class="modal-content tenant-env-modal-content">
+      <div class="modal-header">
+        <div class="modal-title" id="tenantEnvTitle">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+          </svg>
+          Confirm Environment-Specific Values
+        </div>
+        <span class="close" onclick="closeTenantEnvModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p class="tenant-env-hint">
+          These tables carry credentials and per-environment endpoints. The values below
+          came from the <strong>source</strong> database — copying them unchanged into the
+          destination is often wrong. Review each one, then confirm.
+        </p>
+        <div id="tenantEnvBody" class="tenant-env-list"></div>
+      </div>
+      <div class="tenant-env-actions">
+        <button type="button" class="secondary" onclick="closeTenantEnvModal()">Cancel</button>
+        <button type="button" class="primary" id="tenantEnvConfirm" disabled onclick="tenantExportEnvConfirm()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Confirm &amp; Generate
         </button>
       </div>
     </div>
@@ -316,6 +389,7 @@
       WORKFLOW:     { src: 'DB',     dst: null },     // pull is source-only
       FEATURE_FLAG: { src: 'DB',     dst: 'DB' },
       MQ_COMPARE:   { src: 'BROKER', dst: 'BROKER' }, // RabbitMQ, not DB
+      TENANT_EXPORT:{ src: 'DB',     dst: 'DB' },     // v2 only
     };
 
     function updateMode() {

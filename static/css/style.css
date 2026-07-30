@@ -4606,6 +4606,407 @@ button.secondary[data-loading="true"] svg {
   animation: fadeUp 0.32s var(--ease-out) both;
 }
 
+/* ── Tenant Export: table picker ───────────────────────────────────
+ * Multiselect checklist of every table in the export, grouped as the
+ * backend registry groups them. Row counts read source → destination.
+ * Empty tables are dimmed and disabled: there is nothing to generate. */
+
+.te-picker { margin-top: 4px; }
+.te-picker-empty {
+  padding: 18px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--text-3);
+  font-size: 12.5px;
+  text-align: center;
+}
+
+.te-picker-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-1);
+  flex-wrap: wrap;
+}
+.te-picker-toolbar-spacer { flex: 1 1 auto; }
+.te-picker-summary {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-2);
+  letter-spacing: 0.02em;
+}
+.te-picker-summary strong { color: var(--amber); font-weight: 600; }
+.te-summary-env { color: var(--dst); }
+
+.te-group { margin-bottom: 12px; }
+.te-group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 2px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 4px;
+}
+.te-group-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.te-group-count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-3);
+  letter-spacing: 0.05em;
+}
+.te-group-body { display: flex; flex-direction: column; }
+
+.te-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background .12s var(--ease-out), border-color .12s var(--ease-out);
+}
+.te-row:hover { background: var(--bg-1); border-color: var(--line); }
+.te-row.is-empty { opacity: 0.4; cursor: default; }
+.te-row.is-empty:hover { background: none; border-color: transparent; }
+.te-row.is-env { border-left: 2px solid var(--dst); }
+
+.te-row-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+.te-row-name { font-size: 13px; color: var(--text-0); }
+.te-row-table {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-3);
+}
+
+.te-badge {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+  border: 1px solid currentColor;
+  text-transform: uppercase;
+}
+.te-badge.env { color: var(--dst); }
+.te-badge.del { color: var(--err); }
+.te-badge.ins { color: var(--text-3); }
+
+.te-row-counts {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  flex: none;
+}
+.te-count.src { color: var(--src); }
+.te-count.dst { color: var(--dst); }
+.te-count-sep { color: var(--text-4); }
+
+.te-row-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: none;
+  padding: 3px 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--bg-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text-2);
+  cursor: pointer;
+}
+.te-row-view svg { width: 12px; height: 12px; }
+.te-row-view:hover:not(:disabled) { color: var(--amber); border-color: var(--amber); }
+.te-row-view:disabled { opacity: 0.35; cursor: default; }
+
+/* ── Tenant Export: blocking errors + run stats ───────────────────── */
+
+.te-errors {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--err);
+  border-left: 3px solid var(--err);
+  border-radius: var(--radius);
+  background: rgba(248, 113, 113, 0.06);
+}
+.te-errors-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--err);
+  margin: 0 0 8px;
+}
+.te-errors ul { margin: 0; padding-left: 18px; }
+.te-errors li { font-size: 12.5px; color: var(--text-1); line-height: 1.6; }
+
+.te-stats { margin-top: 14px; }
+.te-stats-head {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-bottom: 8px;
+}
+.te-stat {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.te-stat b { color: var(--ok); font-size: 13px; margin-right: 3px; }
+.te-stat-del b { color: var(--err); }
+.te-stat-skip b { color: var(--text-3); }
+.te-stat-note b { color: var(--amber); }
+
+.te-stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.te-stats-table th {
+  text-align: left;
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--line-strong);
+  color: var(--text-3);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 9.5px;
+}
+.te-stats-table td {
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--line-faint);
+  color: var(--text-1);
+}
+.te-stats-table td:first-child { color: var(--text-2); }
+.te-stats-table td:not(:first-child) { text-align: right; width: 70px; }
+
+/* ── Tenant Export: environment confirmation gate ─────────────────── */
+
+.tenant-env-modal-content { max-width: 760px; width: 94vw; }
+.tenant-env-hint {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-2);
+  margin: 0 0 14px;
+  padding-left: 10px;
+  border-left: 2px solid var(--dst);
+}
+.tenant-env-list { display: flex; flex-direction: column; gap: 12px; }
+
+.te-env-block {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--bg-1);
+  overflow: hidden;
+}
+.te-env-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--line);
+}
+.te-env-head code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--dst);
+}
+.te-env-label { font-size: 12px; color: var(--text-2); }
+
+.te-env-rows { padding: 8px 10px; display: flex; flex-direction: column; gap: 10px; }
+.te-env-row-head {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 4px;
+}
+.te-env-field {
+  display: flex;
+  gap: 10px;
+  padding: 2px 0;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  align-items: baseline;
+}
+.te-env-field-name { color: var(--text-3); min-width: 150px; flex: none; }
+.te-env-field-value {
+  color: var(--text-0);
+  word-break: break-all;
+  /* Credentials are shown deliberately: the operator is being asked to verify
+     them, which is impossible if they are masked. */
+}
+.te-env-field.is-required .te-env-field-name { color: var(--dst); }
+
+.te-env-confirm {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 9px 10px;
+  border-top: 1px solid var(--line);
+  background: var(--bg-2);
+  cursor: pointer;
+  font-size: 12.5px;
+  color: var(--text-1);
+}
+.te-env-confirm input { margin-top: 2px; flex: none; }
+
+.tenant-env-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--line);
+}
+
+/* ── Schema version switch ─────────────────────────────────────────
+ * Header pill + notification bar for the legacy (v1) ↔ multi-tenant (v2)
+ * schema switch. Amber = legacy, teal (--src) = multi-tenant, so the
+ * active version reads at a glance without needing the label.
+ * Both v1 and v2 copies live in the markup; data-version picks one. */
+
+.schema-pill {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 3px 7px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg-2);
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color .16s var(--ease-out), border-color .16s var(--ease-out),
+              background .16s var(--ease-out);
+}
+.schema-pill:hover {
+  color: var(--text-0);
+  border-color: var(--amber);
+  background: var(--amber-faint);
+}
+.schema-pill[data-version="v2"] {
+  color: var(--src);
+  border-color: var(--src);
+  background: var(--src-glow);
+}
+.schema-pill[data-version="v2"]:hover {
+  color: var(--text-0);
+  border-color: var(--src);
+}
+
+.schema-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-strong);
+  border-left: 2px solid var(--amber);
+  border-radius: var(--radius);
+  background: var(--bg-1);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.schema-notice[data-version="v2"] {
+  border-left-color: var(--src);
+  background: linear-gradient(90deg, var(--src-glow), var(--bg-1) 55%);
+}
+.schema-notice-glyph {
+  color: var(--amber);
+  font-family: var(--font-mono);
+  line-height: 1.55;
+  flex: none;
+}
+.schema-notice[data-version="v2"] .schema-notice-glyph { color: var(--src); }
+
+.schema-notice-body { flex: 1 1 auto; min-width: 0; }
+.schema-notice-body strong {
+  color: var(--text-0);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.schema-notice-body code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-1);
+  background: var(--bg-3);
+  padding: 1px 4px;
+  border-radius: var(--radius-sm);
+}
+
+/* Show only the copy matching the active version. */
+.schema-notice .schema-notice-v1,
+.schema-notice .schema-notice-v2 { display: none; }
+.schema-notice[data-version="v1"] .schema-notice-v1,
+.schema-notice[data-version="v2"] .schema-notice-v2 { display: inline; }
+
+.schema-notice-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+}
+.schema-notice-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.schema-notice-switch svg { width: 14px; height: 14px; flex: none; }
+
+.schema-notice-dismiss {
+  background: none;
+  border: 1px solid transparent;
+  color: var(--text-3);
+  font-size: 18px;
+  line-height: 1;
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: color .16s var(--ease-out), border-color .16s var(--ease-out);
+}
+.schema-notice-dismiss:hover { color: var(--text-0); border-color: var(--line-strong); }
+/* On v2 the bar is a state indicator, not a notice — nothing to dismiss. */
+.schema-notice[data-version="v2"] .schema-notice-dismiss { display: none; }
+
+@media (max-width: 720px) {
+  .schema-notice { flex-wrap: wrap; }
+  .schema-notice-actions { width: 100%; justify-content: flex-end; }
+}
+
 /* ── Utility ───────────────────────────────────────────────────── */
 .hidden { display: none !important; }
 

@@ -17,6 +17,7 @@
 
 import { qs, formatBytes } from './dom.js';
 import { showToast } from './toast.js';
+import { unwrapDumpText } from './json-dump.js';
 
 /* ── Field validation ─────────────────────────────────────── */
 export function validateFields(fields) {
@@ -30,11 +31,23 @@ export function validateFields(fields) {
 }
 
 /* ── JSON auto-repair ─────────────────────────────────────── */
+
+/** Every exit from repairJson() goes through here: once the text parses, a
+ *  DB-client dump envelope is peeled off it (see lib/json-dump.js). That
+ *  makes "paste the raw export file" work in every JSON field at once —
+ *  a dump is valid JSON, so nothing else in the chain would notice it. */
+function settle(text, fixes) {
+  const inner = unwrapDumpText(text);
+  if (inner === null) return { text, fixes };
+  fixes.push('unwrapped database export envelope');
+  return { text: inner, fixes };
+}
+
 export function repairJson(raw) {
   const fixes = [];
   if (raw == null) return { text: '', fixes };
   let s = String(raw);
-  try { JSON.parse(s); return { text: s, fixes }; } catch (_) {}
+  try { JSON.parse(s); return settle(s, fixes); } catch (_) {}
 
   if (s.charCodeAt(0) === 0xFEFF) { s = s.slice(1); fixes.push('removed BOM marker'); }
   const trimmed = s.replace(/^\s+|\s+$/g, '');
@@ -71,18 +84,20 @@ export function repairJson(raw) {
   const noTrailing = s.replace(/,\s*([}\]])/g, '$1');
   if (noTrailing !== s) { s = noTrailing; fixes.push('removed trailing commas'); }
 
-  try { JSON.parse(s); return { text: s, fixes }; } catch (_) {}
+  try { JSON.parse(s); return settle(s, fixes); } catch (_) {}
   if (/'[^'\\]*'\s*:/.test(s) || /:\s*'[^'\\]*'/.test(s)) {
     const converted = s.replace(/'((?:[^'\\]|\\.)*)'/g, (_, inner) => '"' + inner.replace(/"/g, '\\"').replace(/\\'/g, "'") + '"');
     try { JSON.parse(converted); s = converted; fixes.push('converted single quotes to double'); } catch (_) {}
   }
-  return { text: s, fixes };
+  return settle(s, fixes);   // a no-op when s still does not parse
 }
 
 export function tryRepairTextarea(el, label) {
   const original = el.value;
   if (!original.trim()) return { ok: false, empty: true };
-  try { JSON.parse(original); return { ok: true, fixes: [] }; } catch (_) {}
+  // No fast path for already-valid JSON: a dump parses fine and still needs
+  // unwrapping. repairJson() returns the text unchanged when there is
+  // nothing to do, so a clean paste is never rewritten.
   const { text, fixes } = repairJson(original);
   try {
     JSON.parse(text);
@@ -117,6 +132,9 @@ export function validateJSON(fields) {
  *   · object wrapper:        {"result":[...]} / {"data":[...]} / {"rows":[...]}
  *   · stringified twice:     "[{...}]"
  *   · single object:         {...}                (wrapped → [{...}])
+ *   · raw client dump:       {"SELECT …": [{"result":"[{...}]"}]}
+ *                            — the query text is the column name; peeled by
+ *                              repairJson via lib/json-dump.js
  *
  * Applies repairJson() first to handle BOM, smart quotes, escaped
  * inner quotes, trailing commas, single-quoted JSON, comments.
@@ -308,6 +326,9 @@ export function triggerFileUpload(textarea, opts = {}) {
       textarea.value = String(reader.result || '');
       textarea.dispatchEvent(new Event('input', { bubbles: true }));
       showToast('File Loaded', `${file.name} · ${formatBytes(file.size)}`, 'success');
+      // A file dropped straight out of a DB client is a dump envelope — unwrap
+      // it now so the field shows the payload rather than the query text.
+      tryRepairTextarea(textarea, file.name);
     };
     reader.onerror = () => showToast('Read Failed', `Note: Could not read ${file.name}.`, 'error');
     reader.readAsText(file);

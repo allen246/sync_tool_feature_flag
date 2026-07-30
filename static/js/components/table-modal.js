@@ -117,7 +117,13 @@ export function openTableModal({ title, columns, rows, filename, filenamePrefix,
   setTitle();
   setEditMode(false);
   render(true);
+  // Clear every layered overlay. Reopening without closing first is normal
+  // (the tenant picker calls straight into a different table), and an overlay
+  // left up from the previous table covers .modal-content — including the
+  // Edit button — so the table looks unresponsive.
   hideConfirm();
+  closeJsonEditor();
+  hideMultiFilter();
   qs('#tableModal').classList.remove('hidden');
   wireScrollClosers();
   setTimeout(() => { const f = qs('#tableModal .wt-filter'); if (f) f.focus(); }, 60);
@@ -135,6 +141,7 @@ export function requestCloseTableModal() {
 export function closeTableModal() {
   hideConfirm();
   hideMultiFilter();
+  closeJsonEditor();
   qs('#tableModal').classList.add('hidden');
 }
 
@@ -1271,8 +1278,10 @@ document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
   const m = qs('#tableModal');
   if (!m || m.classList.contains('hidden')) return;
-  // Top of the stack first
-  if (state.je.open) return;                                                   // JSON editor: own handler
+  // Top of the stack first. The JSON editor's own keydown handles Escape and
+  // stops propagation, so reaching here means focus has left its textarea —
+  // cancel it rather than swallowing the key and stranding the user.
+  if (state.je.open) return cancelTableJsonEditor();
   if (!qs('#tableMultiFilter').classList.contains('hidden')) return hideMultiFilter();
   if (!qs('#tableModalConfirm').classList.contains('hidden')) return hideConfirm();
   requestCloseTableModal();
@@ -1281,6 +1290,15 @@ document.addEventListener('keydown', e => {
 document.addEventListener('click', e => {
   const m = qs('#tableModal');
   if (!m || m.classList.contains('hidden')) return;
+
+  // Click on the JSON editor's own dim backdrop (outside its card) cancels it.
+  // Without this the editor has no click-away exit, and a user who clicks off
+  // it then closes the modal leaves it up over the next table.
+  const je = qs('#tableModalJsonEditor');
+  if (state.je.open && je && !je.classList.contains('hidden')) {
+    if (e.target === je) cancelTableJsonEditor();
+    return;                              // editor is modal — absorb the rest
+  }
 
   // While the confirm overlay is up, only its own buttons may act —
   // catch any stray click that escapes its z-index and route the user

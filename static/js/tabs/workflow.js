@@ -3,13 +3,15 @@
  *  table view button on the source JSON).
  * ============================================================ */
 
-import { ICONS, exposeGlobals, escapeHtml, formatBytes } from '../lib/dom.js';
+import { ICONS, exposeGlobals, formatBytes } from '../lib/dom.js';
 import { showToast } from '../lib/toast.js';
 import { setLoading, activeButton } from '../lib/feedback.js';
 import { validateFields, validateJSON, normalizeInput, registerInputs, extractJsonArray, parseCSV } from '../lib/data.js';
 import { flowRibbon, sectionHeader, offlineCallout, outputCard, finalSqlBox, jsonGroup, renderPullResult } from '../components/sections.js';
 import { registerJsonGroupAction, registerUploadVariant } from '../components/json-group.js';
 import { openTableModal } from '../components/table-modal.js';
+import { collectGroupNames, applyGroupRemap, openGroupRemapModal,
+         exposeRemapGlobals } from '../components/group-remap.js';
 
 registerInputs({
   plain: ['wTenant'],
@@ -153,127 +155,6 @@ async function workflowFinal() {
     showToast('Final SQL Generated', 'Note: Review and execute on Destination DB.', 'success');
   }).catch(() => showToast('Server Error', 'Note: Failed to generate Final SQL. Check server logs.', 'error'))
    .finally(() => setLoading(btn, false));
-}
-
-/* ── Group remap modal ───────────────────────────────────── */
-let remapResolver = null;
-
-function collectGroupNames(rows) {
-  const set = new Set();
-  rows.forEach(row => {
-    const fg = typeof row?.from_group === 'string' ? row.from_group.trim() : '';
-    if (fg) set.add(fg);
-    const tg = Array.isArray(row?.to_groups) ? row.to_groups : [];
-    tg.forEach(g => { if (typeof g === 'string') { const t = g.trim(); if (t) set.add(t); } });
-  });
-  return Array.from(set).sort((a, b) => a.localeCompare(b));
-}
-
-function applyGroupRemap(rows, remap) {
-  return rows.map(row => ({
-    ...row,
-    from_group: typeof row?.from_group === 'string' && row.from_group.trim()
-      ? remap[row.from_group.trim()] : row.from_group,
-    to_groups: Array.isArray(row?.to_groups)
-      ? row.to_groups.map(g => (typeof g !== 'string' ? g : (g.trim() ? remap[g.trim()] : g)))
-      : row.to_groups,
-  }));
-}
-
-function openGroupRemapModal(groups) {
-  const modal = document.getElementById('workflowRemapModal');
-  const content = document.getElementById('workflowRemapContent');
-  // Bulk-action header — quick path for "most/all keys stay the same"
-  content.innerHTML = `
-    <div class="workflow-remap-bulk">
-      <div class="workflow-remap-bulk-text">
-        <strong>${groups.length}</strong> distinct group${groups.length === 1 ? '' : 's'} found.
-        Each needs a replacement value — even if it stays the same.
-      </div>
-      <button type="button" class="workflow-remap-bulk-btn" onclick="copyAllRemapKeys()" title="Fill every blank row with its current value">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7l7 7-7 7"/></svg>
-        Keep all unchanged
-      </button>
-    </div>
-  ` + groups.map(group => `
-    <div class="workflow-remap-row">
-      <div class="workflow-remap-source">
-        <span class="workflow-remap-label">Current Group</span>
-        <div class="workflow-remap-value">${escapeHtml(group)}</div>
-      </div>
-      <button type="button" class="workflow-remap-copy" onclick="copyOneRemapKey(this)"
-              data-group="${escapeHtml(group)}"
-              title="Copy current → new (use the same value)">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7l7 7-7 7"/></svg>
-      </button>
-      <div class="workflow-remap-input">
-        <label class="workflow-remap-label" for="workflow-remap-${escapeHtml(group)}">New Group Name</label>
-        <input id="workflow-remap-${escapeHtml(group)}" class="workflow-remap-field"
-               data-group="${escapeHtml(group)}" placeholder="Enter replacement group name">
-        <span class="workflow-remap-error hidden">Replacement value is required.</span>
-      </div>
-    </div>
-  `).join('');
-  modal.classList.remove('hidden');
-  const firstInput = content.querySelector('input');
-  if (firstInput) firstInput.focus();
-  return new Promise(resolve => { remapResolver = resolve; });
-}
-
-/* Per-row helper — copies the source value to the input on the same row. */
-function copyOneRemapKey(btn) {
-  const row = btn.closest('.workflow-remap-row');
-  if (!row) return;
-  const input = row.querySelector('.workflow-remap-field');
-  const src = btn.dataset.group || '';
-  if (!input) return;
-  input.value = src;
-  input.classList.remove('error');
-  row.querySelector('.workflow-remap-error')?.classList.add('hidden');
-  input.dispatchEvent(new Event('input', { bubbles: true }));
-  btn.classList.add('is-flash');
-  setTimeout(() => btn.classList.remove('is-flash'), 700);
-}
-
-/* Bulk helper — fills every blank input with its source value. Doesn't
- * overwrite rows the user already filled differently. */
-function copyAllRemapKeys() {
-  let filled = 0;
-  document.querySelectorAll('#workflowRemapContent .workflow-remap-row').forEach(row => {
-    const src = row.querySelector('.workflow-remap-value')?.textContent.trim();
-    const input = row.querySelector('.workflow-remap-field');
-    if (!input || !src) return;
-    if (input.value.trim()) return;        // skip rows the user has already touched
-    input.value = src;
-    input.classList.remove('error');
-    row.querySelector('.workflow-remap-error')?.classList.add('hidden');
-    filled++;
-  });
-  if (filled) showToast('Filled', `${filled} blank row${filled === 1 ? '' : 's'} set to the current value.`, 'info');
-  else        showToast('Nothing to Fill', 'All rows already have a value.', 'warning');
-}
-
-function closeGroupRemap(result) {
-  document.getElementById('workflowRemapModal').classList.add('hidden');
-  document.getElementById('workflowRemapContent').innerHTML = '';
-  if (remapResolver) { remapResolver(result); remapResolver = null; }
-}
-
-function cancelWorkflowGroupRemap() { closeGroupRemap(null); }
-
-function submitWorkflowGroupRemap() {
-  const fields = Array.from(document.querySelectorAll('#workflowRemapContent .workflow-remap-field'));
-  const remap = {};
-  let bad = false;
-  fields.forEach(f => {
-    const v = f.value.trim();
-    const err = f.parentElement.querySelector('.workflow-remap-error');
-    if (!v) { f.classList.add('error'); err.classList.remove('hidden'); bad = true; return; }
-    f.classList.remove('error'); err.classList.add('hidden');
-    remap[f.dataset.group] = v;
-  });
-  if (bad) { showToast('Validation Error', 'Note: Group remapping is mandatory for all listed values.', 'error'); return; }
-  closeGroupRemap(remap);
 }
 
 /* ── Table view (uses generic table modal) ───────────────── */
@@ -451,11 +332,9 @@ registerUploadVariant('wJson', {
   onPick: uploadWorkflowCSV,
 });
 
-exposeGlobals({
-  workflowPull, workflowFinal,
-  cancelWorkflowGroupRemap, submitWorkflowGroupRemap,
-  copyOneRemapKey, copyAllRemapKeys,
-});
+exposeGlobals({ workflowPull, workflowFinal });
+// The remap dialog's own inline handlers live with the shared component.
+exposeRemapGlobals();
 
 export const workflowTab = {
   key: 'workflow',

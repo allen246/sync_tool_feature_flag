@@ -29,6 +29,7 @@ import { openSqlPreview, closeSqlPreview, copySqlPreviewAll, downloadSqlPreviewA
 import { TabRegistry, switchTab, goToTab } from './state/registry.js';
 import { startStatusBar }                  from './state/status-bar.js';
 import { startFlowObserver }               from './state/flow-state.js';
+import { startSchemaVersion }              from './state/schema-version.js';
 import { bindModalEscape, closeModalById, closeNotesModal } from './lib/modal.js';
 import {
   closeTableModal,
@@ -57,8 +58,14 @@ import { branchTab }      from './tabs/branch.js';
 import { workflowTab }    from './tabs/workflow.js';
 import { featureFlagTab } from './tabs/feature-flag.js';
 import { mqTab }          from './tabs/mq.js';
+import { tenantExportTab } from './tabs/tenant-export.js';
 
-[branchTab, workflowTab, featureFlagTab, mqTab].forEach(t => TabRegistry.register(t));
+/* Full Tenant Export is built entirely from the v2 registry, so it is only
+ * registered on v2. index.html renders its nav button under the same
+ * condition — both read the server-rendered schema version. */
+const TABS = [branchTab, workflowTab, featureFlagTab, mqTab];
+if (document.body.dataset.schemaVersion === 'v2') TABS.push(tenantExportTab);
+TABS.forEach(t => TabRegistry.register(t));
 
 /* Inline-onclick globals used from index.html templates */
 exposeGlobals({
@@ -117,6 +124,7 @@ exposeGlobals({
 bindModalEscape();
 startStatusBar();
 startFlowObserver();
+startSchemaVersion();
 
 // Initial paint: activate the first registered tab.
 TabRegistry.setActive(branchTab.key);
